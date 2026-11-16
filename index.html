@@ -319,7 +319,7 @@ function txs(){return items.filter(function(i){return i.kind==='tx'&&i.date})}
 function sum(list,type){return list.filter(function(t){return t.type===type}).reduce(function(a,t){return a+(+t.amount||0)},0)}
 
 /* ---------- encrypted local persistence ---------- */
-var SECURITY_META='penazenka.security.meta.v1', cryptoKey=null, lockTimer=null;
+var SECURITY_META='penazenka.security.meta.v2', cryptoKey=null, lockTimer=null;
 var LOCK_AFTER_MS=5*60*1000;
 function toB64(a){var s='';for(var i=0;i<a.length;i++)s+=String.fromCharCode(a[i]);return btoa(s)}
 function fromB64(s){var r=atob(s),a=new Uint8Array(r.length);for(var i=0;i<r.length;i++)a[i]=r.charCodeAt(i);return a}
