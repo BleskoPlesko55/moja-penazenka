@@ -1,0 +1,632 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}
+#securityGate{position:fixed;inset:0;z-index:1000;background:var(--bg);display:grid;place-items:center;padding:24px}
+#securityGate[hidden]{display:none!important}
+.security-card{width:min(100%,420px);background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:24px;box-shadow:var(--shadow)}
+.security-card h2{font:800 22px var(--font-display);margin:0 0 8px}
+.security-card p{color:var(--muted);margin:0 0 18px}
+.security-card input{width:100%;border:1.5px solid var(--line);border-radius:12px;background:var(--bg);padding:13px 14px;margin:0 0 10px}
+.security-card .btn{width:100%;margin-top:8px}
+.security-error{min-height:20px;color:var(--exp);font-size:13px;font-weight:600;margin-top:8px}
+</style><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#0f6a3d"><link rel="icon" href="./icons/icon-192.png" type="image/png"></head><body>
+<div id="securityGate"><div class="security-card">
+  <div style="font-size:32px;margin-bottom:12px">🔐</div>
+  <h2 id="securityTitle">Zabezpečená Peňaženka</h2>
+  <p id="securityDescription">Nastav si PIN s aspoň 6 číslicami. Bez neho nebude možné dešifrovať uložené záznamy.</p>
+  <input id="securityPin" type="password" inputmode="numeric" maxlength="32" placeholder="PIN (aspoň 6 číslic)">
+  <input id="securityPinConfirm" type="password" inputmode="numeric" maxlength="32" placeholder="Zopakuj PIN">
+  <button id="securitySubmit" type="button" class="btn">Nastaviť PIN</button>
+  <div id="securityError" class="security-error" role="alert"></div>
+  <p style="font-size:12px;margin-top:14px">PIN sa neukladá. Záznamy zostávajú šifrované v tomto prehliadači.</p>
+</div></div>
+
+<title>Peňaženka</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Manrope:wght@600;700;800&display=swap">
+<style>
+/* Layout: green month header with balance, then chart column + day-grouped transactions, bottom sheet for entry. */
+:root{
+  --bg:#f2f5f3; --surface:#ffffff; --fg:#13211a; --muted:#5b6d63; --line:#e0e8e3;
+  --brand:#14804a; --brand-ink:#ffffff; --head:#0f6a3d; --head-ink:#ffffff; --head-dim:#bfe3cf;
+  --inc:#14804a; --exp:#cf3f36; --soft:#e8f1ec; --scrim:rgba(8,20,14,.5);
+  --head-inc:#b4f0cf; --head-exp:#ffd0ca;
+  --shadow:0 1px 2px rgba(15,40,28,.06),0 8px 24px rgba(15,40,28,.06);
+  --font-body:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+  --font-display:'Manrope','Inter',system-ui,-apple-system,'Segoe UI',Roboto,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0c1410; --surface:#15201a; --fg:#e6efe9; --muted:#93a69b; --line:#243228;
+    --brand:#3cc478; --brand-ink:#06210f; --head:#10301f; --head-ink:#eaf6ef; --head-dim:#9db9aa;
+    --inc:#4fd58a; --exp:#ff7a70; --soft:#1c2b22; --scrim:rgba(0,0,0,.62);
+    --head-inc:#7fe3ac; --head-exp:#ff9d94; --shadow:none; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0c1410; --surface:#15201a; --fg:#e6efe9; --muted:#93a69b; --line:#243228;
+  --brand:#3cc478; --brand-ink:#06210f; --head:#10301f; --head-ink:#eaf6ef; --head-dim:#9db9aa;
+  --inc:#4fd58a; --exp:#ff7a70; --soft:#1c2b22; --scrim:rgba(0,0,0,.62);
+  --head-inc:#7fe3ac; --head-exp:#ff9d94; --shadow:none; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{min-height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:15px;line-height:1.45}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--head);z-index:10}
+button,input{font:inherit;color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.num{font-variant-numeric:tabular-nums}
+
+/* header */
+.top{background:var(--head);color:var(--head-ink);padding-block:14px 20px}
+.brand{margin:0;font:700 12px var(--font-display);letter-spacing:.14em;text-transform:uppercase;color:var(--head-dim)}
+.monthbar{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:6px}
+.monthbar h2{margin:0;font:800 22px var(--font-display);text-align:center;flex:1;min-width:0}
+.nav{width:40px;height:40px;border-radius:50%;border:0;background:rgba(255,255,255,.12);color:var(--head-ink);display:grid;place-items:center}
+.nav:hover{background:rgba(255,255,255,.22)}
+.nav svg{width:20px;height:20px}
+.bal{margin-top:10px;text-align:center}
+.bal span{display:block;font-size:13px;color:var(--head-dim)}
+.bal strong{display:block;font:800 34px/1.15 var(--font-display);font-variant-numeric:tabular-nums}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+.split div{background:rgba(255,255,255,.1);border-radius:14px;padding:10px 14px}
+.split span{display:block;font-size:12px;color:var(--head-dim)}
+.split b{font:700 17px var(--font-display);font-variant-numeric:tabular-nums}
+#inc{color:var(--head-inc)} #exp{color:var(--head-exp)}
+
+/* main */
+main{padding-block:16px 110px}
+.cols{display:grid;gap:16px}
+.cols>section{min-width:0}
+@media (min-width:860px){.cols{grid-template-columns:minmax(0,5fr) minmax(0,6fr);align-items:start}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow)}
+.card h3{margin:0;font:700 16px var(--font-display)}
+.seg{display:inline-grid;grid-auto-flow:column;gap:2px;background:var(--soft);border-radius:12px;padding:3px}
+.seg button{border:0;background:transparent;border-radius:9px;padding:6px 12px;font-weight:600;font-size:13px;color:var(--muted)}
+.seg button[aria-pressed="true"]{background:var(--surface);color:var(--fg);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.chart-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.donut{display:block;width:min(100%,220px);height:auto;margin:14px auto 6px}
+.donut .track{stroke:var(--soft)}
+.dl{fill:var(--muted);font:500 7px var(--font-body);text-anchor:middle}
+.dv{fill:var(--fg);font:800 11px var(--font-display);text-anchor:middle}
+.legend{display:grid;gap:12px;margin-top:12px}
+.lg{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:4px 12px;align-items:center}
+.lg .nm{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lg .nm small{color:var(--muted);font-weight:500;margin-left:6px}
+.lg .am{font-weight:600;font-variant-numeric:tabular-nums}
+.bar{grid-column:2 / 4;height:6px;border-radius:3px;background:var(--soft);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:3px}
+.lg .ci{grid-row:1 / 3}
+.none{color:var(--muted);margin:14px 0 4px}
+
+/* icon circle */
+.ci{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:#fff;flex:none}
+.ci svg{width:19px;height:19px;stroke:#fff}
+
+/* list */
+.day{margin-top:18px}
+.day:first-child{margin-top:0}
+.day-h{display:flex;justify-content:space-between;gap:12px;padding:0 4px 6px;color:var(--muted);font-size:13px;font-weight:600}
+.day-h span:last-child{font-variant-numeric:tabular-nums}
+.rows{background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}
+.row{display:grid;grid-template-columns:36px minmax(0,1fr) auto;gap:12px;align-items:center;width:100%;text-align:left;background:transparent;border:0;padding:11px 14px;border-top:1px solid var(--line)}
+.row:first-child{border-top:0}
+.row:hover{background:var(--soft)}
+.rt b{display:block;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rt small{display:block;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.amt{font:700 15px var(--font-display);font-variant-numeric:tabular-nums;white-space:nowrap}
+.amt.income{color:var(--inc)} .amt.expense{color:var(--exp)}
+
+/* banners, empty */
+.note{color:var(--muted);text-align:center;margin:40px 0}
+.banner{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;background:var(--soft);border-radius:14px;padding:10px 14px;margin-bottom:16px;font-size:14px}
+.link{border:0;background:transparent;color:var(--brand);font-weight:600;padding:6px 4px;text-decoration:underline;text-underline-offset:3px}
+.empty{text-align:center;padding:36px 20px;max-width:440px;margin:24px auto 0}
+.empty .big{width:72px;height:72px;border-radius:50%;background:var(--soft);color:var(--brand);display:grid;place-items:center;margin:0 auto 14px}
+.empty .big svg{width:34px;height:34px}
+.empty h3{margin:0 0 6px;font:800 20px var(--font-display)}
+.empty p{margin:0 0 18px;color:var(--muted)}
+.btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.btn{border:0;border-radius:12px;padding:11px 18px;font-weight:600;background:var(--brand);color:var(--brand-ink)}
+.btn.ghost{background:var(--soft);color:var(--fg)}
+.btn.danger{background:var(--exp);color:#fff}
+.foot{margin:22px 0 0;text-align:center;color:var(--muted);font-size:12.5px}
+
+/* fab */
+.fab{position:fixed;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));width:58px;height:58px;border-radius:50%;border:0;background:var(--brand);color:var(--brand-ink);display:grid;place-items:center;box-shadow:0 6px 18px rgba(0,0,0,.25);z-index:20}
+.fab svg{width:28px;height:28px}
+
+/* sheet */
+.back{position:fixed;inset:0;background:var(--scrim);display:flex;align-items:flex-end;justify-content:center;z-index:40}
+.sheet{width:100%;max-width:520px;max-height:94%;overflow-y:auto;background:var(--surface);border-radius:22px 22px 0 0;padding:16px max(16px,env(safe-area-inset-right,0px)) calc(18px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));display:grid;gap:14px}
+@media (min-width:640px){.back{align-items:center}.sheet{border-radius:22px;padding-bottom:20px}}
+.sh-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.sh-top h3{margin:0;font:800 18px var(--font-display)}
+.x{width:36px;height:36px;border-radius:50%;border:0;background:var(--soft);display:grid;place-items:center}
+.x svg{width:18px;height:18px}
+.seg.full{display:grid;grid-template-columns:1fr 1fr}
+.seg.full button{padding:9px 12px;font-size:14px}
+.lab{display:block;font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.amount{display:flex;align-items:center;gap:8px;border:1.5px solid var(--line);border-radius:14px;padding:6px 14px;background:var(--bg)}
+.amount input{flex:1;min-width:0;border:0;background:transparent;font:800 30px var(--font-display);font-variant-numeric:tabular-nums;padding:4px 0;outline:0}
+.amount:focus-within{border-color:var(--brand)}
+.amount span{font:700 22px var(--font-display);color:var(--muted)}
+.field{width:100%;border:1.5px solid var(--line);border-radius:12px;background:var(--bg);padding:10px 12px;outline:0}
+.field:focus{border-color:var(--brand)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(76px,1fr));gap:8px}
+.cat{display:grid;justify-items:center;gap:6px;padding:10px 4px 8px;border-radius:14px;border:1.5px solid transparent;background:transparent;font-size:12px;text-align:center;line-height:1.2;min-width:0}
+.cat span:last-child{max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cat:hover{background:var(--soft)}
+.cat.on{border-color:var(--brand);background:var(--soft);font-weight:600}
+.cat .ci.plus{background:var(--soft);color:var(--muted);border:1.5px dashed var(--muted)}
+.cat .ci.plus svg{stroke:var(--muted)}
+.two{display:grid;grid-template-columns:1fr;gap:12px}
+.nc{border:1.5px dashed var(--line);border-radius:16px;padding:12px;display:grid;gap:12px}
+.nc-top{display:flex;align-items:center;gap:12px}
+.sw{display:flex;gap:8px;flex-wrap:wrap}
+.sw button{width:28px;height:28px;border-radius:50%;border:2px solid transparent;box-shadow:inset 0 0 0 2px var(--surface)}
+.sw button.on{border-color:var(--fg)}
+.icons{display:grid;grid-template-columns:repeat(auto-fill,minmax(40px,1fr));gap:6px;max-height:176px;overflow-y:auto;padding:2px}
+.ib{height:40px;border-radius:10px;border:1.5px solid transparent;background:var(--soft);display:grid;place-items:center;color:var(--fg)}
+.ib svg{width:20px;height:20px}
+.ib.on{border-color:var(--brand);background:var(--surface)}
+.err{min-height:18px;margin:0;color:var(--exp);font-size:13px;font-weight:600}
+.acts{display:grid;grid-template-columns:1fr;gap:8px}
+.acts .btn{padding:13px 18px}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(88px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;z-index:60;max-width:calc(100% - 32px)}
+@media (prefers-reduced-motion:no-preference){.sheet{animation:up .18s ease-out}@keyframes up{from{transform:translateY(24px);opacity:.6}to{transform:none;opacity:1}}}
+</style>
+
+<header class="top">
+  <div class="wrap">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px"><h1 class="brand">Peňaženka</h1><button type="button" class="link" style="color:var(--head-ink);text-decoration:none" onclick="window.lockWallet()">Uzamknúť</button></div>
+    <div class="monthbar">
+      <button class="nav" id="prev" data-act="prev" aria-label="Predchádzajúci mesiac"><i data-lucide="chevron-left"></i></button>
+      <h2 id="monthTitle"></h2>
+      <button class="nav" id="next" data-act="next" aria-label="Nasledujúci mesiac"><i data-lucide="chevron-right"></i></button>
+    </div>
+    <div class="bal"><span>Bilancia mesiaca</span><strong id="bal">0,00 €</strong></div>
+    <div class="split">
+      <div><span>Príjmy</span><b id="inc">0,00 €</b></div>
+      <div><span>Výdavky</span><b id="exp">0,00 €</b></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap" id="main"><p class="note">Načítavam údaje…</p></main>
+
+<button class="fab" id="fab" data-act="add" aria-label="Pridať transakciu"><i data-lucide="plus"></i></button>
+
+<div class="back" id="sheet" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+    <div class="sh-top">
+      <h3 id="sheetTitle">Nová transakcia</h3>
+      <button class="x" data-act="close" aria-label="Zavrieť"><i data-lucide="x"></i></button>
+    </div>
+    <div class="seg full" role="group" aria-label="Typ transakcie">
+      <button type="button" id="tExp" data-act="type" data-v="expense" aria-pressed="true">Výdavok</button>
+      <button type="button" id="tInc" data-act="type" data-v="income" aria-pressed="false">Príjem</button>
+    </div>
+    <div>
+      <label class="lab" for="amount">Suma</label>
+      <div class="amount"><input id="amount" inputmode="decimal" autocomplete="off" placeholder="0,00"><span>€</span></div>
+    </div>
+    <div>
+      <span class="lab">Kategória</span>
+      <div class="grid" id="catGrid"></div>
+    </div>
+    <div class="nc" id="newCat" hidden>
+      <div class="nc-top">
+        <span class="ci" id="ncPreview"></span>
+        <input class="field" id="catName" maxlength="24" placeholder="Názov kategórie" autocomplete="off" aria-label="Názov novej kategórie">
+      </div>
+      <div class="sw" id="swatches" aria-label="Farba kategórie"></div>
+      <div class="icons" id="iconGrid" aria-label="Ikona kategórie"></div>
+      <div class="btns">
+        <button type="button" class="btn ghost" data-act="catcancel">Zrušiť</button>
+        <button type="button" class="btn" data-act="catsave">Pridať kategóriu</button>
+      </div>
+    </div>
+    <div class="two">
+      <div>
+        <label class="lab" for="note">Poznámka</label>
+        <input class="field" id="note" maxlength="80" placeholder="Napr. obed v práci" autocomplete="off">
+      </div>
+      <div>
+        <label class="lab" for="date">Dátum</label>
+        <input class="field" id="date" type="date">
+      </div>
+    </div>
+    <p class="err" id="err" role="alert"></p>
+    <div class="acts">
+      <button type="button" class="btn" data-act="save">Uložiť</button>
+      <button type="button" class="btn ghost" id="delBtn" data-act="del" hidden>Zmazať</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script src="https://unpkg.com/lucide@0.469.0/dist/umd/lucide.min.js"></script>
+<script>
+(function(){
+'use strict';
+var $=function(s){return document.querySelector(s)};
+var esc=function(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+var fmt=new Intl.NumberFormat('sk-SK',{style:'currency',currency:'EUR'});
+var money=function(n){return fmt.format(n)};
+var pad=function(n){return String(n).padStart(2,'0')};
+var cap=function(s){return s.charAt(0).toUpperCase()+s.slice(1)};
+var dstr=function(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
+var todayStr=function(){return dstr(new Date())};
+var newId=function(p){return p+'_'+Date.now().toString(36)+Math.random().toString(36).slice(2,6)};
+var KEY='penazenka.v1';
+
+/* ---------- icons ---------- */
+var pascal=function(n){return n.split('-').map(function(p){return p.charAt(0).toUpperCase()+p.slice(1)}).join('')};
+function hasIcon(n){try{if(window.lucide&&lucide.icons)return !!lucide.icons[pascal(n)]}catch(e){}return true}
+function ico(n){return '<i data-lucide="'+(hasIcon(n)?n:'circle')+'"></i>'}
+function paintIcons(){
+  if(window.lucide&&lucide.createIcons){try{lucide.createIcons()}catch(e){}}
+  else{document.querySelectorAll('i[data-lucide]').forEach(function(i){i.textContent='•'})}
+}
+var ICONS=['utensils','coffee','pizza','sandwich','ice-cream-cone','beer','wine','apple','cake','shopping-cart','shopping-bag','shopping-basket','store','shirt','gem','gift','home','lamp','sofa','hammer','wrench','zap','droplet','flame','wifi','smartphone','laptop','tv','gamepad-2','film','music','headphones','book-open','graduation-cap','pencil','car','bus','train-front','bike','plane','fuel','map-pin','bed-double','tent','umbrella','heart-pulse','pill','stethoscope','dumbbell','scissors','baby','dog','cat','paw-print','tree-pine','flower-2','briefcase','banknote','wallet','piggy-bank','landmark','receipt','credit-card','trending-up','coins','percent','shield','key-round','truck','package','camera','palette','ticket','party-popper','smile','star','heart','ellipsis'];
+var PAL=['#e8604c','#f08a24','#c78f00','#7cb518','#2fa866','#14a3a3','#2e90e5','#4f6bed','#8b5cf6','#c94fb5','#e5568a','#64748b'];
+var okColor=function(c){return /^#[0-9a-f]{6}$/i.test(c||'')?c:'#64748b'};
+
+/* ---------- default categories ---------- */
+var DEF=[
+ {id:'food',type:'expense',name:'Jedlo a nápoje',icon:'utensils',color:'#f08a24'},
+ {id:'groc',type:'expense',name:'Potraviny',icon:'shopping-cart',color:'#2fa866'},
+ {id:'cafe',type:'expense',name:'Kaviareň',icon:'coffee',color:'#c78f00'},
+ {id:'trans',type:'expense',name:'Doprava',icon:'bus',color:'#2e90e5'},
+ {id:'car',type:'expense',name:'Auto',icon:'car',color:'#4f6bed'},
+ {id:'fuel',type:'expense',name:'Palivo',icon:'fuel',color:'#64748b'},
+ {id:'home',type:'expense',name:'Bývanie',icon:'home',color:'#14a3a3'},
+ {id:'bills',type:'expense',name:'Účty',icon:'receipt',color:'#7cb518'},
+ {id:'phone',type:'expense',name:'Telefón a net',icon:'smartphone',color:'#8b5cf6'},
+ {id:'health',type:'expense',name:'Zdravie',icon:'heart-pulse',color:'#e8604c'},
+ {id:'shop',type:'expense',name:'Nákupy',icon:'shopping-bag',color:'#e5568a'},
+ {id:'cloth',type:'expense',name:'Oblečenie',icon:'shirt',color:'#c94fb5'},
+ {id:'fun',type:'expense',name:'Zábava',icon:'film',color:'#8b5cf6'},
+ {id:'sport',type:'expense',name:'Šport',icon:'dumbbell',color:'#2fa866'},
+ {id:'travel',type:'expense',name:'Cestovanie',icon:'plane',color:'#2e90e5'},
+ {id:'edu',type:'expense',name:'Vzdelanie',icon:'graduation-cap',color:'#4f6bed'},
+ {id:'gift',type:'expense',name:'Darčeky',icon:'gift',color:'#e5568a'},
+ {id:'pets',type:'expense',name:'Zvieratá',icon:'dog',color:'#f08a24'},
+ {id:'oth',type:'expense',name:'Iné',icon:'ellipsis',color:'#64748b'},
+ {id:'sal',type:'income',name:'Výplata',icon:'banknote',color:'#2fa866'},
+ {id:'side',type:'income',name:'Brigáda',icon:'briefcase',color:'#2e90e5'},
+ {id:'giftin',type:'income',name:'Dar',icon:'gift',color:'#e5568a'},
+ {id:'inv',type:'income',name:'Investície',icon:'trending-up',color:'#14a3a3'},
+ {id:'othin',type:'income',name:'Iné príjmy',icon:'piggy-bank',color:'#c78f00'}
+];
+
+/* ---------- state ---------- */
+var items=[], mode='pending', dbCol=null, ready=false, slow=false;
+var now=new Date(), Y=now.getFullYear(), M=now.getMonth();
+var chartType='expense';
+var form=null, delArmed=false, toastT=null;
+
+function customCats(){return items.filter(function(i){return i.kind==='cat'})}
+function catsFor(type){return DEF.filter(function(c){return c.type===type}).concat(customCats().filter(function(c){return c.type===type}))}
+function catById(id){
+  var c=DEF.find(function(x){return x.id===id})||customCats().find(function(x){return x.id===id});
+  return c||{name:'Iné',icon:'ellipsis',color:'#64748b',type:'expense'};
+}
+function txs(){return items.filter(function(i){return i.kind==='tx'&&i.date})}
+function sum(list,type){return list.filter(function(t){return t.type===type}).reduce(function(a,t){return a+(+t.amount||0)},0)}
+
+/* ---------- encrypted local persistence ---------- */
+var SECURITY_META='penazenka.security.meta.v1', cryptoKey=null, lockTimer=null;
+var LOCK_AFTER_MS=5*60*1000;
+function toB64(a){var s='';for(var i=0;i<a.length;i++)s+=String.fromCharCode(a[i]);return btoa(s)}
+function fromB64(s){var r=atob(s),a=new Uint8Array(r.length);for(var i=0;i<r.length;i++)a[i]=r.charCodeAt(i);return a}
+async function deriveKey(pin,salt){
+  var material=await crypto.subtle.importKey('raw',new TextEncoder().encode(pin),'PBKDF2',false,['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2',salt:salt,iterations:310000,hash:'SHA-256'},material,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);
+}
+async function saveLocal(){
+  if(!cryptoKey)throw new Error('Peňaženka je uzamknutá');
+  var iv=crypto.getRandomValues(new Uint8Array(12));
+  var data=await crypto.subtle.encrypt({name:'AES-GCM',iv:iv},cryptoKey,new TextEncoder().encode(JSON.stringify(items)));
+  localStorage.setItem(KEY,JSON.stringify({v:1,iv:toB64(iv),data:toB64(new Uint8Array(data))}));
+}
+async function unlockOrCreate(){
+  var gate=$('#securityGate'),pin=$('#securityPin'),confirm=$('#securityPinConfirm'),btn=$('#securitySubmit'),err=$('#securityError');
+  var metaRaw=localStorage.getItem(SECURITY_META),setup=!metaRaw;
+  $('#securityTitle').textContent=setup?'Zabezpeč svoju Peňaženku':'Odomkni Peňaženku';
+  $('#securityDescription').textContent=setup?'Vytvor si PIN s aspoň 6 číslicami. Bez PIN-u nebude možné obnoviť údaje.':'Zadaj PIN na dešifrovanie finančných záznamov.';
+  confirm.hidden=!setup;btn.textContent=setup?'Nastaviť PIN':'Odomknúť';gate.hidden=false;
+  return new Promise(resolve=>{
+    async function go(){
+      err.textContent='';var p=pin.value;
+      if(!/^\d{6,32}$/.test(p)){err.textContent='PIN musí mať 6 až 32 číslic.';return}
+      if(setup&&p!==confirm.value){err.textContent='PIN-y sa nezhodujú.';return}
+      btn.disabled=true;btn.textContent='Spracúvam…';
+      try{
+        if(setup){
+          var salt=crypto.getRandomValues(new Uint8Array(16));cryptoKey=await deriveKey(p,salt);
+          localStorage.setItem(SECURITY_META,JSON.stringify({v:1,salt:toB64(salt)}));
+          var legacy=[];try{var old=JSON.parse(localStorage.getItem(KEY)||'null');if(Array.isArray(old))legacy=old}catch(e){}
+          items=legacy;await saveLocal();
+        }else{
+          var meta=JSON.parse(metaRaw),blob=JSON.parse(localStorage.getItem(KEY)||'null');
+          if(!meta||meta.v!==1||!blob||blob.v!==1)throw new Error('missing data');
+          cryptoKey=await deriveKey(p,fromB64(meta.salt));
+          var plain=await crypto.subtle.decrypt({name:'AES-GCM',iv:fromB64(blob.iv)},cryptoKey,fromB64(blob.data));
+          items=JSON.parse(new TextDecoder().decode(plain));if(!Array.isArray(items))throw new Error('bad data');
+        }
+        gate.hidden=true;pin.value='';confirm.value='';startLockTimer();resolve(true);
+      }catch(e){
+        cryptoKey=null;err.textContent=setup?'Nepodarilo sa vytvoriť šifrované úložisko.':'Nesprávny PIN alebo poškodené údaje.';
+        btn.disabled=false;btn.textContent=setup?'Nastaviť PIN':'Odomknúť';
+      }
+    }
+    btn.onclick=go;pin.onkeydown=e=>{if(e.key==='Enter')go()};confirm.onkeydown=e=>{if(e.key==='Enter')go()};
+    setTimeout(()=>pin.focus(),100);
+  });
+}
+function lockWallet(){
+  if(!cryptoKey)return;cryptoKey=null;items=[];clearTimeout(lockTimer);ready=false;
+  $('#securityTitle').textContent='Odomkni Peňaženku';
+  $('#securityDescription').textContent='Zadaj PIN na dešifrovanie finančných záznamov.';
+  $('#securityPinConfirm').hidden=true;$('#securityPin').value='';$('#securityPinConfirm').value='';
+  $('#securitySubmit').textContent='Odomknúť';$('#securitySubmit').disabled=false;$('#securityError').textContent='';
+  $('#securityGate').hidden=false;$('#main').innerHTML='<p class="note">Peňaženka je uzamknutá.</p>';
+  $('#bal').textContent=money(0);$('#inc').textContent=money(0);$('#exp').textContent=money(0);
+}
+window.lockWallet=lockWallet;
+function startLockTimer(){clearTimeout(lockTimer);lockTimer=setTimeout(lockWallet,LOCK_AFTER_MS)}
+function touchWallet(){if(cryptoKey)startLockTimer()}
+['click','keydown','touchstart'].forEach(ev=>document.addEventListener(ev,touchWallet,{passive:true}));
+function toast(msg){
+  var t=$('#toast');t.textContent=msg;t.hidden=false;clearTimeout(toastT);toastT=setTimeout(function(){t.hidden=true},3200);
+}
+async function put(item){
+  try{
+    if(mode==='db'){await dbCol.doc(item.id).set(item)}
+    else{var i=items.findIndex(function(x){return x.id===item.id});if(i<0)items.push(item);else items[i]=item;await saveLocal();render()}
+    return true;
+  }catch(e){toast('Uloženie sa nepodarilo. Skús to znova.');return false}
+}
+async function removeItem(id){
+  try{
+    if(mode==='db'){await dbCol.doc(id).delete()}
+    else{items=items.filter(function(x){return x.id!==id});await saveLocal();render()}
+  }catch(e){toast('Zmazanie sa nepodarilo. Skús to znova.')}
+}
+function fallbackLocal(){mode='local';ready=true;slow=false;render()}
+async function init(){
+  var uid=null,db=null;
+  try{
+    if(window.claude&&claude.use){
+      var user=await claude.use('user');
+      if(user)uid=await user.id();
+      if(uid)db=await claude.use('db');
+    }
+  }catch(e){}
+  if(db&&uid){
+    mode='db';dbCol=db.collection('data/users/'+uid);
+    var timer=setTimeout(function(){slow=true;ready=true;render()},10000);
+    try{
+      dbCol.onSnapshot(function(snap){
+        if(snap.metadata&&snap.metadata.fromCache&&snap.size===0)return;
+        clearTimeout(timer);slow=false;ready=true;
+        items=snap.docs.map(function(d){return Object.assign({},d.data(),{id:d.id})});
+        render();
+      },function(){clearTimeout(timer);fallbackLocal()});
+    }catch(e){clearTimeout(timer);fallbackLocal()}
+  }else fallbackLocal();
+}
+
+/* ---------- render ---------- */
+function dayLabel(ds){
+  var d=new Date(ds+'T00:00:00');
+  var y=new Date();y.setDate(y.getDate()-1);
+  var short=d.toLocaleDateString('sk-SK',{day:'numeric',month:'long'});
+  if(ds===todayStr())return 'Dnes, '+short;
+  if(ds===dstr(y))return 'Včera, '+short;
+  return cap(d.toLocaleDateString('sk-SK',{weekday:'long',day:'numeric',month:'long'}));
+}
+function donut(rows,total){
+  var R=46,C=2*Math.PI*R,off=0,s='';
+  rows.forEach(function(r){
+    var len=r.v/total*C,gap=rows.length>1?Math.min(2.2,len*.3):0,seg=Math.max(len-gap,.01);
+    s+='<circle r="'+R+'" cx="60" cy="60" fill="none" stroke="'+r.color+'" stroke-width="14" stroke-dasharray="'+seg.toFixed(2)+' '+(C-seg).toFixed(2)+'" stroke-dashoffset="'+(-off).toFixed(2)+'"/>';
+    off+=len;
+  });
+  return '<svg class="donut" viewBox="0 0 120 120" role="img" aria-label="Rozdelenie podľa kategórií, spolu '+esc(money(total))+'">'+
+    '<g transform="rotate(-90 60 60)"><circle class="track" r="'+R+'" cx="60" cy="60" fill="none" stroke-width="14"/>'+s+'</g>'+
+    '<text class="dl" x="60" y="56">Spolu</text><text class="dv" x="60" y="71">'+esc(money(total))+'</text></svg>';
+}
+function chartCard(mt){
+  var list=mt.filter(function(t){return t.type===chartType});
+  var by={};list.forEach(function(t){by[t.cat]=(by[t.cat]||0)+(+t.amount||0)});
+  var rows=Object.keys(by).map(function(k){var c=catById(k);return {id:k,v:by[k],name:c.name,icon:c.icon,color:okColor(c.color)}}).sort(function(a,b){return b.v-a.v});
+  var total=rows.reduce(function(a,r){return a+r.v},0);
+  var h='<div class="card"><div class="chart-head"><h3>Podľa kategórií</h3><div class="seg" role="group" aria-label="Zobraziť">'+
+    '<button type="button" data-act="chart" data-v="expense" aria-pressed="'+(chartType==='expense')+'">Výdavky</button>'+
+    '<button type="button" data-act="chart" data-v="income" aria-pressed="'+(chartType==='income')+'">Príjmy</button></div></div>';
+  if(!rows.length){h+='<p class="none">'+(chartType==='expense'?'Žiadne výdavky':'Žiadne príjmy')+' v tomto mesiaci.</p></div>';return h}
+  h+=donut(rows,total)+'<div class="legend">';
+  rows.forEach(function(r){
+    var p=r.v/total*100;
+    h+='<div class="lg"><span class="ci" style="background:'+r.color+'">'+ico(r.icon)+'</span>'+
+      '<span class="nm">'+esc(r.name)+'<small>'+Math.round(p)+' %</small></span><span class="am">'+esc(money(r.v))+'</span>'+
+      '<span class="bar"><i style="width:'+p.toFixed(1)+'%;background:'+r.color+'"></i></span></div>';
+  });
+  return h+'</div></div>';
+}
+function listHtml(mt){
+  if(!mt.length)return '<div class="card"><p class="none">V tomto mesiaci zatiaľ nie sú žiadne záznamy. Pridaj ich tlačidlom +.</p></div>';
+  var sorted=mt.slice().sort(function(a,b){return a.date<b.date?1:a.date>b.date?-1:(a.id<b.id?1:-1)});
+  var groups=[],g=null;
+  sorted.forEach(function(t){if(!g||g.d!==t.date){g={d:t.date,l:[]};groups.push(g)}g.l.push(t)});
+  return groups.map(function(g){
+    var tot=sum(g.l,'income')-sum(g.l,'expense');
+    return '<div class="day"><div class="day-h"><span>'+esc(dayLabel(g.d))+'</span><span>'+(tot>0?'+':'')+esc(money(tot))+'</span></div><div class="rows">'+
+      g.l.map(function(t){
+        var c=catById(t.cat),inc=t.type==='income';
+        return '<button type="button" class="row" data-act="edit" data-id="'+esc(t.id)+'"><span class="ci" style="background:'+okColor(c.color)+'">'+ico(c.icon)+'</span>'+
+          '<span class="rt"><b>'+esc(c.name)+'</b>'+(t.note?'<small>'+esc(t.note)+'</small>':'')+'</span>'+
+          '<span class="amt '+(inc?'income':'expense')+'">'+(inc?'+':'−')+esc(money(+t.amount||0))+'</span></button>';
+      }).join('')+'</div></div>';
+  }).join('');
+}
+function emptyHtml(){
+  return '<div class="card empty"><div class="big"><i data-lucide="wallet"></i></div><h3>Začni prvým záznamom</h3>'+
+    '<p>Zapíš výdavok alebo príjem a vyber k nemu ikonu kategórie. Prehľad sa vytvorí sám.</p>'+
+    '<div class="btns"><button type="button" class="btn" data-act="add">Pridať záznam</button>'+
+    '<button type="button" class="btn ghost" data-act="demo">Vyskúšať s ukážkou</button></div></div>';
+}
+function render(){
+  var key=Y+'-'+pad(M+1);
+  var all=txs();
+  var mt=all.filter(function(t){return t.date.slice(0,7)===key});
+  var inc=sum(mt,'income'),exp=sum(mt,'expense');
+  $('#monthTitle').textContent=cap(new Date(Y,M,1).toLocaleDateString('sk-SK',{month:'long',year:'numeric'}));
+  $('#bal').textContent=money(inc-exp);$('#inc').textContent=money(inc);$('#exp').textContent=money(exp);
+  var h='';
+  if(!ready){h='<p class="note">Načítavam údaje…</p>'}
+  else{
+    if(slow)h+='<div class="banner"><span>Údaje sa zatiaľ nepodarilo načítať. Skontroluj pripojenie.</span></div>';
+    var demoN=all.filter(function(t){return t.demo}).length;
+    if(demoN)h+='<div class="banner"><span>Zobrazujú sa ukážkové údaje.</span><button type="button" class="link" data-act="cleardemo">Vymazať ukážky</button></div>';
+    if(!all.length)h+=emptyHtml();
+    else h+='<div class="cols"><section>'+chartCard(mt)+'</section><section>'+listHtml(mt)+'</section></div>';
+    h+='<p class="foot">'+(mode==='db'?'Tvoje údaje sú súkromné, vidíš ich len ty.':'Údaje sa ukladajú iba v tomto prehliadači.')+'</p>';
+  }
+  $('#main').innerHTML=h;
+  paintIcons();
+}
+
+/* ---------- sheet ---------- */
+function setType(t){
+  form.type=t;
+  $('#tExp').setAttribute('aria-pressed',String(t==='expense'));
+  $('#tInc').setAttribute('aria-pressed',String(t==='income'));
+  if(!catsFor(t).some(function(c){return c.id===form.cat}))form.cat=null;
+  renderCats();
+}
+function renderCats(){
+  $('#catGrid').innerHTML=catsFor(form.type).map(function(c){
+    return '<button type="button" class="cat'+(form.cat===c.id?' on':'')+'" data-act="cat" data-id="'+esc(c.id)+'" aria-pressed="'+(form.cat===c.id)+'">'+
+      '<span class="ci" style="background:'+okColor(c.color)+'">'+ico(c.icon)+'</span><span>'+esc(c.name)+'</span></button>';
+  }).join('')+'<button type="button" class="cat" data-act="newcat"><span class="ci plus"><i data-lucide="plus"></i></span><span>Nová</span></button>';
+  paintIcons();
+}
+function renderNc(){
+  var nc=form.nc;
+  $('#ncPreview').style.background=nc.color;
+  $('#ncPreview').innerHTML=ico(nc.icon);
+  $('#swatches').innerHTML=PAL.map(function(c){return '<button type="button" data-act="color" data-v="'+c+'" class="'+(nc.color===c?'on':'')+'" style="background:'+c+'" aria-label="Farba '+c+'"></button>'}).join('');
+  $('#iconGrid').innerHTML=ICONS.filter(hasIcon).map(function(n){return '<button type="button" class="ib'+(nc.icon===n?' on':'')+'" data-act="icon" data-v="'+n+'" aria-label="'+n+'">'+ico(n)+'</button>'}).join('');
+  paintIcons();
+}
+function openSheet(id){
+  var t=id?items.find(function(x){return x.id===id}):null;
+  form={id:t?t.id:null,type:t?t.type:'expense',cat:t?t.cat:null,nc:null};
+  delArmed=false;
+  $('#sheetTitle').textContent=t?'Upraviť transakciu':'Nová transakcia';
+  $('#amount').value=t?String(t.amount).replace('.',','):'';
+  $('#note').value=t&&t.note?t.note:'';
+  $('#date').value=t?t.date:todayStr();
+  $('#err').textContent='';
+  $('#newCat').hidden=true;
+  var d=$('#delBtn');d.hidden=!t;d.textContent='Zmazať';d.className='btn ghost';
+  setType(form.type);
+  $('#sheet').hidden=false;
+  if(!t)setTimeout(function(){$('#amount').focus()},50);
+}
+function closeSheet(){$('#sheet').hidden=true;form=null}
+function parseAmount(s){var n=Number(String(s).replace(/\s/g,'').replace(',','.'));return isFinite(n)?Math.round(n*100)/100:NaN}
+function showErr(m){$('#err').textContent=m}
+async function saveTx(){
+  var amt=parseAmount($('#amount').value);
+  if(!(amt>0))return showErr('Zadaj sumu väčšiu ako 0.');
+  if(!form.cat)return showErr('Vyber kategóriu.');
+  var date=$('#date').value;
+  if(!date)return showErr('Vyber dátum.');
+  var item={id:form.id||newId('t'),kind:'tx',type:form.type,amount:amt,cat:form.cat,note:$('#note').value.trim(),date:date};
+  closeSheet();
+  var p=date.split('-');Y=+p[0];M=+p[1]-1;
+  await put(item);
+  render();
+}
+async function saveCat(){
+  var name=$('#catName').value.trim();
+  if(!name)return showErr('Zadaj názov kategórie.');
+  var c={id:newId('c'),kind:'cat',type:form.type,name:name,icon:form.nc.icon,color:form.nc.color};
+  var ok=await put(c);
+  if(!ok)return;
+  form.cat=c.id;form.nc=null;$('#newCat').hidden=true;showErr('');
+  renderCats();
+}
+function parseDemo(){
+  var today=new Date(),y=today.getFullYear(),m=today.getMonth(),td=today.getDate();
+  var cur=function(day,ty,cat,amt,note){return {type:ty,cat:cat,amount:amt,note:note,date:dstr(new Date(y,m,Math.min(day,td)))}};
+  var prev=function(day,ty,cat,amt,note){return {type:ty,cat:cat,amount:amt,note:note,date:dstr(new Date(y,m-1,day))}};
+  return [
+    cur(1,'income','sal',1450,'Výplata'),cur(2,'expense','home',520,'Nájom'),cur(3,'expense','groc',38.4,'Nákup na týždeň'),
+    cur(4,'expense','trans',25,'Mesačný lístok'),cur(5,'expense','cafe',3.8,'Káva'),cur(7,'expense','groc',52.15,''),
+    cur(8,'expense','fuel',48,''),cur(9,'expense','phone',15,'Paušál'),cur(10,'expense','food',14.2,'Obed'),
+    cur(11,'expense','fun',9.99,'Streaming'),cur(12,'expense','groc',24.9,''),cur(13,'expense','health',12.3,'Lekáreň'),
+    cur(14,'expense','shop',64.9,'Slúchadlá'),cur(15,'income','side',120,'Brigáda'),cur(15,'expense','cafe',4.2,''),
+    prev(1,'income','sal',1450,'Výplata'),prev(2,'expense','home',520,'Nájom'),prev(6,'expense','groc',87.4,''),
+    prev(12,'expense','fuel',55,''),prev(18,'expense','fun',32,'Kino'),prev(24,'expense','cloth',45.5,'Tričká')
+  ].map(function(t){return Object.assign({id:newId('t'),kind:'tx',demo:true},t)});
+}
+async function addDemo(){
+  toast('Pridávam ukážkové údaje…');
+  var list=parseDemo();
+  for(var i=0;i<list.length;i++){await put(list[i])}
+  render();
+}
+async function clearDemo(){
+  var d=txs().filter(function(t){return t.demo});
+  for(var i=0;i<d.length;i++){await removeItem(d[i].id)}
+  render();
+}
+
+/* ---------- events ---------- */
+document.addEventListener('click',function(e){
+  if(e.target===$('#sheet')){closeSheet();return}
+  var b=e.target.closest('[data-act]');if(!b)return;
+  var a=b.dataset.act,v=b.dataset.v,id=b.dataset.id;
+  if(a==='prev'){M--;if(M<0){M=11;Y--}render()}
+  else if(a==='next'){M++;if(M>11){M=0;Y++}render()}
+  else if(a==='add')openSheet(null);
+  else if(a==='edit')openSheet(id);
+  else if(a==='chart'){chartType=v;render()}
+  else if(a==='demo')addDemo();
+  else if(a==='cleardemo')clearDemo();
+  else if(a==='close')closeSheet();
+  else if(a==='type')setType(v);
+  else if(a==='cat'){form.cat=id;showErr('');renderCats()}
+  else if(a==='newcat'){form.nc={color:PAL[6],icon:'star'};$('#catName').value='';$('#newCat').hidden=false;renderNc();$('#newCat').scrollIntoView({block:'nearest'});$('#catName').focus()}
+  else if(a==='catcancel'){form.nc=null;$('#newCat').hidden=true}
+  else if(a==='color'){form.nc.color=v;renderNc()}
+  else if(a==='icon'){form.nc.icon=v;renderNc()}
+  else if(a==='catsave')saveCat();
+  else if(a==='save')saveTx();
+  else if(a==='del'){
+    if(!delArmed){delArmed=true;b.textContent='Potvrdiť zmazanie';b.className='btn danger'}
+    else{var did=form.id;closeSheet();removeItem(did)}
+  }
+});
+document.addEventListener('keydown',function(e){
+  if(e.key==='Escape'&&!$('#sheet').hidden)closeSheet();
+  if(e.key==='Enter'&&!$('#sheet').hidden&&(e.target.id==='amount'||e.target.id==='note')){e.preventDefault();saveTx()}
+});
+
+paintIcons();
+render();
+unlockOrCreate().then(function(ok){if(ok)init()}).catch(function(e){console.error(e)});
+})();
+</script>
+
+<script>
+if ('serviceWorker' in navigator) addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(console.warn));
+</script></body></html>
