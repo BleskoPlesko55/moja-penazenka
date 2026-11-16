@@ -1,13 +1,24 @@
-MOJA PEŇAŽENKA – OPRAVENÁ VERZIA
+MOJA PENAZENKA – VERZIA SO ZALOHOU A OBNOVOU
 
-Nahraj do koreňového priečinka GitHub repozitára tieto súbory: index.html, manifest.webmanifest a sw.js. README.txt je návod.
+Nahraj do koreňového priečinka GitHub repozitára tieto tri súbory:
+- index.html
+- manifest.webmanifest
+- sw.js
 
-Dôležité: priečinok icons ponechaj tak, ako je, vrátane icon-192.png a icon-512.png.
+Priečinok icons ponechaj v repozitári bez zmeny (icon-192.png a icon-512.png).
 
-Opravy: po úspešnom odomknutí sa obnoví hlavná obrazovka; pri každom pokuse sa znovu načíta stav nastavenia PIN-u; service worker má novú verziu cache.
+NOVE FUNKCIE:
+- V peňaženke pribudne sekcia „Záloha a prenos“.
+- „Stiahnuť zálohu“ vytvorí JSON súbor, ktorý obsahuje iba ZAŠIFROVANÉ finančné záznamy a údaje potrebné na ich obnovenie.
+- „Obnoviť zo zálohy“ načíta záložný JSON, vyžiada pôvodný PIN a pred prepísaním údajov zobrazí potvrdenie.
+- Na obnovenie v inom prehliadači najprv otvor aplikáciu, nastav/odomkni ju a potom v sekcii Záloha a prenos zvoľ „Obnoviť zo zálohy“. Zadaj PIN použitý pri vytvorení zálohy.
 
-Zabezpečenie: AES-GCM 256-bit, kľúč odvodený z PIN-u cez PBKDF2-SHA-256. PIN sa neukladá. Automatické uzamknutie po 5 minútach.
+DÔLEŽITÉ:
+- Záloha je šifrovaná. Bez pôvodného PIN-u ju nemožno obnoviť.
+- Obnovenie nahradí údaje v aktuálnom prehliadači údajmi zo zálohy.
+- Zálohu si ulož na bezpečné miesto; neposielaj ju verejne.
+- Pred každou väčšou zmenou alebo pravidelne si vytvor novú zálohu.
+- Údaje sa automaticky nesynchronizujú medzi prehliadačmi.
+- Aplikácia používa lokálne úložisko prehliadača; vymazanie dát stránky môže odstrániť lokálnu kópiu.
 
-Upozornenie: údaje sú uložené iba v tomto prehliadači a zariadení. Vymazanie dát prehliadača ich môže odstrániť. Bez PIN-u ich nemožno dešifrovať. Pred používaním na dôležité financie odporúčam doplniť a otestovať export a obnovu zálohy.
-
-Po nahratí počkaj na dokončenie GitHub Pages a obnov stránku. Ak sa stále zobrazuje stará verzia, otvor stránku v súkromnom okne alebo vymaž údaje stránky, ale pozor: vymazanie údajov stránky odstráni aj lokálne uložené finančné záznamy.
+Po nahratí počkaj na dokončenie GitHub Pages a obnov aplikáciu. Ak sa zobrazí stará verzia, zavri kartu a otvor odkaz znova. Nemaž údaje stránky, pokiaľ nemáš bezpečne uloženú zálohu.

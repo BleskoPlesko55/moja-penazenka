@@ -196,6 +196,7 @@ main{padding-block:16px 110px}
 </header>
 
 <main class="wrap" id="main"><p class="note">Načítavam údaje…</p></main>
+<input id="backupFile" type="file" accept="application/json,.json" hidden>
 
 <button class="fab" id="fab" data-act="add" aria-label="Pridať transakciu"><i data-lucide="plus"></i></button>
 
@@ -498,6 +499,7 @@ function render(){
     if(demoN)h+='<div class="banner"><span>Zobrazujú sa ukážkové údaje.</span><button type="button" class="link" data-act="cleardemo">Vymazať ukážky</button></div>';
     if(!all.length)h+=emptyHtml();
     else h+='<div class="cols"><section>'+chartCard(mt)+'</section><section>'+listHtml(mt)+'</section></div>';
+    h+='<section class="card" style="margin-top:16px"><h3>Záloha a prenos</h3><p class="none" style="text-align:left">Záloha obsahuje zašifrované údaje. Na obnovenie v inom prehliadači použiješ rovnaký PIN.</p><div class="btns"><button type="button" class="btn" data-act="backup-export">Stiahnuť zálohu</button><button type="button" class="btn ghost" data-act="backup-import">Obnoviť zo zálohy</button></div></section>';
     h+='<p class="foot">'+(mode==='db'?'Tvoje údaje sú súkromné, vidíš ich len ty.':'Údaje sa ukladajú iba v tomto prehliadači.')+'</p>';
   }
   $('#main').innerHTML=h;
@@ -592,6 +594,45 @@ async function clearDemo(){
   render();
 }
 
+/* ---------- encrypted backup / restore ---------- */
+function downloadBackup(){
+  if(mode!=='local'){toast('Záloha je dostupná pre lokálne uloženie.');return}
+  if(!cryptoKey){toast('Najprv odomkni peňaženku.');return}
+  try{
+    var meta=localStorage.getItem(SECURITY_META),blob=localStorage.getItem(KEY);
+    if(!meta||!blob)throw new Error('missing');
+    var pack={format:'moja-penazenka-encrypted-backup',version:1,createdAt:new Date().toISOString(),security:JSON.parse(meta),payload:JSON.parse(blob)};
+    var file=new Blob([JSON.stringify(pack,null,2)],{type:'application/json'});
+    var url=URL.createObjectURL(file),a=document.createElement('a');
+    a.href=url;a.download='moja-penazenka-zaloha-'+dstr(new Date())+'.json';
+    document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},1000);
+    toast('Zašifrovaná záloha je pripravená.');
+  }catch(e){toast('Zálohu sa nepodarilo vytvoriť.');}
+}
+async function restoreBackup(file){
+  if(mode!=='local'){toast('Obnova je dostupná pre lokálne uloženie.');return}
+  if(!file)return;
+  try{
+    var raw=await file.text(),pack=JSON.parse(raw);
+    if(!pack||pack.format!=='moja-penazenka-encrypted-backup'||pack.version!==1||!pack.security||pack.security.v!==1||!pack.payload||pack.payload.v!==1)throw new Error('format');
+    var pin=window.prompt('Zadaj PIN, ktorým bola vytvorená táto záloha:');
+    if(pin===null)return;
+    if(!/^\d{6,32}$/.test(pin))throw new Error('pin');
+    var testKey=await deriveKey(pin,fromB64(pack.security.salt));
+    var plain=await crypto.subtle.decrypt({name:'AES-GCM',iv:fromB64(pack.payload.iv)},testKey,fromB64(pack.payload.data));
+    var restored=JSON.parse(new TextDecoder().decode(plain));
+    if(!Array.isArray(restored))throw new Error('data');
+    if(!window.confirm('Obnoviť túto zálohu? Údaje v tomto prehliadači budú nahradené údajmi zo zálohy.'))return;
+    localStorage.setItem(SECURITY_META,JSON.stringify(pack.security));
+    localStorage.setItem(KEY,JSON.stringify(pack.payload));
+    cryptoKey=testKey;items=restored;ready=true;slow=false;clearTimeout(lockTimer);render();startLockTimer();
+    toast('Záloha bola úspešne obnovená.');
+  }catch(e){
+    if(e&&e.name==='OperationError')toast('PIN nesedí alebo je záloha poškodená.');
+    else toast('Zálohu sa nepodarilo obnoviť. Skontroluj súbor.');
+  }
+}
+
 /* ---------- events ---------- */
 document.addEventListener('click',function(e){
   if(e.target===$('#sheet')){closeSheet();return}
@@ -604,6 +645,8 @@ document.addEventListener('click',function(e){
   else if(a==='chart'){chartType=v;render()}
   else if(a==='demo')addDemo();
   else if(a==='cleardemo')clearDemo();
+  else if(a==='backup-export')downloadBackup();
+  else if(a==='backup-import')$('#backupFile').click();
   else if(a==='close')closeSheet();
   else if(a==='type')setType(v);
   else if(a==='cat'){form.cat=id;showErr('');renderCats()}
@@ -618,6 +661,7 @@ document.addEventListener('click',function(e){
     else{var did=form.id;closeSheet();removeItem(did)}
   }
 });
+document.getElementById('backupFile').addEventListener('change',function(e){var f=e.target.files&&e.target.files[0];if(f)restoreBackup(f);e.target.value=''});
 document.addEventListener('keydown',function(e){
   if(e.key==='Escape'&&!$('#sheet').hidden)closeSheet();
   if(e.key==='Enter'&&!$('#sheet').hidden&&(e.target.id==='amount'||e.target.id==='note')){e.preventDefault();saveTx()}
