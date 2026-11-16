@@ -360,7 +360,7 @@ async function unlockOrCreate(){
           var plain=await crypto.subtle.decrypt({name:'AES-GCM',iv:fromB64(blob.iv)},cryptoKey,fromB64(blob.data));
           items=JSON.parse(new TextDecoder().decode(plain));if(!Array.isArray(items))throw new Error('bad data');
         }
-        gate.hidden=true;pin.value='';confirm.value='';startLockTimer();resolve(true);
+        gate.hidden=true;pin.value='';confirm.value='';ready=true;render();startLockTimer();resolve(true);
       }catch(e){
         cryptoKey=null;err.textContent=setup?'Nepodarilo sa vytvoriť šifrované úložisko.':'Nesprávny PIN alebo poškodené údaje.';
         btn.disabled=false;btn.textContent=setup?'Nastaviť PIN':'Odomknúť';
@@ -371,7 +371,7 @@ async function unlockOrCreate(){
   });
 }
 function lockWallet(){
-  if(!cryptoKey)return;cryptoKey=null;items=[];clearTimeout(lockTimer);ready=false;
+  if(!cryptoKey)return;cryptoKey=null;items=[];clearTimeout(lockTimer);
   $('#securityTitle').textContent='Odomkni Peňaženku';
   $('#securityDescription').textContent='Zadaj PIN na dešifrovanie finančných záznamov.';
   $('#securityPinConfirm').hidden=true;$('#securityPin').value='';$('#securityPinConfirm').value='';
