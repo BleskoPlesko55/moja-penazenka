@@ -254,6 +254,32 @@ main{padding-top:22px}
 @media(min-width:860px){.top{padding-bottom:28px}.bal{text-align:left}.split{max-width:560px}.top .wrap{max-width:1040px}}
 @media(max-width:420px){.lock-tool span{display:none}.top-tool{padding:0 10px}.brand-caption{font-size:10px}.monthbar{margin-top:16px}}
 @media(prefers-reduced-motion:no-preference){.card,.rows{animation:softIn .28s ease-out both}@keyframes softIn{from{opacity:.7;transform:translateY(5px)}to{opacity:1;transform:none}}}
+
+/* ---------- selectable skins + motion ---------- */
+:root[data-skin="midnight"]{--bg:#100d1d;--surface:#1c1730;--fg:#f3efff;--muted:#aaa0c7;--line:#34294f;--brand:#a45cff;--brand-ink:#160b27;--head:#171027;--head-ink:#f8f2ff;--head-dim:#c6a9ff;--inc:#54e0c0;--exp:#ff719e;--soft:#2a2142;--scrim:rgba(5,3,12,.72);--shadow:0 12px 32px rgba(0,0,0,.3);color-scheme:dark}
+:root[data-skin="pastel"]{--bg:#fbf5fa;--surface:#fffaff;--fg:#43364b;--muted:#95869b;--line:#eee0ee;--brand:#b57acb;--brand-ink:#fff;--head:#e9d8f0;--head-ink:#493454;--head-dim:#765b83;--inc:#69ad91;--exp:#df8294;--soft:#f4e9f5;--scrim:rgba(49,30,57,.35);--shadow:0 8px 24px rgba(105,72,119,.09);color-scheme:light}
+:root[data-skin="ocean"]{--bg:#eef8fa;--surface:#fff;--fg:#123a48;--muted:#66838d;--line:#d8e9ed;--brand:#078da5;--brand-ink:#fff;--head:#07566b;--head-ink:#f0fdff;--head-dim:#a8e4ec;--inc:#159d82;--exp:#e36c67;--soft:#e0f2f5;--scrim:rgba(4,35,48,.55);--shadow:0 9px 26px rgba(13,81,98,.09)}
+:root[data-skin="candy"]{--bg:#fff5f1;--surface:#fff;--fg:#392c42;--muted:#89798f;--line:#f0dfeb;--brand:#ed7b9b;--brand-ink:#fff;--head:#6547a5;--head-ink:#fff;--head-dim:#e3d5ff;--inc:#36a98d;--exp:#ef7180;--soft:#f9e8f0;--scrim:rgba(42,25,65,.48);--shadow:0 10px 26px rgba(114,69,133,.12)}
+:root[data-skin="emerald"]{--bg:#f3f7f4;--surface:#fff;--fg:#10271e;--muted:#718279;--line:#e2ebe5;--brand:#087a52;--brand-ink:#fff;--head:#075c42;--head-ink:#f3fff8;--head-dim:#b8dfcc;--inc:#07865a;--exp:#d85c52;--soft:#e8f3ed;--scrim:rgba(4,24,16,.58);--shadow:0 8px 28px rgba(13,66,43,.07)}
+:root[data-skin="titanium"]{--bg:#eef0f3;--surface:#fff;--fg:#202630;--muted:#737d8b;--line:#dce0e6;--brand:#596779;--brand-ink:#fff;--head:#252d38;--head-ink:#fff;--head-dim:#c8d0db;--inc:#248b69;--exp:#c85c62;--soft:#e8ecf1;--scrim:rgba(10,15,22,.6);--shadow:0 8px 28px rgba(28,38,52,.1)}
+:root[data-skin="midnight"] .top,:root[data-skin="ocean"] .top,:root[data-skin="candy"] .top{background:linear-gradient(135deg,var(--head),var(--brand));}
+:root[data-skin="pastel"] .top{background:linear-gradient(135deg,#f0e3f5,#e5d9f0);}
+:root[data-skin="titanium"] .top{background:linear-gradient(135deg,#252d38,#596779);}
+:root[data-skin="emerald"] .top{background:linear-gradient(135deg,#064b38 0%,#087451 52%,#0b8a60 100%)}
+.skin-panel{margin-top:16px}.skin-panel .skin-controls{display:grid;gap:10px}.skin-panel label{display:grid;gap:5px;color:var(--muted);font-size:12px;font-weight:650}.skin-panel select,.skin-panel input[type=color]{width:100%;min-height:42px;border:1px solid var(--line);border-radius:11px;background:var(--bg);padding:7px;color:var(--fg)}.skin-colors{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.skin-note{font-size:12px;color:var(--muted);margin:0}
+@media(prefers-reduced-motion:no-preference){
+ body[data-motion="soft"] .card,body[data-motion="normal"] .card,body[data-motion="bold"] .card{animation:walletFade .28s ease-out both}
+ body[data-motion="normal"] .btn,body[data-motion="bold"] .btn,body[data-motion="normal"] .fab,body[data-motion="bold"] .fab{transition:transform .2s ease,box-shadow .2s ease,filter .2s ease}
+ body[data-motion="normal"] .btn:active,body[data-motion="bold"] .btn:active,body[data-motion="normal"] .fab:active,body[data-motion="bold"] .fab:active{transform:translateY(1px) scale(.97)}
+ body[data-motion="bold"] .card,body[data-motion="bold"] .rows{transition:transform .25s ease,box-shadow .25s ease}
+ body[data-motion="bold"] .card:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(20,70,50,.13)}
+ body[data-motion="normal"] .ci,body[data-motion="bold"] .ci{transition:transform .2s ease,filter .2s ease}
+ body[data-motion="bold"] .cat:active .ci,body[data-motion="bold"] .row:active .ci{transform:translateY(-3px) scale(1.06)}
+ body[data-motion="soft"] .top,body[data-motion="normal"] .top,body[data-motion="bold"] .top{transition:background .35s ease,color .35s ease}
+}
+@keyframes walletFade{from{opacity:.65;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
 </style>
 
 <header class="top">
@@ -588,6 +614,7 @@ function render(){
     if(!all.length)h+=emptyHtml();
     else h+='<div class="cols"><section>'+chartCard(mt)+'</section><section>'+listHtml(mt)+'</section></div>';
     h+='<section class="card" style="margin-top:16px"><h3>Záloha a prenos</h3><p class="none" style="text-align:left">Záloha je chránená samostatným heslom. Pri obnove ho zadáš znova; PIN jednotlivých prehliadačov zostáva nezávislý.</p><div class="btns"><button type="button" class="btn" data-act="backup-export">Stiahnuť zálohu</button><button type="button" class="btn ghost" data-act="backup-import">Obnoviť zo zálohy</button></div></section>';
+    h+=skinSettingsHtml();
     h+='<p class="foot">'+(mode==='db'?'Tvoje údaje sú súkromné, vidíš ich len ty.':'Údaje sa ukladajú iba v tomto prehliadači.')+'</p>';
   }
   $('#main').innerHTML=h;
@@ -756,6 +783,32 @@ async function restoreBackup(file){
 }
 
 
+/* ---------- skin settings ---------- */
+function skinSettingsHtml(){
+  var skin=getPref('penazenka.skin','emerald'),motion=getPref('penazenka.motion','normal');
+  var custom=getCustomColors();
+  return '<section class="card skin-panel"><h3>Vzhľad aplikácie</h3><p class="none" style="text-align:left">Vyber si štýl celej peňaženky. Zmena sa uloží iba v tomto prehliadači a nezasiahne tvoje finančné údaje.</p><div class="skin-controls">'+
+    '<label>Farebný štýl<select id="skinSelect"><option value="emerald" '+(skin==='emerald'?'selected':'')+'>Emerald Luxury</option><option value="midnight" '+(skin==='midnight'?'selected':'')+'>Midnight Neon</option><option value="candy" '+(skin==='candy'?'selected':'')+'>3D Candy</option><option value="pastel" '+(skin==='pastel'?'selected':'')+'>Pastel Dream</option><option value="ocean" '+(skin==='ocean'?'selected':'')+'>Ocean Glass</option><option value="titanium" '+(skin==='titanium'?'selected':'')+'>Titanium Black</option><option value="custom" '+(skin==='custom'?'selected':'')+'>Môj vlastný vzhľad</option></select></label>'+
+    '<div id="customSkinControls" '+(skin==='custom'?'':'hidden')+'><div class="skin-colors"><label>Pozadie<input id="customBg" type="color" value="'+custom.bg+'"></label><label>Hlavná farba<input id="customBrand" type="color" value="'+custom.brand+'"></label><label>Hlavička<input id="customHead" type="color" value="'+custom.head+'"></label><label>Karty<input id="customSurface" type="color" value="'+custom.surface+'"></label></div><div class="btns" style="margin-top:10px"><button type="button" class="btn" data-act="save-custom-skin">Použiť vlastné farby</button></div></div>'+
+    '<label>Intenzita animácií<select id="motionSelect"><option value="soft" '+(motion==='soft'?'selected':'')+'>Jemné</option><option value="normal" '+(motion==='normal'?'selected':'')+'>Normálne</option><option value="bold" '+(motion==='bold'?'selected':'')+'>Výrazné</option><option value="off" '+(motion==='off'?'selected':'')+'>Vypnuté</option></select></label><p class="skin-note">Animácie rešpektujú nastavenie obmedzenia pohybu v zariadení.</p></div></section>';
+}
+function getPref(k,d){try{return localStorage.getItem(k)||d}catch(e){return d}}
+function getCustomColors(){try{return JSON.parse(localStorage.getItem('penazenka.customSkin')||'null')||{bg:'#f3f7f4',brand:'#087a52',head:'#075c42',surface:'#ffffff'}}catch(e){return {bg:'#f3f7f4',brand:'#087a52',head:'#075c42',surface:'#ffffff'}}}
+function applySkin(skin){
+  var root=document.documentElement;root.setAttribute('data-skin',skin||'emerald');
+  if(skin==='custom'){
+    var c=getCustomColors();root.style.setProperty('--bg',c.bg);root.style.setProperty('--brand',c.brand);root.style.setProperty('--head',c.head);root.style.setProperty('--surface',c.surface);root.style.setProperty('--soft',c.bg);root.style.setProperty('--brand-ink','#ffffff');root.style.setProperty('--head-ink','#ffffff');
+  }else{['--bg','--brand','--head','--surface','--soft','--brand-ink','--head-ink'].forEach(function(k){root.style.removeProperty(k)})}
+  try{localStorage.setItem('penazenka.skin',skin)}catch(e){}
+  var meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute('content',getComputedStyle(root).getPropertyValue('--head').trim()||'#075c42');
+}
+function applyMotion(motion){document.body.setAttribute('data-motion',motion);try{localStorage.setItem('penazenka.motion',motion)}catch(e){}}
+function saveCustomSkin(){
+  var c={bg:$('#customBg').value,brand:$('#customBrand').value,head:$('#customHead').value,surface:$('#customSurface').value};
+  try{localStorage.setItem('penazenka.customSkin',JSON.stringify(c))}catch(e){}
+  applySkin('custom');toast('Vlastný vzhľad bol použitý.');
+}
+
 /* ---------- appearance preference ---------- */
 function applyTheme(theme){
   if(theme==='light'||theme==='dark')document.documentElement.setAttribute('data-theme',theme);
@@ -771,8 +824,16 @@ function toggleTheme(){
   applyTheme(next);
 }
 try{applyTheme(localStorage.getItem('penazenka.theme')||'auto')}catch(e){applyTheme('auto')}
+try{applySkin(localStorage.getItem('penazenka.skin')||'emerald');applyMotion(localStorage.getItem('penazenka.motion')||'normal')}catch(e){applySkin('emerald');applyMotion('normal')}
 
 /* ---------- events ---------- */
+/* Live appearance controls */
+document.addEventListener('change',function(e){
+  if(e.target&&e.target.id==='skinSelect'){
+    var v=e.target.value;$('#customSkinControls').hidden=(v!=='custom');applySkin(v);
+  }
+  if(e.target&&e.target.id==='motionSelect')applyMotion(e.target.value);
+});
 document.addEventListener('click',function(e){
   if(e.target===$('#sheet')){closeSheet();return}
   var b=e.target.closest('[data-act]');if(!b)return;
@@ -785,6 +846,7 @@ document.addEventListener('click',function(e){
   else if(a==='demo')addDemo();
   else if(a==='cleardemo')clearDemo();
   else if(a==='theme-toggle')toggleTheme();
+  else if(a==='save-custom-skin')saveCustomSkin();
   else if(a==='backup-export')downloadBackup();
   else if(a==='backup-import')$('#backupFile').click();
   else if(a==='close')closeSheet();
