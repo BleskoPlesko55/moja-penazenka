@@ -7,7 +7,7 @@
 .security-card input{width:100%;border:1.5px solid var(--line);border-radius:12px;background:var(--bg);padding:13px 14px;margin:0 0 10px}
 .security-card .btn{width:100%;margin-top:8px}
 .security-error{min-height:20px;color:var(--exp);font-size:13px;font-weight:600;margin-top:8px}
-</style><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#0f6a3d"><link rel="icon" href="./icons/icon-192.png" type="image/png"></head><body>
+</style><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#075c42"><link rel="icon" href="./icons/icon-192.png" type="image/png"></head><body>
 <div id="securityGate"><div class="security-card">
   <div style="font-size:32px;margin-bottom:12px">🔐</div>
   <h2 id="securityTitle">Zabezpečená Peňaženka</h2>
@@ -177,11 +177,68 @@ main{padding-block:16px 110px}
 .acts .btn{padding:13px 18px}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(88px + env(safe-area-inset-bottom,0px));background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;z-index:60;max-width:calc(100% - 32px)}
 @media (prefers-reduced-motion:no-preference){.sheet{animation:up .18s ease-out}@keyframes up{from{transform:translateY(24px);opacity:.6}to{transform:none;opacity:1}}}
+/* ---------- emerald premium redesign ---------- */
+:root{
+  --bg:#f3f7f4;--surface:#ffffff;--fg:#10271e;--muted:#718279;--line:#e2ebe5;
+  --brand:#087a52;--brand-ink:#ffffff;--head:#075c42;--head-ink:#f3fff8;--head-dim:#b8dfcc;
+  --inc:#07865a;--exp:#d85c52;--soft:#e8f3ed;--scrim:rgba(4,24,16,.58);
+  --head-inc:#9cf0c4;--head-exp:#ffc4b9;--shadow:0 8px 28px rgba(13,66,43,.07);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0a1712;--surface:#12231b;--fg:#e8f5ed;--muted:#9aafa2;--line:#263d31;--brand:#39bd85;--brand-ink:#062519;--head:#071f17;--head-ink:#f1fff7;--head-dim:#a4cbb5;--inc:#53d69b;--exp:#ff877d;--soft:#1b3327;--scrim:rgba(0,0,0,.68);--head-inc:#9cf0c4;--head-exp:#ffaaa0;--shadow:0 10px 30px rgba(0,0,0,.18);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0a1712;--surface:#12231b;--fg:#e8f5ed;--muted:#9aafa2;--line:#263d31;--brand:#39bd85;--brand-ink:#062519;--head:#071f17;--head-ink:#f1fff7;--head-dim:#a4cbb5;--inc:#53d69b;--exp:#ff877d;--soft:#1b3327;--scrim:rgba(0,0,0,.68);--head-inc:#9cf0c4;--head-exp:#ffaaa0;--shadow:0 10px 30px rgba(0,0,0,.18);color-scheme:dark}
+:root[data-theme="light"]{color-scheme:light}
+body{background:var(--bg);letter-spacing:-.01em}
+body::before{background:var(--head)}
+.top{position:relative;overflow:hidden;padding:18px 0 24px;background:linear-gradient(135deg,#064b38 0%,#087451 52%,#0b8a60 100%);color:#f3fff8;border-radius:0 0 28px 28px;box-shadow:0 12px 34px rgba(5,76,52,.18)}
+.top:before{content:"";position:absolute;width:260px;height:260px;border:1px solid rgba(255,255,255,.10);border-radius:50%;right:-95px;top:-150px;box-shadow:0 0 0 28px rgba(255,255,255,.035),0 0 0 58px rgba(255,255,255,.025);pointer-events:none}
+.top .wrap{position:relative;z-index:1}
+.top-actions{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand-mark{display:flex;align-items:center;gap:11px;min-width:0}
+.brand-symbol{width:40px;height:40px;border-radius:14px;display:grid;place-items:center;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);font:800 23px var(--font-display);color:#c7f5dc}
+.brand{margin:0;color:#f2fff7;font:800 12px var(--font-display);letter-spacing:.14em}
+.brand-caption{display:block;margin-top:2px;color:#b9dfcc;font-size:11px;letter-spacing:.01em}
+.top-tools{display:flex;align-items:center;gap:8px}
+.top-tool{height:38px;min-width:38px;padding:0 11px;border:1px solid rgba(255,255,255,.2);border-radius:12px;background:rgba(255,255,255,.11);color:#f4fff8;display:flex;align-items:center;justify-content:center;gap:7px;font-size:12px;font-weight:650;backdrop-filter:blur(8px)}
+.top-tool svg{width:17px;height:17px}
+.monthbar{margin-top:20px}
+.monthbar h2{font-size:23px;letter-spacing:-.035em}
+.nav{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.13)}
+.bal{margin-top:16px;text-align:left;padding:0 4px}
+.bal span{font-size:12px;letter-spacing:.04em;color:#bfe5d0}
+.bal strong{font-size:clamp(34px,8vw,42px);letter-spacing:-.045em;margin-top:3px}
+.split{gap:10px;margin-top:18px}
+.split div{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:12px 14px;backdrop-filter:blur(8px)}
+.split span{font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:#bfe5d0}
+.split b{display:block;margin-top:3px;font-size:17px}
+main{padding-top:22px}
+.card,.rows{border-radius:20px;border-color:var(--line);box-shadow:var(--shadow)}
+.card{padding:18px}
+.card h3{font-size:16px;letter-spacing:-.02em}
+.chart-head{margin-bottom:4px}
+.day{margin-top:22px}
+.day-h{padding:0 5px 9px;font-size:12px;letter-spacing:.02em}
+.rows{overflow:hidden}
+.row{padding:13px 14px;transition:background .16s ease}
+.row:active{background:var(--soft)}
+.ci{width:38px;height:38px;border-radius:13px;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.ci svg{width:18px;height:18px}
+.amt{font-size:14px}
+.btn{border-radius:13px;padding:12px 18px;box-shadow:0 4px 12px rgba(8,122,82,.12);transition:transform .15s ease,filter .15s ease}
+.btn:active,.fab:active{transform:scale(.98)}
+.btn.ghost{box-shadow:none;border:1px solid var(--line)}
+.fab{width:60px;height:60px;border-radius:20px;background:linear-gradient(145deg,#0c9a69,#08704e);box-shadow:0 10px 24px rgba(5,91,61,.3)}
+.fab svg{width:26px;height:26px}
+.sheet{border:1px solid var(--line);box-shadow:0 -12px 40px rgba(0,0,0,.12)}
+.security-card{border-radius:24px;box-shadow:0 18px 55px rgba(0,0,0,.18)}
+.security-card .btn{box-shadow:none}
+@media(min-width:860px){.top{padding-bottom:28px}.bal{text-align:left}.split{max-width:560px}.top .wrap{max-width:1040px}}
+@media(max-width:420px){.lock-tool span{display:none}.top-tool{padding:0 10px}.brand-caption{font-size:10px}.monthbar{margin-top:16px}}
+@media(prefers-reduced-motion:no-preference){.card,.rows{animation:softIn .28s ease-out both}@keyframes softIn{from{opacity:.7;transform:translateY(5px)}to{opacity:1;transform:none}}}
 </style>
 
 <header class="top">
   <div class="wrap">
-    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px"><h1 class="brand">Peňaženka</h1><button type="button" class="link" style="color:var(--head-ink);text-decoration:none" onclick="window.lockWallet()">Uzamknúť</button></div>
+    <div class="top-actions"><div class="brand-mark"><span class="brand-symbol">₿</span><div><h1 class="brand">MOJA PEŇAŽENKA</h1><span class="brand-caption">Tvoje financie pod kontrolou</span></div></div><div class="top-tools"><button type="button" class="top-tool" id="themeToggle" data-act="theme-toggle" aria-label="Prepnúť vzhľad"><i data-lucide="moon"></i></button><button type="button" class="top-tool lock-tool" onclick="window.lockWallet()"><i data-lucide="lock-keyhole"></i><span>Uzamknúť</span></button></div></div>
     <div class="monthbar">
       <button class="nav" id="prev" data-act="prev" aria-label="Predchádzajúci mesiac"><i data-lucide="chevron-left"></i></button>
       <h2 id="monthTitle"></h2>
@@ -197,6 +254,17 @@ main{padding-block:16px 110px}
 
 <main class="wrap" id="main"><p class="note">Načítavam údaje…</p></main>
 <input id="backupFile" type="file" accept="application/json,.json" hidden>
+<div id="backupPasswordGate" hidden style="position:fixed;inset:0;z-index:1200;background:var(--scrim);display:grid;place-items:center;padding:24px">
+  <div class="security-card" style="max-width:420px">
+    <div style="font-size:30px;margin-bottom:10px">🔐</div>
+    <h2 id="backupPasswordTitle">Zabezpeč zálohu</h2>
+    <p id="backupPasswordDescription">Zadaj heslo, ktorým bude záloha zašifrovaná.</p>
+    <input id="backupPassword" type="password" autocomplete="new-password" placeholder="Heslo zálohy">
+    <input id="backupPasswordConfirm" type="password" autocomplete="new-password" placeholder="Zopakuj heslo" hidden>
+    <div class="security-error" id="backupPasswordError" role="alert"></div>
+    <div class="btns"><button type="button" class="btn ghost" id="backupPasswordCancel">Zrušiť</button><button type="button" class="btn" id="backupPasswordSubmit">Pokračovať</button></div>
+  </div>
+</div>
 
 <button class="fab" id="fab" data-act="add" aria-label="Pridať transakciu"><i data-lucide="plus"></i></button>
 
@@ -499,7 +567,7 @@ function render(){
     if(demoN)h+='<div class="banner"><span>Zobrazujú sa ukážkové údaje.</span><button type="button" class="link" data-act="cleardemo">Vymazať ukážky</button></div>';
     if(!all.length)h+=emptyHtml();
     else h+='<div class="cols"><section>'+chartCard(mt)+'</section><section>'+listHtml(mt)+'</section></div>';
-    h+='<section class="card" style="margin-top:16px"><h3>Záloha a prenos</h3><p class="none" style="text-align:left">Záloha obsahuje zašifrované údaje. Na obnovenie v inom prehliadači použiješ rovnaký PIN.</p><div class="btns"><button type="button" class="btn" data-act="backup-export">Stiahnuť zálohu</button><button type="button" class="btn ghost" data-act="backup-import">Obnoviť zo zálohy</button></div></section>';
+    h+='<section class="card" style="margin-top:16px"><h3>Záloha a prenos</h3><p class="none" style="text-align:left">Záloha je chránená samostatným heslom. Pri obnove ho zadáš znova; PIN jednotlivých prehliadačov zostáva nezávislý.</p><div class="btns"><button type="button" class="btn" data-act="backup-export">Stiahnuť zálohu</button><button type="button" class="btn ghost" data-act="backup-import">Obnoviť zo zálohy</button></div></section>';
     h+='<p class="foot">'+(mode==='db'?'Tvoje údaje sú súkromné, vidíš ich len ty.':'Údaje sa ukladajú iba v tomto prehliadači.')+'</p>';
   }
   $('#main').innerHTML=h;
@@ -594,44 +662,95 @@ async function clearDemo(){
   render();
 }
 
-/* ---------- encrypted backup / restore ---------- */
-function downloadBackup(){
+/* ---------- password-protected encrypted backup / restore ---------- */
+function backupPasswordDialog(confirmMode){
+  var gate=$('#backupPasswordGate'),one=$('#backupPassword'),two=$('#backupPasswordConfirm'),err=$('#backupPasswordError');
+  $('#backupPasswordTitle').textContent=confirmMode?'Zabezpeč zálohu':'Odomkni zálohu';
+  $('#backupPasswordDescription').textContent=confirmMode?'Vytvor heslo pre túto zálohu. Použi aspoň 8 znakov.':'Zadaj heslo, ktorým bola záloha zašifrovaná.';
+  one.value='';two.value='';two.hidden=!confirmMode;err.textContent='';
+  $('#backupPasswordSubmit').textContent=confirmMode?'Vytvoriť zálohu':'Obnoviť';
+  gate.hidden=false;
+  return new Promise(resolve=>{
+    function finish(value){gate.hidden=true;one.value='';two.value='';$('#backupPasswordSubmit').onclick=null;$('#backupPasswordCancel').onclick=null;resolve(value)}
+    $('#backupPasswordCancel').onclick=()=>finish(null);
+    $('#backupPasswordSubmit').onclick=()=>{
+      var pw=one.value;
+      if(pw.length<8){err.textContent='Heslo musí mať aspoň 8 znakov.';return}
+      if(confirmMode&&pw!==two.value){err.textContent='Heslá sa nezhodujú.';return}
+      finish(pw);
+    };
+    one.onkeydown=e=>{if(e.key==='Enter')$('#backupPasswordSubmit').click()};
+    two.onkeydown=e=>{if(e.key==='Enter')$('#backupPasswordSubmit').click()};
+    setTimeout(()=>one.focus(),80);
+  });
+}
+async function deriveBackupKey(password,salt){
+  var material=await crypto.subtle.importKey('raw',new TextEncoder().encode(password),'PBKDF2',false,['deriveKey']);
+  return crypto.subtle.deriveKey({name:'PBKDF2',salt:salt,iterations:310000,hash:'SHA-256'},material,{name:'AES-GCM',length:256},false,['encrypt','decrypt']);
+}
+async function downloadBackup(){
   if(mode!=='local'){toast('Záloha je dostupná pre lokálne uloženie.');return}
   if(!cryptoKey){toast('Najprv odomkni peňaženku.');return}
+  var password=await backupPasswordDialog(true);if(password===null)return;
   try{
-    var meta=localStorage.getItem(SECURITY_META),blob=localStorage.getItem(KEY);
-    if(!meta||!blob)throw new Error('missing');
-    var pack={format:'moja-penazenka-encrypted-backup',version:1,createdAt:new Date().toISOString(),security:JSON.parse(meta),payload:JSON.parse(blob)};
+    var salt=crypto.getRandomValues(new Uint8Array(16)),iv=crypto.getRandomValues(new Uint8Array(12));
+    var key=await deriveBackupKey(password,salt);
+    var encrypted=await crypto.subtle.encrypt({name:'AES-GCM',iv:iv},key,new TextEncoder().encode(JSON.stringify(items)));
+    var pack={format:'moja-penazenka-password-backup',version:2,createdAt:new Date().toISOString(),kdf:{name:'PBKDF2',hash:'SHA-256',iterations:310000},cipher:'AES-GCM-256',salt:toB64(salt),iv:toB64(iv),data:toB64(new Uint8Array(encrypted))};
     var file=new Blob([JSON.stringify(pack,null,2)],{type:'application/json'});
     var url=URL.createObjectURL(file),a=document.createElement('a');
     a.href=url;a.download='moja-penazenka-zaloha-'+dstr(new Date())+'.json';
     document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url)},1000);
-    toast('Zašifrovaná záloha je pripravená.');
+    toast('Heslom chránená záloha je pripravená.');
   }catch(e){toast('Zálohu sa nepodarilo vytvoriť.');}
 }
 async function restoreBackup(file){
   if(mode!=='local'){toast('Obnova je dostupná pre lokálne uloženie.');return}
   if(!file)return;
   try{
-    var raw=await file.text(),pack=JSON.parse(raw);
-    if(!pack||pack.format!=='moja-penazenka-encrypted-backup'||pack.version!==1||!pack.security||pack.security.v!==1||!pack.payload||pack.payload.v!==1)throw new Error('format');
-    var pin=window.prompt('Zadaj PIN, ktorým bola vytvorená táto záloha:');
-    if(pin===null)return;
-    if(!/^\d{6,32}$/.test(pin))throw new Error('pin');
-    var testKey=await deriveKey(pin,fromB64(pack.security.salt));
-    var plain=await crypto.subtle.decrypt({name:'AES-GCM',iv:fromB64(pack.payload.iv)},testKey,fromB64(pack.payload.data));
-    var restored=JSON.parse(new TextDecoder().decode(plain));
+    var raw=await file.text(),pack=JSON.parse(raw),restored,testKey;
+    if(pack&&pack.format==='moja-penazenka-password-backup'&&pack.version===2){
+      if(!pack.kdf||pack.kdf.name!=='PBKDF2'||pack.kdf.hash!=='SHA-256'||pack.kdf.iterations!==310000||pack.cipher!=='AES-GCM-256')throw new Error('format');
+      var password=await backupPasswordDialog(false);if(password===null)return;
+      testKey=await deriveBackupKey(password,fromB64(pack.salt));
+      var plain=await crypto.subtle.decrypt({name:'AES-GCM',iv:fromB64(pack.iv)},testKey,fromB64(pack.data));
+      restored=JSON.parse(new TextDecoder().decode(plain));
+    }else if(pack&&pack.format==='moja-penazenka-encrypted-backup'&&pack.version===1&&pack.security&&pack.security.v===1&&pack.payload&&pack.payload.v===1){
+      var pin=window.prompt('Táto je staršia záloha. Zadaj pôvodný PIN:');if(pin===null)return;
+      if(!/^\d{6,32}$/.test(pin))throw new Error('pin');
+      testKey=await deriveKey(pin,fromB64(pack.security.salt));
+      var oldPlain=await crypto.subtle.decrypt({name:'AES-GCM',iv:fromB64(pack.payload.iv)},testKey,fromB64(pack.payload.data));
+      restored=JSON.parse(new TextDecoder().decode(oldPlain));
+    }else throw new Error('format');
     if(!Array.isArray(restored))throw new Error('data');
     if(!window.confirm('Obnoviť túto zálohu? Údaje v tomto prehliadači budú nahradené údajmi zo zálohy.'))return;
-    localStorage.setItem(SECURITY_META,JSON.stringify(pack.security));
-    localStorage.setItem(KEY,JSON.stringify(pack.payload));
-    cryptoKey=testKey;items=restored;ready=true;slow=false;clearTimeout(lockTimer);render();startLockTimer();
+    items=restored;
+    if(pack.version===1){localStorage.setItem(SECURITY_META,JSON.stringify(pack.security));localStorage.setItem(KEY,JSON.stringify(pack.payload));cryptoKey=testKey;}
+    else{if(!cryptoKey)throw new Error('locked');await saveLocal();}
+    ready=true;slow=false;clearTimeout(lockTimer);render();startLockTimer();
     toast('Záloha bola úspešne obnovená.');
   }catch(e){
-    if(e&&e.name==='OperationError')toast('PIN nesedí alebo je záloha poškodená.');
-    else toast('Zálohu sa nepodarilo obnoviť. Skontroluj súbor.');
+    if(e&&e.name==='OperationError')toast('Heslo nesedí alebo je záloha poškodená.');
+    else toast('Zálohu sa nepodarilo obnoviť. Skontroluj súbor a odomkni peňaženku.');
   }
 }
+
+
+/* ---------- appearance preference ---------- */
+function applyTheme(theme){
+  if(theme==='light'||theme==='dark')document.documentElement.setAttribute('data-theme',theme);
+  else document.documentElement.removeAttribute('data-theme');
+  var b=$('#themeToggle');
+  if(b){var dark=(theme==='dark')||(theme==='auto'&&!window.matchMedia('(prefers-color-scheme: light)').matches);b.innerHTML=dark?'<i data-lucide="sun"></i>':'<i data-lucide="moon"></i>';b.setAttribute('aria-label',dark?'Prepnúť na svetlý režim':'Prepnúť na tmavý režim');paintIcons()}
+}
+function toggleTheme(){
+  var current=document.documentElement.getAttribute('data-theme');
+  var dark=current==='dark'||(!current&&!window.matchMedia('(prefers-color-scheme: light)').matches);
+  var next=dark?'light':'dark';
+  try{localStorage.setItem('penazenka.theme',next)}catch(e){}
+  applyTheme(next);
+}
+try{applyTheme(localStorage.getItem('penazenka.theme')||'auto')}catch(e){applyTheme('auto')}
 
 /* ---------- events ---------- */
 document.addEventListener('click',function(e){
@@ -645,6 +764,7 @@ document.addEventListener('click',function(e){
   else if(a==='chart'){chartType=v;render()}
   else if(a==='demo')addDemo();
   else if(a==='cleardemo')clearDemo();
+  else if(a==='theme-toggle')toggleTheme();
   else if(a==='backup-export')downloadBackup();
   else if(a==='backup-import')$('#backupFile').click();
   else if(a==='close')closeSheet();
