@@ -28,15 +28,19 @@
 .nc-top .ci{width:44px;height:44px;border-radius:15px}
 @media(prefers-reduced-motion:no-preference){.ci{transition:transform .18s ease,box-shadow .18s ease}.row:hover .ci,.cat:hover .ci{transform:translateY(-2px);box-shadow:inset 0 2px 2px rgba(255,255,255,.5),inset 0 -3px 5px rgba(0,0,0,.16),0 4px 0 rgba(0,0,0,.12),0 8px 14px rgba(10,45,30,.2)}}
 </style><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#075c42"><link rel="icon" href="./icons/icon-192.png" type="image/png"></head><body>
-<div id="securityGate"><div class="security-card">
-  <div style="font-size:32px;margin-bottom:12px">🔐</div>
-  <h2 id="securityTitle">Zabezpečená Peňaženka</h2>
+<div id="securityGate"><div class="security-card premium-login">
+  <div class="login-emblem" aria-hidden="true"><svg viewBox="0 0 120 100" role="img"><defs><linearGradient id="gold" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#fff2b2"/><stop offset=".45" stop-color="#d8a943"/><stop offset="1" stop-color="#8d5b16"/></linearGradient><linearGradient id="green" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#147653"/><stop offset="1" stop-color="#042e22"/></linearGradient></defs><path d="M8 32 60 5l52 27Z" fill="url(#green)" stroke="url(#gold)" stroke-width="3"/><path d="M16 37h88M18 83h84M12 91h96" stroke="url(#gold)" stroke-width="4" stroke-linecap="round"/><g fill="url(#green)" stroke="url(#gold)" stroke-width="3"><path d="M23 39h13v42H23zM53.5 39h13v42h-13zM84 39h13v42H84z"/></g><rect x="43" y="51" width="34" height="27" rx="5" fill="url(#gold)"/><path d="M48 51v-7a12 12 0 0 1 24 0v7" fill="none" stroke="url(#gold)" stroke-width="5"/><circle cx="60" cy="63" r="3" fill="#073b2b"/><path d="M60 65v6" stroke="#073b2b" stroke-width="3"/></svg></div>
+  <div class="login-kicker">BEZPEČNÝ PRÍSTUP</div>
+  <h2 id="securityTitle">Moja Peňaženka</h2>
+  <div class="login-subtitle">Osobné financie pod kontrolou</div>
+  <div class="login-divider"><span></span><i>✦</i><span></span></div>
   <p id="securityDescription">Nastav si PIN s aspoň 6 číslicami. Bez neho nebude možné dešifrovať uložené záznamy.</p>
-  <input id="securityPin" type="password" inputmode="numeric" maxlength="32" placeholder="PIN (aspoň 6 číslic)">
-  <input id="securityPinConfirm" type="password" inputmode="numeric" maxlength="32" placeholder="Zopakuj PIN">
-  <button id="securitySubmit" type="button" class="btn">Nastaviť PIN</button>
+  <label class="login-label" for="securityPin">Tvoj bezpečnostný PIN</label>
+  <input id="securityPin" type="password" inputmode="numeric" autocomplete="current-password" maxlength="32" placeholder="Zadaj PIN (6 až 32 číslic)">
+  <input id="securityPinConfirm" type="password" inputmode="numeric" autocomplete="new-password" maxlength="32" placeholder="Zopakuj PIN">
+  <button id="securitySubmit" type="button" class="btn">Odomknúť peňaženku</button>
   <div id="securityError" class="security-error" role="alert"></div>
-  <p style="font-size:12px;margin-top:14px">PIN sa neukladá. Záznamy zostávajú šifrované v tomto prehliadači.</p>
+  <p class="login-footnote"><span>♢</span> PIN sa neukladá. Tvoje záznamy zostávajú šifrované v tomto prehliadači.</p>
 </div></div>
 
 <title>Peňaženka</title>
@@ -255,81 +259,91 @@ main{padding-top:22px}
 @media(max-width:420px){.lock-tool span{display:none}.top-tool{padding:0 10px}.brand-caption{font-size:10px}.monthbar{margin-top:16px}}
 @media(prefers-reduced-motion:no-preference){.card,.rows{animation:softIn .28s ease-out both}@keyframes softIn{from{opacity:.7;transform:translateY(5px)}to{opacity:1;transform:none}}}
 
-/* ---------- 3D shell + slide-out navigation ---------- */
-.top{position:relative;overflow:hidden;background:linear-gradient(145deg,var(--head),color-mix(in srgb,var(--head) 72%,var(--brand)));box-shadow:0 12px 28px rgba(0,0,0,.13)}
-.top:after{content:"";position:absolute;right:-70px;top:-110px;width:230px;height:230px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.18),transparent 68%);pointer-events:none}
-.top-actions{display:flex;align-items:center;gap:12px;position:relative;z-index:1}
-.menu-trigger{width:46px;height:46px;flex:0 0 46px;border:1px solid rgba(255,255,255,.28);border-radius:16px;color:var(--head-ink);background:linear-gradient(145deg,rgba(255,255,255,.25),rgba(255,255,255,.07));box-shadow:inset 0 1px 1px rgba(255,255,255,.32),0 5px 0 rgba(0,0,0,.13),0 9px 18px rgba(0,0,0,.14);display:grid;place-items:center;transform:translateY(-2px)}
-.menu-trigger:active{transform:translateY(1px);box-shadow:inset 0 1px 2px rgba(0,0,0,.15),0 2px 5px rgba(0,0,0,.12)}
-.brand-mark{display:flex;align-items:center;gap:10px;min-width:0;flex:1}.brand-symbol{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(145deg,#fff5cf,#c9a64d 60%,#8b6723);color:#3d2b08;font-weight:900;font-size:22px;box-shadow:inset 0 2px 2px rgba(255,255,255,.85),0 4px 0 rgba(0,0,0,.17),0 8px 15px rgba(0,0,0,.18)}
-.top-tools{display:flex;gap:8px}.top-tool{box-shadow:inset 0 1px 1px rgba(255,255,255,.28),0 4px 0 rgba(0,0,0,.12),0 7px 14px rgba(0,0,0,.12)}
-#main{max-width:1040px}
-.card,.rows{box-shadow:0 8px 0 color-mix(in srgb,var(--fg) 5%,transparent),0 13px 28px rgba(10,35,24,.08);border-radius:22px}
-.card{border-color:color-mix(in srgb,var(--line) 70%,white)}
-.btn,.fab,.skin-choice,.motion-choice{box-shadow:inset 0 1px 1px rgba(255,255,255,.35),0 4px 0 color-mix(in srgb,var(--brand) 35%,#17231e),0 8px 16px rgba(0,0,0,.10)}
-.btn:active,.skin-choice:active,.motion-choice:active{transform:translateY(2px);box-shadow:inset 0 1px 2px rgba(0,0,0,.12),0 2px 5px rgba(0,0,0,.1)}
-.fab{background:linear-gradient(145deg,color-mix(in srgb,var(--brand) 70%,white),var(--brand));border:1px solid rgba(255,255,255,.35);box-shadow:inset 0 2px 2px rgba(255,255,255,.38),0 5px 0 color-mix(in srgb,var(--brand) 55%,#10251d),0 12px 22px rgba(0,0,0,.2)}
-.drawer-scrim{position:fixed;inset:0;background:rgba(3,13,9,.56);backdrop-filter:blur(5px);z-index:80;opacity:0;visibility:hidden;transition:opacity .25s ease,visibility .25s ease}
-.drawer-scrim.open{opacity:1;visibility:visible}
-.drawer{position:fixed;z-index:81;inset:0 auto 0 0;width:min(84vw,340px);padding:calc(18px + env(safe-area-inset-top,0px)) 16px calc(18px + env(safe-area-inset-bottom,0px));background:linear-gradient(160deg,var(--surface),var(--bg));border-right:1px solid var(--line);box-shadow:18px 0 50px rgba(0,0,0,.24);transform:translateX(-105%);transition:transform .3s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column;gap:14px;overflow:auto}
-.drawer.open{transform:translateX(0)}
-.drawer-brand{display:flex;align-items:center;gap:12px;padding:6px 4px 16px;border-bottom:1px solid var(--line)}
-.drawer-brand .brand-symbol{width:48px;height:48px}.drawer-brand strong{display:block;font:800 14px var(--font-display);letter-spacing:.08em}.drawer-brand small{color:var(--muted);font-size:11px}
-.drawer-label{padding:8px 10px 0;color:var(--muted);font-size:10px;font-weight:900;letter-spacing:.16em;text-transform:uppercase}
-.drawer-nav{display:grid;gap:9px}
-.drawer-item{display:flex;align-items:center;gap:13px;width:100%;min-height:54px;padding:8px 12px;border:1px solid var(--line);border-radius:17px;background:linear-gradient(145deg,var(--surface),color-mix(in srgb,var(--soft) 75%,var(--surface)));color:var(--fg);text-align:left;font-weight:750;box-shadow:inset 0 1px 1px rgba(255,255,255,.65),0 4px 0 color-mix(in srgb,var(--fg) 8%,transparent),0 8px 15px rgba(0,0,0,.07);transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease}
-.drawer-item:active{transform:translateY(2px);box-shadow:inset 0 1px 2px rgba(0,0,0,.1),0 1px 3px rgba(0,0,0,.08)}
-.drawer-item[aria-current="page"]{border-color:var(--brand);background:linear-gradient(145deg,color-mix(in srgb,var(--brand) 17%,var(--surface)),var(--surface));box-shadow:inset 0 1px 1px rgba(255,255,255,.65),0 4px 0 color-mix(in srgb,var(--brand) 35%,transparent),0 9px 18px color-mix(in srgb,var(--brand) 14%,transparent)}
-.drawer-icon{width:38px;height:38px;display:grid;place-items:center;border-radius:13px;color:#fff;background:linear-gradient(145deg,var(--brand),color-mix(in srgb,var(--brand) 55%,#09291d));box-shadow:inset 0 2px 2px rgba(255,255,255,.35),0 3px 0 rgba(0,0,0,.15),0 6px 10px rgba(0,0,0,.12)}
-.drawer-icon svg{width:19px;height:19px;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))}
-.drawer-item:nth-child(2) .drawer-icon{background:linear-gradient(145deg,#2788dc,#14529c)}.drawer-item:nth-child(3) .drawer-icon{background:linear-gradient(145deg,#9a62dc,#6036a5)}.drawer-item:nth-child(4) .drawer-icon{background:linear-gradient(145deg,#d7a84b,#98621c)}.drawer-item:nth-child(5) .drawer-icon{background:linear-gradient(145deg,#1cae9b,#08766e)}.drawer-item:nth-child(6) .drawer-icon{background:linear-gradient(145deg,#e47d9d,#a83d70)}
-.drawer-spacer{flex:1;min-height:12px}.drawer-footer{border-top:1px solid var(--line);padding-top:12px;color:var(--muted);font-size:11px;text-align:center}
-.view-heading{display:flex;align-items:center;gap:10px;margin:4px 0 14px}.view-heading h2{margin:0;font:800 19px var(--font-display)}.view-heading .view-mark{width:38px;height:38px;border-radius:13px;display:grid;place-items:center;color:white;background:linear-gradient(145deg,var(--brand),color-mix(in srgb,var(--brand) 50%,#10251d));box-shadow:inset 0 2px 2px rgba(255,255,255,.35),0 4px 0 color-mix(in srgb,var(--brand) 45%,#10251d),0 8px 14px rgba(0,0,0,.12)}
-@media(prefers-reduced-motion:no-preference){.card,.rows{animation:walletFade .35s ease both}}
-@media(prefers-reduced-motion:reduce){.drawer,.drawer-scrim,.drawer-item{transition:none!important}}
+/* ---------- clean premium home + discreet 3D navigation ---------- */
+.top{background:var(--head);box-shadow:none;padding-block:13px 18px}
+.top:after{display:none}
+.top-actions{gap:13px}
+.menu-trigger{width:42px;height:42px;flex-basis:42px;border-radius:14px;transform:none;background:rgba(255,255,255,.10);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 3px 8px rgba(0,0,0,.08)}
+.menu-trigger:active{transform:scale(.96)}
+.brand-mark{gap:9px}
+.brand-symbol{width:36px;height:36px;border-radius:12px;font-size:19px;box-shadow:inset 0 1px 1px rgba(255,255,255,.75),0 3px 7px rgba(0,0,0,.12)}
+.monthbar{margin-top:20px}
+.bal{margin-top:13px}
+.bal strong{font-size:36px;letter-spacing:-.045em}
+.split{max-width:520px;margin:16px auto 0;gap:10px}
+.split div{background:rgba(255,255,255,.075);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:10px 13px;box-shadow:none;backdrop-filter:none}
+main{padding-top:20px}
+#main{max-width:980px}
+.card,.rows{border-radius:18px;box-shadow:0 1px 2px rgba(10,35,24,.035),0 7px 20px rgba(10,35,24,.045)}
+.card{border:1px solid var(--line)}
+.view-heading{margin:2px 0 12px}
+.drawer{background:linear-gradient(160deg,var(--surface),var(--bg));box-shadow:16px 0 44px rgba(0,0,0,.20)}
+.drawer-item{min-height:52px;border-radius:15px;box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 3px 0 color-mix(in srgb,var(--fg) 7%,transparent),0 7px 13px rgba(0,0,0,.055)}
+.drawer-icon{width:36px;height:36px;border-radius:12px}
+.drawer-item[aria-current="page"]{box-shadow:inset 0 1px 0 rgba(255,255,255,.55),0 3px 0 color-mix(in srgb,var(--brand) 30%,transparent),0 7px 14px color-mix(in srgb,var(--brand) 12%,transparent)}
+.fab{width:58px;height:58px;border-radius:19px}
+@media(max-width:520px){.bal strong{font-size:33px}.split{gap:8px}.split div{padding:9px 11px}}
+@media(prefers-reduced-motion:reduce){.drawer,.drawer-scrim,.drawer-item,.menu-trigger{transition:none!important}}
 
-/* ---------- selectable skins + motion ---------- */
-:root[data-skin="midnight"]{--bg:#100d1d;--surface:#1c1730;--fg:#f3efff;--muted:#aaa0c7;--line:#34294f;--brand:#a45cff;--brand-ink:#160b27;--head:#171027;--head-ink:#f8f2ff;--head-dim:#c6a9ff;--inc:#54e0c0;--exp:#ff719e;--soft:#2a2142;--scrim:rgba(5,3,12,.72);--shadow:0 12px 32px rgba(0,0,0,.3);color-scheme:dark}
-:root[data-skin="pastel"]{--bg:#fbf5fa;--surface:#fffaff;--fg:#43364b;--muted:#95869b;--line:#eee0ee;--brand:#b57acb;--brand-ink:#fff;--head:#e9d8f0;--head-ink:#493454;--head-dim:#765b83;--inc:#69ad91;--exp:#df8294;--soft:#f4e9f5;--scrim:rgba(49,30,57,.35);--shadow:0 8px 24px rgba(105,72,119,.09);color-scheme:light}
-:root[data-skin="ocean"]{--bg:#eef8fa;--surface:#fff;--fg:#123a48;--muted:#66838d;--line:#d8e9ed;--brand:#078da5;--brand-ink:#fff;--head:#07566b;--head-ink:#f0fdff;--head-dim:#a8e4ec;--inc:#159d82;--exp:#e36c67;--soft:#e0f2f5;--scrim:rgba(4,35,48,.55);--shadow:0 9px 26px rgba(13,81,98,.09)}
-:root[data-skin="candy"]{--bg:#fff5f1;--surface:#fff;--fg:#392c42;--muted:#89798f;--line:#f0dfeb;--brand:#ed7b9b;--brand-ink:#fff;--head:#6547a5;--head-ink:#fff;--head-dim:#e3d5ff;--inc:#36a98d;--exp:#ef7180;--soft:#f9e8f0;--scrim:rgba(42,25,65,.48);--shadow:0 10px 26px rgba(114,69,133,.12)}
-:root[data-skin="emerald"]{--bg:#f3f7f4;--surface:#fff;--fg:#10271e;--muted:#718279;--line:#e2ebe5;--brand:#087a52;--brand-ink:#fff;--head:#075c42;--head-ink:#f3fff8;--head-dim:#b8dfcc;--inc:#07865a;--exp:#d85c52;--soft:#e8f3ed;--scrim:rgba(4,24,16,.58);--shadow:0 8px 28px rgba(13,66,43,.07)}
-:root[data-skin="titanium"]{--bg:#eef0f3;--surface:#fff;--fg:#202630;--muted:#737d8b;--line:#dce0e6;--brand:#596779;--brand-ink:#fff;--head:#252d38;--head-ink:#fff;--head-dim:#c8d0db;--inc:#248b69;--exp:#c85c62;--soft:#e8ecf1;--scrim:rgba(10,15,22,.6);--shadow:0 8px 28px rgba(28,38,52,.1)}
-:root[data-skin="midnight"] .top,:root[data-skin="ocean"] .top,:root[data-skin="candy"] .top{background:linear-gradient(135deg,var(--head),var(--brand));}
-:root[data-skin="pastel"] .top{background:linear-gradient(135deg,#f0e3f5,#e5d9f0);}
-:root[data-skin="titanium"] .top{background:linear-gradient(135deg,#252d38,#596779);}
-:root[data-skin="emerald"] .top{background:linear-gradient(135deg,#064b38 0%,#087451 52%,#0b8a60 100%)}
-
-.skin-panel{margin-top:16px;overflow:hidden}.skin-panel .skin-intro{color:var(--muted);font-size:13px;line-height:1.5;margin:5px 0 16px}
-.skin-panel .skin-controls{display:grid;gap:18px}.skin-section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 10px;font-size:14px;font-weight:800;color:var(--fg)}
-.skin-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.skin-choice{position:relative;display:flex;align-items:center;gap:10px;width:100%;min-height:66px;padding:10px;border:1px solid var(--line);border-radius:16px;background:var(--surface);color:var(--fg);text-align:left;cursor:pointer;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease;box-shadow:0 3px 12px rgba(0,0,0,.035)}
-.skin-choice:active{transform:scale(.975)}.skin-choice[aria-pressed="true"]{border:2px solid var(--brand);padding:9px;box-shadow:0 0 0 3px color-mix(in srgb,var(--brand) 13%,transparent),var(--shadow)}
-.skin-orb{flex:0 0 38px;width:38px;height:38px;border-radius:13px;box-shadow:inset 0 1px 2px rgba(255,255,255,.6),0 4px 9px rgba(0,0,0,.16);background:var(--orb)}
-.skin-choice-copy{display:grid;gap:3px;min-width:0}.skin-choice-copy strong{font-size:12px;line-height:1.2}.skin-choice-copy small{font-size:10px;color:var(--muted)}.skin-choice .skin-check{position:absolute;right:8px;top:7px;color:var(--brand);font-size:12px;font-weight:900}
-.skin-custom{border:1px solid var(--line);border-radius:16px;padding:12px;background:var(--bg)}.skin-colors{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.skin-colors label{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 9px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--muted);font-size:11px;font-weight:700}.skin-colors input[type=color]{width:34px;height:30px;min-height:30px;padding:2px;border:0;border-radius:8px;background:transparent;cursor:pointer}
-.skin-motion-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.motion-choice{min-height:43px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--muted);font-size:11px;font-weight:750;cursor:pointer;transition:all .18s ease}.motion-choice[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:var(--brand-ink);box-shadow:0 4px 12px color-mix(in srgb,var(--brand) 24%,transparent)}
-.skin-note{font-size:11px;color:var(--muted);margin:8px 0 0;line-height:1.45}.skin-action{width:100%;margin-top:10px}.skin-divider{height:1px;background:var(--line)}
-@media(max-width:380px){.skin-grid{gap:7px}.skin-choice{padding:8px;gap:8px}.skin-orb{width:32px;height:32px;flex-basis:32px}.skin-choice-copy strong{font-size:11px}.skin-motion-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(prefers-reduced-motion:reduce){.skin-choice,.motion-choice{transition:none!important}}
-@media(prefers-reduced-motion:no-preference){
- body[data-motion="soft"] .card,body[data-motion="normal"] .card,body[data-motion="bold"] .card{animation:walletFade .28s ease-out both}
- body[data-motion="normal"] .btn,body[data-motion="bold"] .btn,body[data-motion="normal"] .fab,body[data-motion="bold"] .fab{transition:transform .2s ease,box-shadow .2s ease,filter .2s ease}
- body[data-motion="normal"] .btn:active,body[data-motion="bold"] .btn:active,body[data-motion="normal"] .fab:active,body[data-motion="bold"] .fab:active{transform:translateY(1px) scale(.97)}
- body[data-motion="bold"] .card,body[data-motion="bold"] .rows{transition:transform .25s ease,box-shadow .25s ease}
- body[data-motion="bold"] .card:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(20,70,50,.13)}
- body[data-motion="normal"] .ci,body[data-motion="bold"] .ci{transition:transform .2s ease,filter .2s ease}
- body[data-motion="bold"] .cat:active .ci,body[data-motion="bold"] .row:active .ci{transform:translateY(-3px) scale(1.06)}
- body[data-motion="soft"] .top,body[data-motion="normal"] .top,body[data-motion="bold"] .top{transition:background .35s ease,color .35s ease}
-}
-@keyframes walletFade{from{opacity:.65;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+/* ---------- Premium Mobile: bank-style secure login ---------- */
+#securityGate{background:radial-gradient(ellipse at 50% 12%,rgba(36,157,111,.28),transparent 42%),linear-gradient(145deg,#031c16 0%,#06412f 48%,#021b15 100%);overflow:auto}
+#securityGate:before,#securityGate:after{content:"";position:fixed;pointer-events:none;border-radius:50%;filter:blur(1px)}
+#securityGate:before{width:360px;height:360px;right:-180px;top:-160px;border:1px solid rgba(224,185,94,.18);box-shadow:0 0 0 22px rgba(224,185,94,.025),0 0 0 48px rgba(224,185,94,.02)}
+#securityGate:after{width:300px;height:300px;left:-190px;bottom:-160px;border:1px solid rgba(48,205,142,.2);box-shadow:0 0 0 26px rgba(48,205,142,.025),0 0 0 54px rgba(48,205,142,.02)}
+.premium-login{position:relative;z-index:1;width:min(100%,430px);padding:27px 25px 22px;text-align:center;color:#f4f8f3;background:linear-gradient(150deg,rgba(14,83,60,.96),rgba(3,35,26,.98));border:1px solid rgba(224,190,111,.55);border-radius:28px;box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 22px 65px rgba(0,0,0,.48),0 0 36px rgba(29,161,111,.15);backdrop-filter:blur(18px)}
+.login-emblem{width:132px;height:112px;margin:0 auto 10px;display:grid;place-items:center;filter:drop-shadow(0 7px 10px rgba(0,0,0,.35))}
+.login-emblem svg{width:100%;height:100%;overflow:visible}
+.login-kicker{font-size:10px;letter-spacing:.24em;font-weight:800;color:#e6c77b}
+.premium-login h2{font:800 27px/1.12 var(--font-display);letter-spacing:-.04em;color:#f7e5b1;margin:8px 0 4px;text-shadow:0 2px 12px rgba(0,0,0,.32)}
+.login-subtitle{font-size:13px;color:#b9d8c9;letter-spacing:.04em}
+.login-divider{display:flex;align-items:center;gap:12px;margin:17px 4px 14px;color:#e6c77b}
+.login-divider span{height:1px;flex:1;background:linear-gradient(90deg,transparent,rgba(230,199,123,.65))}
+.login-divider span:last-child{background:linear-gradient(90deg,rgba(230,199,123,.65),transparent)}
+.login-divider i{font-style:normal;font-size:13px}
+.premium-login #securityDescription{font-size:13px;line-height:1.5;color:#c1d8cc;margin:0 0 16px}
+.login-label{display:block;text-align:left;font-size:12px;font-weight:700;color:#e5d4a3;margin:0 0 7px}
+.premium-login input{display:block;width:100%;height:49px;margin:0 0 10px;padding:0 15px;border-radius:14px;border:1px solid rgba(214,190,128,.42);background:rgba(0,20,14,.56);color:#fff;text-align:center;letter-spacing:.18em;box-shadow:inset 0 2px 8px rgba(0,0,0,.2);outline:none}
+.premium-login input::placeholder{color:#9db9aa;letter-spacing:0}
+.premium-login input:focus{border-color:#e5c36d;box-shadow:0 0 0 3px rgba(229,195,109,.13),inset 0 2px 8px rgba(0,0,0,.2)}
+.premium-login .btn{width:100%;min-height:49px;margin-top:4px;border:1px solid #f0d48c;border-radius:14px;background:linear-gradient(180deg,#f3d98f,#bd8c36);color:#183b2b;font-weight:800;box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 5px 0 #76511d,0 10px 20px rgba(0,0,0,.22)}
+.premium-login .btn:active{transform:translateY(3px);box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 2px 0 #76511d,0 5px 12px rgba(0,0,0,.2)}
+.premium-login .security-error{color:#ffb0a8;text-align:center}
+.login-footnote{font-size:11px!important;line-height:1.45;color:#9ebcaf!important;margin:14px 0 0!important}
+.login-footnote span{color:#e5c36d;margin-right:4px}
+@media(max-width:420px){.premium-login{padding:22px 19px 18px;border-radius:24px}.login-emblem{width:112px;height:96px}.premium-login h2{font-size:25px}}
+/* A true light palette when the user explicitly selects light mode. */
+:root[data-theme="light"]{--bg:#f3f7f4;--surface:#ffffff;--fg:#13251b;--muted:#64766c;--line:#dce8df;--brand:#087a52;--brand-ink:#ffffff;--head:#075c42;--head-ink:#ffffff;--head-dim:#c5e6d5;--inc:#087a52;--exp:#c9423a;--soft:#e8f2eb;--scrim:rgba(3,24,16,.52);--head-inc:#b8f1d0;--head-exp:#ffd0ca;--shadow:0 1px 2px rgba(15,40,28,.06),0 8px 24px rgba(15,40,28,.06);color-scheme:light}
+/* Report preview and clean print/PDF output. */
+.report-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:end;margin:14px 0}
+.report-tools label{display:grid;gap:5px;color:var(--muted);font-size:12px;font-weight:700;flex:1;min-width:130px}
+.report-tools input{min-width:0;width:100%;border:1px solid var(--line);border-radius:11px;background:var(--bg);color:var(--fg);padding:10px}
+.report-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:12px 0}
+.report-stat{background:var(--soft);border-radius:13px;padding:11px;min-width:0}
+.report-stat small{display:block;color:var(--muted);font-size:11px}
+.report-stat strong{display:block;margin-top:4px;font:800 16px var(--font-display);overflow-wrap:anywhere}
+.report-table-wrap{overflow-x:auto}
+.report-table{width:100%;border-collapse:collapse;font-size:13px}
+.report-table th,.report-table td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+.report-table th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.04em}
+.report-table td:last-child,.report-table th:last-child{text-align:right;white-space:nowrap}
+.report-print-title{margin:0 0 4px;font:800 22px var(--font-display)}
+.report-print-meta{color:var(--muted);font-size:12px;margin-bottom:14px}
+.report-positive{color:var(--inc);font-weight:700}.report-negative{color:var(--exp);font-weight:700}
+/* Realistic 3D category columns with glossy faces and visible side depth. */
+.chart3d{display:flex;align-items:flex-end;gap:13px;min-height:150px;overflow-x:auto;padding:18px 12px 8px;margin:4px 0 12px;perspective:700px;border-radius:16px;background:linear-gradient(180deg,rgba(15,110,75,.035),transparent)}
+.chart3d-item{flex:1 0 46px;min-width:46px;display:flex;flex-direction:column;align-items:center;gap:7px}
+.chart3d-value{font-size:10px;font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.chart3d-bar{position:relative;width:30px;min-height:7px;border-radius:7px 7px 2px 2px;transform:rotateX(-5deg) skewY(-1deg);transform-style:preserve-3d;box-shadow:0 8px 12px rgba(0,0,0,.16),inset 2px 0 3px rgba(255,255,255,.42),inset -3px 0 5px rgba(0,0,0,.12);border:1px solid rgba(255,255,255,.3)}
+.chart3d-bar:before{content:"";position:absolute;left:100%;top:3px;width:8px;height:100%;transform:skewY(-35deg);transform-origin:left top;background:linear-gradient(90deg,rgba(0,0,0,.2),rgba(0,0,0,.42));border-radius:0 4px 3px 0}
+.chart3d-bar:after{content:"";position:absolute;left:3px;right:3px;top:2px;height:10px;border-radius:50%;background:rgba(255,255,255,.3);filter:blur(2px)}
+.chart3d-label{max-width:66px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;color:var(--muted)}
+@media print{body{background:#fff!important;color:#111!important}body *{visibility:hidden!important}#reportPrintArea,#reportPrintArea *{visibility:visible!important}#reportPrintArea{position:absolute!important;left:0!important;top:0!important;width:100%!important;padding:0!important;margin:0!important;background:#fff!important;color:#111!important}#reportPrintArea .card{border:0!important;box-shadow:none!important;padding:0!important}#reportPrintArea .report-table th,#reportPrintArea .report-table td{border-bottom:1px solid #ddd!important;color:#111!important}#reportPrintArea .report-summary{break-inside:avoid}#reportPrintArea .report-stat{background:#f2f5f3!important;color:#111!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}#reportPrintArea .report-stat small{color:#555!important}.report-tools,.report-print-button{display:none!important}@page{size:auto;margin:14mm}}
 
 </style>
 
 <header class="top">
   <div class="wrap">
-    <div class="top-actions"><button type="button" class="menu-trigger" data-act="menu-open" aria-label="Otvoriť menu"><i data-lucide="menu"></i></button><div class="brand-mark"><span class="brand-symbol">€</span><div><h1 class="brand">MOJA PEŇAŽENKA</h1><span class="brand-caption">Tvoje financie pod kontrolou</span></div></div><div class="top-tools"><button type="button" class="top-tool" id="themeToggle" data-act="theme-toggle" aria-label="Prepnúť vzhľad"><i data-lucide="moon"></i></button><button type="button" class="top-tool lock-tool" onclick="window.lockWallet()"><i data-lucide="lock-keyhole"></i><span>Uzamknúť</span></button></div></div>
+    <div class="top-actions"><button type="button" class="menu-trigger" data-act="menu-open" aria-label="Otvoriť menu"><i data-lucide="menu"></i></button><div class="brand-mark"><span class="brand-symbol">€</span><div><h1 class="brand">MOJA PEŇAŽENKA</h1><span class="brand-caption">Tvoje financie pod kontrolou</span></div></div></div>
     <div class="monthbar">
       <button class="nav" id="prev" data-act="prev" aria-label="Predchádzajúci mesiac"><i data-lucide="chevron-left"></i></button>
       <h2 id="monthTitle"></h2>
@@ -353,6 +367,7 @@ main{padding-top:22px}
     <button class="drawer-item" data-act="view" data-v="wallets"><span class="drawer-icon"><i data-lucide="wallet"></i></span>Peňaženky</button>
     <button class="drawer-item" data-act="view" data-v="appearance"><span class="drawer-icon"><i data-lucide="palette"></i></span>Vzhľad a skiny</button>
     <button class="drawer-item" data-act="view" data-v="backup"><span class="drawer-icon"><i data-lucide="shield-check"></i></span>Záloha a prenos</button>
+    <button class="drawer-item" data-act="view" data-v="reports"><span class="drawer-icon"><i data-lucide="file-chart-column"></i></span>Reporty, PDF a tlač</button>
   </nav>
   <div class="drawer-spacer"></div>
   <button class="drawer-item" data-act="theme-toggle"><span class="drawer-icon"><i data-lucide="moon-star"></i></span>Svetlý / tmavý režim</button>
@@ -621,6 +636,10 @@ function donut(rows,total){
     '<g transform="rotate(-90 60 60)"><circle class="track" r="'+R+'" cx="60" cy="60" fill="none" stroke-width="14"/>'+s+'</g>'+
     '<text class="dl" x="60" y="56">Spolu</text><text class="dv" x="60" y="71">'+esc(money(total))+'</text></svg>';
 }
+function bar3dHtml(rows,total){
+  var max=Math.max.apply(null,rows.map(function(r){return r.v}))||1;
+  return '<div class="chart3d" aria-label="Priestorový stĺpcový graf podľa kategórií">'+rows.slice(0,8).map(function(r){var height=Math.max(8,Math.round(r.v/max*112));return '<div class="chart3d-item"><span class="chart3d-value">'+esc(money(r.v))+'</span><div class="chart3d-bar" style="height:'+height+'px;background:linear-gradient(135deg,rgba(255,255,255,.62),'+r.color+' 28%,'+r.color+' 72%,rgba(0,0,0,.38))"></div><span class="chart3d-label">'+esc(r.name)+'</span></div>'}).join('')+'</div>';
+}
 function chartCard(mt){
   var list=mt.filter(function(t){return t.type===chartType});
   var by={};list.forEach(function(t){by[t.cat]=(by[t.cat]||0)+(+t.amount||0)});
@@ -630,7 +649,7 @@ function chartCard(mt){
     '<button type="button" data-act="chart" data-v="expense" aria-pressed="'+(chartType==='expense')+'">Výdavky</button>'+
     '<button type="button" data-act="chart" data-v="income" aria-pressed="'+(chartType==='income')+'">Príjmy</button></div></div>';
   if(!rows.length){h+='<p class="none">'+(chartType==='expense'?'Žiadne výdavky':'Žiadne príjmy')+' v tomto mesiaci.</p></div>';return h}
-  h+=donut(rows,total)+'<div class="legend">';
+  h+=donut(rows,total)+bar3dHtml(rows,total)+'<div class="legend">';
   rows.forEach(function(r){
     var p=r.v/total*100;
     h+='<div class="lg"><span class="ci" style="background:'+r.color+'">'+ico(r.icon)+'</span>'+
@@ -661,6 +680,15 @@ function emptyHtml(){
     '<div class="btns"><button type="button" class="btn" data-act="add">Pridať záznam</button>'+
     '<button type="button" class="btn ghost" data-act="demo">Vyskúšať s ukážkou</button></div></div>';
 }
+function reportPreviewHtml(from,to){
+  var valid=txs().filter(function(t){return t.date>=from&&t.date<=to}).slice().sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:0});
+  var inc=sum(valid,'income'),exp=sum(valid,'expense'),balance=inc-exp;
+  var rows=valid.map(function(t){var c=catById(t.cat),income=t.type==='income';return '<tr><td>'+esc(t.date)+'</td><td>'+esc(c.name)+'</td><td>'+esc(t.note||'—')+'</td><td class="'+(income?'report-positive':'report-negative')+'">'+(income?'+':'−')+esc(money(+t.amount||0))+'</td></tr>'}).join('');
+  return '<div class="card"><h2 class="report-print-title">Moja Peňaženka – finančný report</h2><div class="report-print-meta">Obdobie: '+esc(from)+' až '+esc(to)+' · Vytvorené: '+esc(new Date().toLocaleDateString('sk-SK'))+'</div><div class="report-summary"><div class="report-stat"><small>Príjmy</small><strong class="report-positive">'+esc(money(inc))+'</strong></div><div class="report-stat"><small>Výdavky</small><strong class="report-negative">'+esc(money(exp))+'</strong></div><div class="report-stat"><small>Rozdiel</small><strong>'+esc(money(balance))+'</strong></div></div><div class="report-table-wrap"><table class="report-table"><thead><tr><th>Dátum</th><th>Kategória</th><th>Poznámka</th><th>Suma</th></tr></thead><tbody>'+(rows||'<tr><td colspan="4">Za vybrané obdobie nie sú žiadne záznamy.</td></tr>')+'</tbody></table></div><p class="report-print-meta" style="margin-top:12px">Počet záznamov: '+valid.length+'</p></div>';
+}
+function updateReportPreview(){var a=$('#reportFrom'),b=$('#reportTo'),area=$('#reportPrintArea');if(!a||!b||!area)return;if(a.value&&b.value&&a.value>b.value){toast('Dátum „od“ nemôže byť po dátume „do“.');return}area.innerHTML=reportPreviewHtml(a.value||'0000-00-00',b.value||'9999-12-31');paintIcons()}
+function printReport(){updateReportPreview();window.print()}
+
 function render(){
   var key=Y+'-'+pad(M+1);
   var all=txs();
@@ -676,7 +704,7 @@ function render(){
     if(demoN)h+='<div class="banner"><span>Zobrazujú sa ukážkové údaje.</span><button type="button" class="link" data-act="cleardemo">Vymazať ukážky</button></div>';
     if(activeView==='overview'){
       if(!all.length)h+=emptyHtml();
-      else h+='<div class="view-heading"><span class="view-mark"><i data-lucide="layout-dashboard"></i></span><h2>Finančný prehľad</h2></div><div class="cols"><section>'+chartCard(mt)+'</section><section>'+listHtml(mt)+'</section></div>';
+      else h+='<div class="cols"><section>'+chartCard(mt)+'</section><section>'+listHtml(mt)+'</section></div>';
     }else if(activeView==='transactions'){
       h+='<div class="view-heading"><span class="view-mark"><i data-lucide="receipt-text"></i></span><h2>Transakcie</h2></div>'+listHtml(mt);
     }else if(activeView==='stats'){
@@ -685,11 +713,11 @@ function render(){
       h+='<div class="view-heading"><span class="view-mark"><i data-lucide="palette"></i></span><h2>Vzhľad aplikácie</h2></div>'+skinSettingsHtml();
     }else if(activeView==='backup'){
       h+='<div class="view-heading"><span class="view-mark"><i data-lucide="shield-check"></i></span><h2>Záloha a prenos</h2></div><section class="card"><h3>Bezpečná záloha</h3><p class="none" style="text-align:left">Záloha je chránená samostatným heslom. Pri obnove ho zadáš znova; PIN jednotlivých prehliadačov zostáva nezávislý.</p><div class="btns"><button type="button" class="btn" data-act="backup-export">Stiahnuť zálohu</button><button type="button" class="btn ghost" data-act="backup-import">Obnoviť zo zálohy</button></div></section>';
+    }else if(activeView==='reports'){
+      h+='<div class="view-heading"><span class="view-mark"><i data-lucide="file-chart-column"></i></span><h2>Reporty a tlač</h2></div><section class="card"><h3>Finančný prehľad</h3><p class="none" style="text-align:left">Vyber obdobie. Report môžeš vytlačiť alebo uložiť ako PDF cez tlačovú ponuku zariadenia.</p><div class="report-tools"><label>Od dátumu<input id="reportFrom" type="date" value="'+Y+'-'+pad(M+1)+'-01"></label><label>Do dátumu<input id="reportTo" type="date" value="'+dstr(new Date())+'"></label></div><div id="reportPrintArea">'+reportPreviewHtml(Y+'-'+pad(M+1)+'-01',dstr(new Date()))+'</div><div class="btns report-print-button"><button type="button" class="btn" data-act="report-print"><i data-lucide="printer"></i> Tlačiť / Uložiť PDF</button></div></section>';
     }else if(activeView==='wallets'){
       h+='<div class="view-heading"><span class="view-mark"><i data-lucide="wallet"></i></span><h2>Moje peňaženky</h2></div><section class="card"><h3>Osobná peňaženka</h3><p class="none" style="text-align:left">Všetky tvoje príjmy a výdavky sú zatiaľ vedené v jednej peňaženke. Viac samostatných peňaženiek môžeme doplniť v ďalšej verzii bez straty existujúcich údajov.</p></section>';
     }
-    h+='<section class="card" style="margin-top:16px"><h3>Záloha a prenos</h3><p class="none" style="text-align:left">Záloha je chránená samostatným heslom. Pri obnove ho zadáš znova; PIN jednotlivých prehliadačov zostáva nezávislý.</p><div class="btns"><button type="button" class="btn" data-act="backup-export">Stiahnuť zálohu</button><button type="button" class="btn ghost" data-act="backup-import">Obnoviť zo zálohy</button></div></section>';
-    h+=skinSettingsHtml();
     h+='<p class="foot">'+(mode==='db'?'Tvoje údaje sú súkromné, vidíš ich len ty.':'Údaje sa ukladajú iba v tomto prehliadači.')+'</p>';
   }
   $('#main').innerHTML=h;
@@ -916,6 +944,7 @@ try{applySkin(localStorage.getItem('penazenka.skin')||'emerald');applyMotion(loc
 /* ---------- events ---------- */
 /* Live appearance controls */
 document.addEventListener('change',function(e){
+  if(e.target&&(e.target.id==='reportFrom'||e.target.id==='reportTo'))updateReportPreview();
   if(e.target&&e.target.id==='skinSelect'){
     var v=e.target.value;$('#customSkinControls').hidden=(v!=='custom');applySkin(v);
   }
@@ -944,6 +973,7 @@ document.addEventListener('click',function(e){
   else if(a==='save-custom-skin')saveCustomSkin();
   else if(a==='backup-export')downloadBackup();
   else if(a==='backup-import')$('#backupFile').click();
+  else if(a==='report-print')printReport();
   else if(a==='close')closeSheet();
   else if(a==='type')setType(v);
   else if(a==='cat'){form.cat=id;showErr('');renderCats()}
