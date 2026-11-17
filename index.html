@@ -592,6 +592,20 @@ body[data-icons="line"] .art svg{width:55%;height:55%}
 img.cat-art{width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit}
 .ci:has(> img.cat-art){background:none!important;border:0!important;box-shadow:none!important}
 #catGrid{grid-template-columns:repeat(5,minmax(0,1fr))!important}
+.print-only{display:none}
+.pdf-btn{margin-top:4px}
+@media print{
+  body{background:#fff!important;zoom:1!important;padding:0!important;color:#000!important}
+  .top,.bnav,.fab,.drawer,.drawer-scrim,#sheet,#securityGate,.noprint,.pdf-btn,.bud-row .link,.bud-row button,.link{display:none!important}
+  .print-only{display:block!important;font:800 20px sans-serif;margin:0 0 12px}
+  #main{padding:0!important;max-width:none!important}
+  .card{box-shadow:none!important;border:1px solid #bbb!important;background:#fff!important;color:#000!important;break-inside:avoid}
+  .bud-row{break-inside:avoid;color:#000!important}
+  .bud-row b,.bud-amt,.none,h3{color:#000!important}
+  .pbar{background:#e5e5e5!important}
+  .expense{color:#b00020!important}
+  .foot{display:none!important}
+}
 #catGrid .cat{min-width:0;overflow:hidden}
 #catGrid .cat span{white-space:normal;overflow-wrap:anywhere;line-height:1.2}
 #sheet{overflow-x:hidden}
@@ -859,8 +873,11 @@ function budgetsHtml(mt){
       (over?'<small class="expense">Limit je prekročený</small>':'')+'</div>';
   }).join(''):'<p class="none" style="text-align:left">Zatiaľ nemáš žiadny rozpočet. Pridaj limit pre kategóriu nižšie.</p>';
   var opts=catsFor('expense').map(function(c){return '<option value="'+esc(c.id)+'">'+esc(c.name)+'</option>'}).join('');
+  var monthName=cap(new Date(Y,M,1).toLocaleDateString('sk-SK',{month:'long',year:'numeric'}));
   return '<div class="view-heading"><h2>Rozpočty</h2></div>'+
-    '<section class="card"><h3>Mesačný limit</h3><p class="none" style="text-align:left">Limit platí pre každý mesiac. Spotreba sa počíta z výdavkov vybraného mesiaca.</p>'+
+    '<div class="print-only">Rozpočet – '+esc(monthName)+'</div>'+
+    '<div class="btns pdf-btn noprint"><button type="button" class="btn ghost" data-act="bud-pdf">Uložiť do PDF</button></div>'+
+    '<section class="card noprint"><h3>Mesačný limit</h3><p class="none" style="text-align:left">Limit platí pre každý mesiac. Spotreba sa počíta z výdavkov vybraného mesiaca.</p>'+
     '<div class="form-row"><select id="budCat">'+opts+'</select><input id="budLimit" inputmode="decimal" placeholder="Limit v €"><button type="button" class="btn" data-act="bud-add">Uložiť</button></div></section>'+
     '<section class="card"><h3>Prehľad</h3>'+rows+'</section>';
 }
@@ -1453,6 +1470,7 @@ document.addEventListener('click',function(e){
   else if(a==='font-face'){setPref('penazenka.font',v);applyPrefs();render()}
   else if(a==='font-size'){setPref('penazenka.fontsize',v);applyPrefs();render()}
   else if(a==='bud-add')budgetAdd()
+  else if(a==='bud-pdf')window.print()
   else if(a==='bud-del')removeItem(id)
   else if(a==='goal-add')goalAdd()
   else if(a==='goal-del')removeItem(id)
