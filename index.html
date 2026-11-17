@@ -111,7 +111,7 @@ body{background:var(--bg);color:var(--fg)}
 
 </style><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#075c42"><link rel="icon" href="./icons/icon-192.png" type="image/png"></head><body>
 <div id="securityGate"><div class="pin-card">
-  <div class="brand-logo lg" aria-hidden="true">€</div>
+  <img class="pin-logo" src="img/logo.png" alt="">
   <h1 class="pin-brand">MOJA PEŇAŽENKA</h1>
   <p class="pin-sub">Tvoje financie pod kontrolou</p>
   <div class="pin-panel">
@@ -512,13 +512,33 @@ body{background:var(--bg);padding-bottom:calc(92px + env(safe-area-inset-bottom,
 :root[data-theme="dark"][data-skin="gold"]{--bg:#120f08;--surface:#211c12;--fg:#faf4e2;--muted:#b5a983;--line:#3d3520;--brand:#e5c15a;--brand-ink:#2a2008;--head:#1f1706;--head-ink:#fff;--head-dim:#dcc98a;--soft:#33291a;--inc:#7bd69e;--exp:#ff9283;--shadow:0 10px 28px rgba(0,0,0,.3);color-scheme:dark}
 :root[data-theme="dark"][data-skin="brown"]{--bg:#130e0a;--surface:#221a14;--fg:#f6eee9;--muted:#b3a196;--line:#3a2e27;--brand:#d9a57c;--brand-ink:#2a1608;--head:#1d120b;--head-ink:#fff;--head-dim:#d9bfae;--soft:#33261f;--inc:#6fd3a4;--exp:#ff8f86;--shadow:0 10px 28px rgba(0,0,0,.3);color-scheme:dark}
 @media(max-width:520px){.tiles{gap:6px}.tile b{font-size:12px}.tile small{font-size:10px}.hero strong{font-size:30px}.theme-grid{gap:12px 6px}}
+
+/* ===== Ikony z dizajnu ===== */
+.pin-logo{width:128px;height:auto;display:block;margin:0 auto;filter:drop-shadow(0 8px 14px rgba(0,0,0,.35))}
+.top .brand-art{width:50px;height:auto;flex:none;display:block}
+.drawer-brand .brand-art{width:50px;height:auto;flex:none;display:block}
+.drawer-icon.art{background:transparent;border:0;width:44px;height:44px}
+.drawer-icon.art img{width:44px;height:44px;object-fit:contain;display:block}
+.tile .ic.art{width:50px;height:50px;border-radius:14px;background:transparent;overflow:hidden}
+.tile .ic.art img{width:100%;height:100%;object-fit:cover;display:block}
+.recent .r .ci.art{width:44px;height:44px;border-radius:14px;background:transparent;overflow:hidden}
+.recent .r .ci.art img{width:100%;height:100%;object-fit:cover;display:block}
+.sc2 .ic.art{width:46px;height:46px;border-radius:14px;background:transparent;overflow:hidden}
+.sc2 .ic.art img{width:100%;height:100%;object-fit:cover;display:block}
+.hero{text-align:center}
+.hero strong{text-align:center}
+.hero .hero-coins{position:absolute;left:6px;bottom:4px;width:86px;height:auto;pointer-events:none}
+.hero .hero-wallet{position:absolute;right:4px;top:14px;width:100px;height:auto;pointer-events:none}
+.hero .hd{position:relative;z-index:2}
+.hero .hero-coins,.hero .hero-wallet{mix-blend-mode:screen;border-radius:12px}
+.hero .hd span{color:#fff}
 </style>
 
 <header class="top">
   <div class="wrap">
     <div class="top-row">
       <button type="button" class="menu-trigger" data-act="menu-open" aria-label="Otvoriť menu"><i data-lucide="menu"></i></button>
-      <div class="brand-mark"><span class="brand-logo" aria-hidden="true">€</span><div><h1 class="brand">Moja Peňaženka</h1><span class="brand-caption">Tvoje financie pod kontrolou</span></div></div>
+      <div class="brand-mark"><img class="brand-art" src="img/logo.png" alt=""><div><h1 class="brand">Moja Peňaženka</h1><span class="brand-caption">Tvoje financie pod kontrolou</span></div></div>
       <button type="button" class="bell" data-act="bell" aria-label="Upozornenia"><i data-lucide="bell"></i><span class="dot" aria-hidden="true"></span></button>
     </div>
     <div class="monthbar">
@@ -530,28 +550,28 @@ body{background:var(--bg);padding-bottom:calc(92px + env(safe-area-inset-bottom,
 </header>
 <div class="drawer-scrim" id="drawerScrim" data-act="menu-close"></div>
 <aside class="drawer" id="appDrawer" aria-label="Hlavné menu">
-  <div class="drawer-brand"><span class="brand-logo sm" aria-hidden="true">€</span><div><strong>MOJA PEŇAŽENKA</strong><small>Osobné financie</small></div><button class="x" style="margin-left:auto" data-act="menu-close" aria-label="Zavrieť menu"><i data-lucide="x"></i></button></div>
+  <div class="drawer-brand"><img class="brand-art" src="img/logo.png" alt=""><div><strong>MOJA PEŇAŽENKA</strong><small>Osobné financie</small></div><button class="x" style="margin-left:auto" data-act="menu-close" aria-label="Zavrieť menu"><i data-lucide="x"></i></button></div>
   <div class="drawer-label">Hlavné</div>
   <nav class="drawer-nav">
-    <button class="drawer-item" data-act="view" data-v="overview" aria-current="page"><span class="drawer-icon"><i data-lucide="layout-dashboard"></i></span>Prehľad</button>
-    <button class="drawer-item" data-act="view" data-v="transactions"><span class="drawer-icon"><i data-lucide="receipt-text"></i></span>Transakcie</button>
-    <button class="drawer-item" data-act="view" data-v="stats"><span class="drawer-icon"><i data-lucide="chart-no-axes-combined"></i></span>Štatistiky</button>
-    <button class="drawer-item" data-act="view" data-v="calendar"><span class="drawer-icon"><i data-lucide="calendar"></i></span>Kalendár</button>
+    <button class="drawer-item" data-act="view" data-v="overview" aria-current="page"><span class="drawer-icon art"><img src="img/d_home.png" alt=""></span>Prehľad</button>
+    <button class="drawer-item" data-act="view" data-v="transactions"><span class="drawer-icon art"><img src="img/d_receipt.png" alt=""></span>Transakcie</button>
+    <button class="drawer-item" data-act="view" data-v="stats"><span class="drawer-icon art"><img src="img/d_chart.png" alt=""></span>Štatistiky</button>
+    <button class="drawer-item" data-act="view" data-v="calendar"><span class="drawer-icon art"><img src="img/d_calendar.png" alt=""></span>Kalendár</button>
   </nav>
   <div class="drawer-label">Plánovanie</div>
   <nav class="drawer-nav">
-    <button class="drawer-item" data-act="view" data-v="budgets"><span class="drawer-icon"><i data-lucide="wallet"></i></span>Rozpočty</button>
-    <button class="drawer-item" data-act="view" data-v="goals"><span class="drawer-icon"><i data-lucide="target"></i></span>Ciele sporenia</button>
-    <button class="drawer-item" data-act="view" data-v="reports"><span class="drawer-icon"><i data-lucide="chart-column"></i></span>Finančné reporty</button>
+    <button class="drawer-item" data-act="view" data-v="budgets"><span class="drawer-icon art"><img src="img/d_wallet.png" alt=""></span>Rozpočty</button>
+    <button class="drawer-item" data-act="view" data-v="goals"><span class="drawer-icon art"><img src="img/d_target.png" alt=""></span>Ciele sporenia</button>
+    <button class="drawer-item" data-act="view" data-v="reports"><span class="drawer-icon art"><img src="img/d_pie.png" alt=""></span>Finančné reporty</button>
   </nav>
   <div class="drawer-label">Prispôsobenie</div>
   <nav class="drawer-nav">
-    <button class="drawer-item" data-act="view" data-v="appearance"><span class="drawer-icon"><i data-lucide="palette"></i></span>Vzhľad a skiny</button>
-    <button class="drawer-item" data-act="view" data-v="backup"><span class="drawer-icon"><i data-lucide="cloud-upload"></i></span>Záloha a obnova</button>
-    <button class="drawer-item" data-act="view" data-v="settings"><span class="drawer-icon"><i data-lucide="settings"></i></span>Nastavenia</button>
+    <button class="drawer-item" data-act="view" data-v="appearance"><span class="drawer-icon art"><img src="img/d_palette.png" alt=""></span>Vzhľad a skiny</button>
+    <button class="drawer-item" data-act="view" data-v="backup"><span class="drawer-icon art"><img src="img/d_cloud.png" alt=""></span>Záloha a obnova</button>
+    <button class="drawer-item" data-act="view" data-v="settings"><span class="drawer-icon art"><img src="img/d_gear.png" alt=""></span>Nastavenia</button>
   </nav>
   <div class="drawer-spacer"></div>
-  <div class="drawer-secure"><span class="drawer-icon"><i data-lucide="shield-check"></i></span><div><strong>Tvoje financie sú chránené</strong><small>Šifrovanie • PIN kód • Lokálne uloženie</small></div></div>
+  <div class="drawer-secure"><span class="drawer-icon art"><img src="img/d_shield.png" alt=""></span><div><strong>Tvoje financie sú chránené</strong><small>Šifrovanie • PIN kód • Lokálne uloženie</small></div></div>
 </aside>
 
 <main class="wrap" id="main"><p class="note">Načítavam údaje…</p></main>
@@ -886,23 +906,25 @@ function emptyHtml(){
     '<div class="btns"><button type="button" class="btn" data-act="add">Pridať záznam</button>'+
     '<button type="button" class="btn ghost" data-act="demo">Vyskúšať s ukážkou</button></div></div>';
 }
+var ART={'Potraviny':'r_basket.png','Výplata':'r_money.png','Doprava':'r_car.png','Domácnosť':'r_house.png','Bývanie':'r_house.png'};
 function recentRow(t){var c=catById(t.cat),inc=t.type==='income';
-  return '<button type="button" class="r" data-act="edit" data-id="'+esc(t.id)+'"><span class="ci" style="background:'+okColor(c.color)+'">'+ico(c.icon)+'</span>'+
+  var iconHtml=ART[c.name]?'<span class="ci art"><img src="img/'+ART[c.name]+'" alt=""></span>':'<span class="ci" style="background:'+okColor(c.color)+'">'+ico(c.icon)+'</span>';
+  return '<button type="button" class="r" data-act="edit" data-id="'+esc(t.id)+'">'+iconHtml+
     '<span class="rt"><b>'+esc(c.name)+'</b><small>'+esc(dayLabel(t.date))+'</small></span>'+
     '<span class="amt '+(inc?'income':'expense')+'">'+(inc?'+':'−')+esc(money(+t.amount||0))+'</span></button>';}
-function tile(cls,icon,title,sub,v){return '<button type="button" class="tile '+cls+'" data-act="view" data-v="'+v+'"><span class="ic"><i data-lucide="'+icon+'"></i></span><b>'+title+'</b><small>'+sub+'</small></button>'}
+function tile(cls,icon,title,sub,v){return '<button type="button" class="tile '+cls+'" data-act="view" data-v="'+v+'"><span class="ic art"><img src="img/'+icon+'.png" alt=""></span><b>'+title+'</b><small>'+sub+'</small></button>'}
 function overviewHtml(mt,inc,exp){
   var last=mt.slice().sort(function(a,b){return a.date<b.date?1:a.date>b.date?-1:(a.id<b.id?1:-1)}).slice(0,4);
   var rows=last.length?last.map(recentRow).join(''):'<p class="none" style="padding:14px 10px;text-align:left">V tomto mesiaci zatiaľ nie sú žiadne záznamy. Pridaj ich tlačidlom +.</p>';
   return '<section class="hero" aria-label="Celkový zostatok"><div class="hd"><span>Celkový zostatok</span><button type="button" data-act="eye" aria-label="Skryť alebo zobraziť sumy"><i data-lucide="eye"></i></button></div>'+
-    '<strong id="bal">'+esc(money(inc-exp))+'</strong><span class="deco" aria-hidden="true"><i data-lucide="wallet"></i></span></section>'+
-    '<div class="stats2"><div class="sc2 inc"><span class="ic"><i data-lucide="trending-up"></i></span><div><span>Príjmy</span><b id="inc">'+esc(money(inc))+'</b></div></div>'+
-    '<div class="sc2 exp"><span class="ic"><i data-lucide="trending-down"></i></span><div><span>Výdavky</span><b id="exp">'+esc(money(exp))+'</b></div></div></div>'+
+    '<strong id="bal">'+esc(money(inc-exp))+'</strong><img class="hero-coins" src="img/coins_left.png" alt=""><img class="hero-wallet" src="img/wallet_right.png" alt=""></section>'+
+    '<div class="stats2"><div class="sc2 inc"><span class="ic art"><img src="img/chart_up.png" alt=""></span><div><span>Príjmy</span><b id="inc">'+esc(money(inc))+'</b></div></div>'+
+    '<div class="sc2 exp"><span class="ic art"><img src="img/coins_exp.png" alt=""></span><div><span>Výdavky</span><b id="exp">'+esc(money(exp))+'</b></div></div></div>'+
     '<div class="tiles">'+
-      tile('t-sav','piggy-bank','Úspory','Ciele sporenia','goals')+
-      tile('t-stat','chart-pie','Štatistiky','Prehľady a grafy','stats')+
-      tile('t-bud','target','Rozpočty','Plány a limity','budgets')+
-      tile('t-goal','mountain','Ciele','Sporenie na sny','goals')+
+      tile('t-sav','t_piggy','Úspory','Ciele sporenia','goals')+
+      tile('t-stat','t_pie','Štatistiky','Prehľady a grafy','stats')+
+      tile('t-bud','t_target','Rozpočty','Plány a limity','budgets')+
+      tile('t-goal','t_mountain','Ciele','Sporenie na sny','goals')+
     '</div>'+
     '<div class="sec-head"><h3>Posledné transakcie</h3><button type="button" class="link" data-act="view" data-v="transactions">Zobraziť všetky ›</button></div>'+
     '<div class="recent">'+rows+'</div>';

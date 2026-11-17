@@ -17,5 +17,7 @@ Poznámky:
 Aktualizácia:
 1. Pred zmenou si uložte zálohu peňaženky (Záloha a obnova).
 2. V koreni repozitára nahraďte index.html, sw.js, manifest.webmanifest a README.txt.
-3. Priečinok icons/ ponechajte (obsahuje ikony aplikácie).
+3. Priečinky icons/ a img/ nahrajte celé (img obsahuje ikony a ilustrácie z dizajnu).
 4. Po nasadení stránku znova otvorte.
+
+Ikony a ilustrácie: priečinok img/ obsahuje výrezy ikon z dizajnu (peňaženka, mince, prasiatko, koláč, terč, hora, menu ikony, transakcie).
