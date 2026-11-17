@@ -21,3 +21,10 @@ Aktualizácia:
 4. Po nasadení stránku znova otvorte.
 
 Ikony a ilustrácie: priečinok img/ obsahuje výrezy ikon z dizajnu (peňaženka, mince, prasiatko, koláč, terč, hora, menu ikony, transakcie).
+
+Doplnené funkcie:
+- Rozpočty: mesačný limit pre kategóriu, zobrazuje spotrebu a upozorní pri prekročení.
+- Ciele sporenia: vytvor cieľ, pridávaj sumy a sleduj priebeh.
+- Kalendár: mesačná mriežka; klik na deň ukáže jeho záznamy.
+- Finančné reporty: porovnanie príjmov a výdavkov za 6 mesiacov, najväčšie výdavky a export CSV (CSV nie je šifrované).
+- Vzhľad a skiny: záložka Ikony (farebné 3D alebo čiarové) a záložka Písmo (typ a veľkosť písma).
