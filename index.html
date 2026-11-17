@@ -110,15 +110,28 @@ body{background:var(--bg);color:var(--fg)}
 @media(max-width:520px){.bal{padding:14px}.split div{padding:11px 12px}.drawer{width:min(88vw,360px)}}
 
 </style><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#075c42"><link rel="icon" href="./icons/icon-192.png" type="image/png"></head><body>
-<div id="securityGate"><div class="security-card">
-  <div style="font-size:32px;margin-bottom:12px">🔐</div>
-  <h2 id="securityTitle">Zabezpečená Peňaženka</h2>
-  <p id="securityDescription">Nastav si PIN s aspoň 6 číslicami. Bez neho nebude možné dešifrovať uložené záznamy.</p>
-  <input id="securityPin" type="password" inputmode="numeric" maxlength="32" placeholder="PIN (aspoň 6 číslic)">
-  <input id="securityPinConfirm" type="password" inputmode="numeric" maxlength="32" placeholder="Zopakuj PIN">
-  <button id="securitySubmit" type="button" class="btn">Nastaviť PIN</button>
-  <div id="securityError" class="security-error" role="alert"></div>
-  <p style="font-size:12px;margin-top:14px">PIN sa neukladá. Záznamy zostávajú šifrované v tomto prehliadači.</p>
+<div id="securityGate"><div class="pin-card">
+  <div class="brand-logo lg" aria-hidden="true">€</div>
+  <h1 class="pin-brand">MOJA PEŇAŽENKA</h1>
+  <p class="pin-sub">Tvoje financie pod kontrolou</p>
+  <div class="pin-panel">
+    <h2 id="securityTitle" class="pin-title">Zadaj svoj PIN</h2>
+    <p id="securityDescription" class="pin-desc">Zadaj PIN na dešifrovanie finančných záznamov.</p>
+    <div class="pin-dots" id="pinDots" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    <input id="securityPin" class="sr-only" type="password" inputmode="numeric" maxlength="32" autocomplete="off" aria-label="PIN">
+    <input id="securityPinConfirm" class="sr-only" type="password" inputmode="numeric" maxlength="32" autocomplete="off" aria-label="Zopakuj PIN">
+    <div class="pin-pad">
+      <button type="button" data-pad="1">1</button><button type="button" data-pad="2">2</button><button type="button" data-pad="3">3</button>
+      <button type="button" data-pad="4">4</button><button type="button" data-pad="5">5</button><button type="button" data-pad="6">6</button>
+      <button type="button" data-pad="7">7</button><button type="button" data-pad="8">8</button><button type="button" data-pad="9">9</button>
+      <button type="button" data-pad="ok" class="pin-ok" aria-label="Potvrdiť PIN"><i data-lucide="check"></i></button>
+      <button type="button" data-pad="0">0</button>
+      <button type="button" data-pad="back" class="pin-del" aria-label="Vymazať číslicu"><i data-lucide="delete"></i></button>
+    </div>
+    <button id="securitySubmit" type="button" hidden>Odomknúť</button>
+    <div id="securityError" class="security-error" role="alert"></div>
+  </div>
+  <div class="pin-foot"><i data-lucide="shield-check"></i>Záznamy zostávajú šifrované v tomto prehliadači</div>
 </div></div>
 
 <title>Peňaženka</title>
@@ -362,42 +375,193 @@ main{padding-top:20px}
 .fab{width:58px;height:58px;border-radius:19px}
 @media(max-width:520px){.bal strong{font-size:33px}.split{gap:8px}.split div{padding:9px 11px}}
 @media(prefers-reduced-motion:reduce){.drawer,.drawer-scrim,.drawer-item,.menu-trigger{transition:none!important}}
+
+/* ===== Redizajn podľa zadania: Emerald Luxury ===== */
+:root{--gold:#d4af37;--gold-soft:#f6e3a1}
+body{background:var(--bg);padding-bottom:calc(92px + env(safe-area-inset-bottom,0px))}
+.sr-only{position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.brand-logo{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;flex:none;background:linear-gradient(145deg,#24996d,#0b4d37);border:1.5px solid var(--gold);box-shadow:0 6px 16px rgba(0,0,0,.28),inset 0 1px 0 rgba(255,255,255,.3);font:800 24px var(--font-display);color:var(--gold-soft)}
+.brand-logo.lg{width:84px;height:84px;border-radius:24px;border-width:2px;font-size:44px}
+.brand-logo.sm{width:38px;height:38px;border-radius:12px;font-size:20px}
+
+/* PIN brána */
+#securityGate{background:radial-gradient(120% 70% at 50% 0%,#0f6a4a 0%,#063826 60%,#042a1d 100%);padding:20px 16px;overflow:auto;align-content:center}
+.pin-card{width:min(100%,400px);display:flex;flex-direction:column;align-items:center;text-align:center;color:#fff8e6;margin:auto}
+.pin-brand{font:800 22px var(--font-display);letter-spacing:.06em;margin:14px 0 2px;color:#fff8e6}
+.pin-sub{margin:0;font-size:13px;color:#c9e6d6}
+.pin-panel{width:100%;margin-top:18px;background:linear-gradient(180deg,#fffdf6,#f5edd3);border-radius:28px;border:1.5px solid var(--gold);padding:22px 20px 20px;color:#14291f;box-shadow:0 14px 40px rgba(0,0,0,.35)}
+.pin-title{font:800 20px var(--font-display);margin:0}
+.pin-desc{margin:6px 0 0;font-size:13px;color:#5b6d63;min-height:18px}
+.pin-dots{display:flex;justify-content:center;gap:16px;margin:18px 0 20px}
+.pin-dots i{width:14px;height:14px;border-radius:50%;border:2px solid #0f6a3d;background:transparent;transition:background .15s}
+.pin-dots i.on{background:#0f6a3d}
+.pin-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.pin-pad button{height:58px;border-radius:18px;border:1px solid #e6dcb8;background:linear-gradient(180deg,#fff,#efe7cc);font:700 22px var(--font-display);color:#14291f;box-shadow:0 4px 0 #d9ceaa,0 6px 10px rgba(0,0,0,.08);cursor:pointer;display:grid;place-items:center;padding:0}
+.pin-pad button:active{transform:translateY(2px);box-shadow:0 2px 0 #d9ceaa}
+.pin-pad button.pin-ok{background:linear-gradient(180deg,#24996d,#0b5a3f);color:#fff;border-color:#0b4d37;box-shadow:0 4px 0 #063826}
+.pin-pad button.pin-del{background:transparent;border-color:transparent;box-shadow:none;color:#14291f}
+.pin-pad button svg{width:24px;height:24px}
+.pin-foot{margin-top:18px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:12px;color:#fff1c2}
+.pin-foot svg{width:16px;height:16px;color:var(--gold-soft)}
+.security-error{color:#b3261e;min-height:18px}
+
+/* Hlavička */
+.top{background:linear-gradient(160deg,var(--head) 0%,color-mix(in srgb,var(--head) 70%,#000) 100%);color:var(--head-ink);border-bottom:3px solid var(--gold);position:sticky;top:0;z-index:20;padding-top:env(safe-area-inset-top,0px)}
+.top .wrap{padding:14px 16px 14px}
+.top-row{display:flex;align-items:center;gap:12px}
+.top-row .brand-mark{flex:1;min-width:0;display:flex;align-items:center;gap:12px}
+.top h1.brand{font:800 18px var(--font-display);letter-spacing:.02em;margin:0;color:var(--head-ink)}
+.top .brand-caption{display:block;color:var(--head-dim);font-size:12px}
+.top .menu-trigger{width:42px;height:42px;border-radius:14px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.22);color:var(--head-ink);cursor:pointer;display:grid;place-items:center}
+.bell{position:relative;width:42px;height:42px;border-radius:14px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.1);color:var(--head-ink);display:grid;place-items:center;cursor:pointer;padding:0}
+.bell svg{width:20px;height:20px}
+.bell .dot{position:absolute;top:9px;right:10px;width:9px;height:9px;border-radius:50%;background:#ff5a4e;border:2px solid var(--head)}
+.top .monthbar{margin:12px auto 0;display:flex;justify-content:center;align-items:center;gap:6px;background:rgba(255,255,255,.12);border-radius:999px;padding:4px;width:max-content;max-width:100%}
+.top .monthbar h2{font:700 14px var(--font-display);color:var(--head-ink);margin:0;padding:0 10px;min-width:150px;text-align:center}
+.top .monthbar .nav{background:transparent;border:0;color:var(--head-ink);width:32px;height:32px;display:grid;place-items:center;cursor:pointer;border-radius:50%}
+.top .monthbar .nav svg{width:18px;height:18px}
+
+/* Dashboard */
+.hero{position:relative;overflow:hidden;border-radius:22px;padding:18px 20px 20px;background:linear-gradient(135deg,var(--head),var(--brand));border:2px solid var(--gold);color:var(--head-ink);box-shadow:0 12px 26px rgba(0,0,0,.2);min-height:118px;margin-top:4px}
+.hero .hd{display:flex;justify-content:space-between;align-items:center;font-size:14px;color:var(--head-dim)}
+.hero .hd button{background:transparent;border:0;color:var(--head-ink);cursor:pointer;width:34px;height:34px;display:grid;place-items:center;margin-right:-8px}
+.hero .hd svg{width:20px;height:20px}
+.hero strong{display:block;margin-top:6px;font:800 34px var(--font-display);color:var(--head-ink);letter-spacing:-.01em;position:relative;z-index:1}
+.hero .deco{position:absolute;right:14px;bottom:8px;color:var(--gold-soft);opacity:.22;pointer-events:none}
+.hero .deco svg{width:92px;height:92px}
+.stats2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+.sc2{display:flex;align-items:center;gap:10px;padding:14px;border-radius:18px;color:#fff;box-shadow:0 8px 18px rgba(0,0,0,.12);min-width:0}
+.sc2.inc{background:linear-gradient(135deg,#3a8fe0,#1f63b8)}
+.sc2.exp{background:linear-gradient(135deg,#f0655a,#c63d35)}
+.sc2 .ic{width:38px;height:38px;border-radius:12px;background:rgba(255,255,255,.22);display:grid;place-items:center;flex:none}
+.sc2 .ic svg{width:20px;height:20px}
+.sc2 span{font-size:12px;opacity:.92;display:block}
+.sc2 b{font:800 17px var(--font-display);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tiles{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:12px}
+.tile{border:0;border-radius:18px;padding:12px 6px;color:#fff;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;box-shadow:0 8px 16px rgba(0,0,0,.14);min-width:0;font:inherit}
+.tile .ic{width:40px;height:40px;border-radius:14px;background:rgba(255,255,255,.22);display:grid;place-items:center}
+.tile svg{width:22px;height:22px}
+.tile b{font:800 13px var(--font-display);line-height:1.1}
+.tile small{font-size:10.5px;opacity:.92;line-height:1.2}
+.t-sav{background:linear-gradient(145deg,#c35fd6,#8e3fb8)}
+.t-stat{background:linear-gradient(145deg,#f6a23a,#e0791b)}
+.t-bud{background:linear-gradient(145deg,#2fb59c,#128a77)}
+.t-goal{background:linear-gradient(145deg,#4f8ef0,#2a5fc8)}
+.sec-head{display:flex;justify-content:space-between;align-items:center;margin:18px 2px 8px;gap:8px}
+.sec-head h3{font:800 16px var(--font-display);margin:0;color:var(--fg)}
+.sec-head .link{font-size:13px}
+.recent{background:var(--surface);border-radius:20px;border:1px solid var(--line);box-shadow:var(--shadow);padding:4px 6px}
+.recent .r{display:flex;align-items:center;gap:12px;width:100%;padding:10px 8px;border:0;background:transparent;color:var(--fg);text-align:left;cursor:pointer;border-bottom:1px solid var(--line);font:inherit}
+.recent .r:last-child{border-bottom:0}
+.recent .r .ci{width:40px;height:40px;border-radius:14px;flex:none}
+.recent .r .rt{flex:1;min-width:0;display:grid;gap:2px}
+.recent .r .rt b{font-size:14px}
+.recent .r .rt small{color:var(--muted);font-size:12px}
+.recent .r .amt{font-weight:800;white-space:nowrap}
+.recent .r .amt.income{color:var(--inc)}
+.recent .r .amt.expense{color:var(--exp)}
+.hide-amounts #bal,.hide-amounts .sc2 b,.hide-amounts .recent .amt{filter:blur(7px);user-select:none}
+
+/* Spodná navigácia a tlačidlo + */
+.bnav{position:fixed;left:0;right:0;bottom:0;z-index:30;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;padding:8px 8px calc(8px + env(safe-area-inset-bottom,0px));background:var(--surface);border-top:1px solid var(--line);box-shadow:0 -6px 20px rgba(0,0,0,.08)}
+.bnav button{border:0;background:transparent;color:var(--muted);display:grid;justify-items:center;gap:3px;font:600 11px var(--font-display);padding:2px 0;cursor:pointer;min-width:0}
+.bnav button svg{width:20px;height:20px}
+.bnav .bi{width:52px;height:30px;border-radius:999px;display:grid;place-items:center}
+.bnav button[aria-current="page"]{color:var(--brand)}
+.bnav button[aria-current="page"] .bi{background:var(--soft)}
+.fab{right:18px;bottom:calc(84px + env(safe-area-inset-bottom,0px));width:58px;height:58px;border-radius:50%;background:linear-gradient(145deg,#f3dc7e,#c9a02e);color:#1d2a20;border:2px solid #fff3c4;box-shadow:0 10px 20px rgba(0,0,0,.28)}
+.fab svg{width:26px;height:26px;stroke-width:2.5}
+
+/* Bočné menu */
+.drawer-brand{padding:4px 2px 18px}
+.drawer-brand .brand-logo{width:44px;height:44px}
+.drawer-label{margin-top:10px}
+.drawer-secure{display:flex;align-items:center;gap:12px;padding:14px;border-radius:18px;background:var(--soft);border:1px solid var(--line);margin-top:6px}
+.drawer-secure strong{display:block;font-size:13px}
+.drawer-secure small{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+.drawer-secure .drawer-icon{background:var(--surface)}
+
+/* Ďalšie obrazovky */
+.set-list{display:grid}
+.set-row{display:flex;align-items:center;gap:12px;width:100%;padding:12px 4px;border:0;background:transparent;color:var(--fg);font-weight:700;cursor:pointer;text-align:left;border-bottom:1px solid var(--line);font:inherit;font-weight:700}
+.set-row:last-child{border-bottom:0}
+
+/* Vzhľad a skiny */
+.app-tabs{display:flex;gap:6px;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:5px;margin:0 0 6px}
+.app-tabs button{flex:1;border:0;background:transparent;border-radius:999px;padding:9px 6px;color:var(--muted);font:700 14px var(--font-display);cursor:pointer}
+.app-tabs button[aria-pressed="true"]{background:var(--brand);color:var(--brand-ink)}
+.theme-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 10px;margin:8px 0 20px}
+.theme-tile{border:0;background:transparent;cursor:pointer;display:grid;justify-items:center;gap:6px;color:var(--fg);font:700 12px var(--font-display);padding:0;min-width:0}
+.theme-tile .tt{width:88px;height:72px;border-radius:18px;display:grid;place-items:center;background:var(--orb);border:2px solid transparent;box-shadow:0 6px 14px rgba(0,0,0,.18);position:relative;color:#ffe9a3;font:800 28px var(--font-display)}
+.theme-tile[aria-pressed="true"] .tt{border-color:var(--gold);box-shadow:0 0 0 3px color-mix(in srgb,var(--gold) 35%,transparent),0 6px 14px rgba(0,0,0,.18)}
+.theme-tile .tt .ok{position:absolute;right:-6px;top:-6px;width:22px;height:22px;border-radius:50%;background:#1faa6b;color:#fff;display:grid;place-items:center;font-size:12px;border:2px solid var(--surface)}
+.theme-tile .cur{font-size:10.5px;color:var(--muted);font-weight:600;margin-top:-4px}
+.color-rows{display:grid;gap:10px}
+.crow{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--line);border-radius:16px;background:var(--surface);cursor:pointer;position:relative;font-weight:700}
+.crow .cl{flex:1}
+.crow .cs{width:58px;height:26px;border-radius:9px;border:1px solid rgba(0,0,0,.12);background:var(--c)}
+.crow .chev{color:var(--muted);width:18px;height:18px}
+.crow input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;margin:0;padding:0;border:0}
+.save-theme{width:100%;margin-top:20px;padding:15px;border-radius:16px;font-size:15px}
+
+/* Tmavý vzhľad nových motívov */
+:root[data-skin="burgundy"]{--bg:#f8f1f2;--surface:#fff;--fg:#2b1218;--muted:#7a5a60;--line:#ecdde0;--brand:#8c1d35;--brand-ink:#fff;--head:#5e1224;--head-ink:#fff;--head-dim:#f0c4cc;--soft:#f5e3e7;--inc:#1f7a57;--exp:#c2384a;--shadow:0 8px 24px rgba(90,20,35,.08);color-scheme:light}
+:root[data-skin="gold"]{--bg:#fbf7ec;--surface:#fff;--fg:#2a2210;--muted:#7d7150;--line:#eee5c8;--brand:#a6811c;--brand-ink:#fff;--head:#6f5410;--head-ink:#fff;--head-dim:#f3e2a6;--soft:#f7efd5;--inc:#2c7a4b;--exp:#c2513a;--shadow:0 8px 24px rgba(110,85,20,.10);color-scheme:light}
+:root[data-skin="brown"]{--bg:#f7f2ee;--surface:#fff;--fg:#2a1d15;--muted:#7c6a5e;--line:#ebe0d6;--brand:#7a4a2a;--brand-ink:#fff;--head:#4f2f19;--head-ink:#fff;--head-dim:#e5c9b0;--soft:#f3e7dc;--inc:#2b7a58;--exp:#bf4b3c;--shadow:0 8px 24px rgba(70,40,20,.09);color-scheme:light}
+:root[data-theme="dark"][data-skin="burgundy"]{--bg:#140c0f;--surface:#23161b;--fg:#f8eef1;--muted:#b7a0a7;--line:#3b2730;--brand:#e58aa0;--brand-ink:#2a0d15;--head:#2a0c15;--head-ink:#fff;--head-dim:#e3b8c2;--soft:#34212a;--inc:#6fd3a4;--exp:#ff8f86;--shadow:0 10px 28px rgba(0,0,0,.3);color-scheme:dark}
+:root[data-theme="dark"][data-skin="gold"]{--bg:#120f08;--surface:#211c12;--fg:#faf4e2;--muted:#b5a983;--line:#3d3520;--brand:#e5c15a;--brand-ink:#2a2008;--head:#1f1706;--head-ink:#fff;--head-dim:#dcc98a;--soft:#33291a;--inc:#7bd69e;--exp:#ff9283;--shadow:0 10px 28px rgba(0,0,0,.3);color-scheme:dark}
+:root[data-theme="dark"][data-skin="brown"]{--bg:#130e0a;--surface:#221a14;--fg:#f6eee9;--muted:#b3a196;--line:#3a2e27;--brand:#d9a57c;--brand-ink:#2a1608;--head:#1d120b;--head-ink:#fff;--head-dim:#d9bfae;--soft:#33261f;--inc:#6fd3a4;--exp:#ff8f86;--shadow:0 10px 28px rgba(0,0,0,.3);color-scheme:dark}
+@media(max-width:520px){.tiles{gap:6px}.tile b{font-size:12px}.tile small{font-size:10px}.hero strong{font-size:30px}.theme-grid{gap:12px 6px}}
 </style>
 
 <header class="top">
   <div class="wrap">
-    <div class="top-actions"><button type="button" class="menu-trigger" data-act="menu-open" aria-label="Otvoriť menu"><i data-lucide="menu"></i></button><div class="brand-mark"><span class="brand-symbol">€</span><div><h1 class="brand">MOJA PEŇAŽENKA</h1><span class="brand-caption">Tvoje financie pod kontrolou</span></div></div></div>
+    <div class="top-row">
+      <button type="button" class="menu-trigger" data-act="menu-open" aria-label="Otvoriť menu"><i data-lucide="menu"></i></button>
+      <div class="brand-mark"><span class="brand-logo" aria-hidden="true">€</span><div><h1 class="brand">Moja Peňaženka</h1><span class="brand-caption">Tvoje financie pod kontrolou</span></div></div>
+      <button type="button" class="bell" data-act="bell" aria-label="Upozornenia"><i data-lucide="bell"></i><span class="dot" aria-hidden="true"></span></button>
+    </div>
     <div class="monthbar">
       <button class="nav" id="prev" data-act="prev" aria-label="Predchádzajúci mesiac"><i data-lucide="chevron-left"></i></button>
       <h2 id="monthTitle"></h2>
       <button class="nav" id="next" data-act="next" aria-label="Nasledujúci mesiac"><i data-lucide="chevron-right"></i></button>
     </div>
-    <div class="bal"><span>Bilancia mesiaca</span><strong id="bal">0,00 €</strong></div>
-    <div class="split">
-      <div><span>Príjmy</span><b id="inc">0,00 €</b></div>
-      <div><span>Výdavky</span><b id="exp">0,00 €</b></div>
-    </div>
   </div>
 </header>
 <div class="drawer-scrim" id="drawerScrim" data-act="menu-close"></div>
 <aside class="drawer" id="appDrawer" aria-label="Hlavné menu">
-  <div class="drawer-brand"><span class="brand-symbol">€</span><div><strong>MOJA PEŇAŽENKA</strong><small>Tvoje financie pod kontrolou</small></div><button class="x" style="margin-left:auto" data-act="menu-close" aria-label="Zavrieť menu"><i data-lucide="x"></i></button></div>
-  <div class="drawer-label">Moja peňaženka</div>
+  <div class="drawer-brand"><span class="brand-logo sm" aria-hidden="true">€</span><div><strong>MOJA PEŇAŽENKA</strong><small>Osobné financie</small></div><button class="x" style="margin-left:auto" data-act="menu-close" aria-label="Zavrieť menu"><i data-lucide="x"></i></button></div>
+  <div class="drawer-label">Hlavné</div>
   <nav class="drawer-nav">
     <button class="drawer-item" data-act="view" data-v="overview" aria-current="page"><span class="drawer-icon"><i data-lucide="layout-dashboard"></i></span>Prehľad</button>
     <button class="drawer-item" data-act="view" data-v="transactions"><span class="drawer-icon"><i data-lucide="receipt-text"></i></span>Transakcie</button>
     <button class="drawer-item" data-act="view" data-v="stats"><span class="drawer-icon"><i data-lucide="chart-no-axes-combined"></i></span>Štatistiky</button>
-    <button class="drawer-item" data-act="view" data-v="wallets"><span class="drawer-icon"><i data-lucide="wallet"></i></span>Peňaženky</button>
+    <button class="drawer-item" data-act="view" data-v="calendar"><span class="drawer-icon"><i data-lucide="calendar"></i></span>Kalendár</button>
+  </nav>
+  <div class="drawer-label">Plánovanie</div>
+  <nav class="drawer-nav">
+    <button class="drawer-item" data-act="view" data-v="budgets"><span class="drawer-icon"><i data-lucide="wallet"></i></span>Rozpočty</button>
+    <button class="drawer-item" data-act="view" data-v="goals"><span class="drawer-icon"><i data-lucide="target"></i></span>Ciele sporenia</button>
+    <button class="drawer-item" data-act="view" data-v="reports"><span class="drawer-icon"><i data-lucide="chart-column"></i></span>Finančné reporty</button>
+  </nav>
+  <div class="drawer-label">Prispôsobenie</div>
+  <nav class="drawer-nav">
     <button class="drawer-item" data-act="view" data-v="appearance"><span class="drawer-icon"><i data-lucide="palette"></i></span>Vzhľad a skiny</button>
-    <button class="drawer-item" data-act="view" data-v="backup"><span class="drawer-icon"><i data-lucide="shield-check"></i></span>Záloha a prenos</button>
+    <button class="drawer-item" data-act="view" data-v="backup"><span class="drawer-icon"><i data-lucide="cloud-upload"></i></span>Záloha a obnova</button>
+    <button class="drawer-item" data-act="view" data-v="settings"><span class="drawer-icon"><i data-lucide="settings"></i></span>Nastavenia</button>
   </nav>
   <div class="drawer-spacer"></div>
-  <button class="drawer-item" data-act="theme-toggle"><span class="drawer-icon"><i data-lucide="moon-star"></i></span>Svetlý / tmavý režim</button>
-  <button class="drawer-item" data-act="lock"><span class="drawer-icon"><i data-lucide="lock-keyhole"></i></span>Uzamknúť aplikáciu</button>
-  <div class="drawer-footer">Súkromná peňaženka · údaje zostávajú v tomto zariadení</div>
+  <div class="drawer-secure"><span class="drawer-icon"><i data-lucide="shield-check"></i></span><div><strong>Tvoje financie sú chránené</strong><small>Šifrovanie • PIN kód • Lokálne uloženie</small></div></div>
 </aside>
 
 <main class="wrap" id="main"><p class="note">Načítavam údaje…</p></main>
+<nav class="bnav" aria-label="Rýchla navigácia">
+  <button type="button" data-act="view" data-v="overview" aria-current="page"><span class="bi"><i data-lucide="home"></i></span>Prehľad</button>
+  <button type="button" data-act="view" data-v="transactions"><span class="bi"><i data-lucide="receipt-text"></i></span>Transakcie</button>
+  <button type="button" data-act="view" data-v="stats"><span class="bi"><i data-lucide="chart-no-axes-combined"></i></span>Štatistiky</button>
+  <button type="button" data-act="view" data-v="budgets"><span class="bi"><i data-lucide="wallet"></i></span>Rozpočty</button>
+  <button type="button" data-act="view" data-v="goals"><span class="bi"><i data-lucide="target"></i></span>Ciele</button>
+</nav>
 <input id="backupFile" type="file" accept="application/json,.json" hidden>
 <div id="backupPasswordGate" hidden style="position:fixed;inset:0;z-index:1200;background:var(--scrim);display:grid;place-items:center;padding:24px">
   <div class="security-card" style="max-width:420px">
@@ -548,18 +712,42 @@ async function saveLocal(){
   var data=await crypto.subtle.encrypt({name:'AES-GCM',iv:iv},cryptoKey,new TextEncoder().encode(JSON.stringify(items)));
   localStorage.setItem(KEY,JSON.stringify({v:1,iv:toB64(iv),data:toB64(new Uint8Array(data))}));
 }
+var pinStep=1,appTab='theme';
+function setT(id,v){var e=document.getElementById(id);if(e)e.textContent=v}
+function pinActive(){return pinStep===1?document.getElementById('securityPin'):document.getElementById('securityPinConfirm')}
+function pinRefresh(){var n=pinActive().value.length;document.querySelectorAll('#pinDots i').forEach(function(d,i){d.classList.toggle('on',i<Math.min(n,4))})}
+function pinDigit(d){var a=pinActive();if(a.value.length<32)a.value+=d;pinRefresh()}
+function pinBack(){var a=pinActive();a.value=a.value.slice(0,-1);pinRefresh()}
+function padOk(){
+  var err=document.getElementById('securityError');
+  if(!localStorage.getItem(SECURITY_META)&&pinStep===1){
+    var p=document.getElementById('securityPin').value;
+    if(!/^\d{4,32}$/.test(p)){err.textContent='PIN musí mať 4 až 32 číslic.';return}
+    err.textContent='';pinStep=2;
+    document.getElementById('securityTitle').textContent='Zopakuj PIN';
+    document.getElementById('securityDescription').textContent='Zadaj PIN ešte raz na potvrdenie.';
+    pinRefresh();document.getElementById('securityPinConfirm').focus();return;
+  }
+  var b=document.getElementById('securitySubmit');if(b&&b.onclick)b.onclick();
+}
+document.addEventListener('click',function(e){
+  var k=e.target.closest&&e.target.closest('[data-pad]');if(!k)return;
+  var v=k.dataset.pad;if(v==='ok')padOk();else if(v==='back')pinBack();else pinDigit(v);
+});
+document.addEventListener('input',function(e){if(e.target.id==='securityPin'||e.target.id==='securityPinConfirm')pinRefresh()});
+document.addEventListener('input',function(e){if(e.target.type==='color'&&e.target.closest('.crow'))e.target.closest('.crow').style.setProperty('--c',e.target.value)});
 async function unlockOrCreate(){
   var gate=$('#securityGate'),pin=$('#securityPin'),confirm=$('#securityPinConfirm'),btn=$('#securitySubmit'),err=$('#securityError');
-  var metaRaw=localStorage.getItem(SECURITY_META),setup=!metaRaw;
-  $('#securityTitle').textContent=setup?'Zabezpeč svoju Peňaženku':'Odomkni Peňaženku';
-  $('#securityDescription').textContent=setup?'Vytvor si PIN s aspoň 6 číslicami. Bez PIN-u nebude možné obnoviť údaje.':'Zadaj PIN na dešifrovanie finančných záznamov.';
-  confirm.hidden=!setup;btn.textContent=setup?'Nastaviť PIN':'Odomknúť';gate.hidden=false;
+  var metaRaw=localStorage.getItem(SECURITY_META),setup=!metaRaw;pinStep=1;
+  $('#securityTitle').textContent=setup?'Vytvor svoj PIN':'Zadaj svoj PIN';
+  $('#securityDescription').textContent=setup?'Zvol PIN s aspoň 4 číslicami. Bez PIN-u nebude možné obnoviť údaje.':'Zadaj PIN na dešifrovanie finančných záznamov.';
+  confirm.hidden=false;btn.textContent=setup?'Nastaviť PIN':'Odomknúť';gate.hidden=false;
   return new Promise(resolve=>{
     async function go(){
       metaRaw=localStorage.getItem(SECURITY_META);
       setup=!metaRaw;
       err.textContent='';var p=pin.value;
-      if(!/^\d{6,32}$/.test(p)){err.textContent='PIN musí mať 6 až 32 číslic.';return}
+      if(!/^\d{4,32}$/.test(p)){err.textContent='PIN musí mať 4 až 32 číslic.';return}
       if(setup&&p!==confirm.value){err.textContent='PIN-y sa nezhodujú.';return}
       btn.disabled=true;btn.textContent='Spracúvam…';
       try{
@@ -581,18 +769,18 @@ async function unlockOrCreate(){
         btn.disabled=false;btn.textContent=setup?'Nastaviť PIN':'Odomknúť';
       }
     }
-    btn.onclick=go;pin.onkeydown=e=>{if(e.key==='Enter')go()};confirm.onkeydown=e=>{if(e.key==='Enter')go()};
+    btn.onclick=go;pin.onkeydown=e=>{if(e.key==='Enter')padOk()};confirm.onkeydown=e=>{if(e.key==='Enter')padOk()};
     setTimeout(()=>pin.focus(),100);
   });
 }
 function lockWallet(){
   if(!cryptoKey)return;cryptoKey=null;items=[];clearTimeout(lockTimer);
-  $('#securityTitle').textContent='Odomkni Peňaženku';
+  $('#securityTitle').textContent='Zadaj svoj PIN';
   $('#securityDescription').textContent='Zadaj PIN na dešifrovanie finančných záznamov.';
-  $('#securityPinConfirm').hidden=true;$('#securityPin').value='';$('#securityPinConfirm').value='';
+  $('#securityPinConfirm').hidden=false;$('#securityPin').value='';$('#securityPinConfirm').value='';pinStep=1;pinRefresh();
   $('#securitySubmit').textContent='Odomknúť';$('#securitySubmit').disabled=false;$('#securityError').textContent='';
   $('#securityGate').hidden=false;$('#main').innerHTML='<p class="note">Peňaženka je uzamknutá.</p>';
-  $('#bal').textContent=money(0);$('#inc').textContent=money(0);$('#exp').textContent=money(0);
+  
 }
 window.lockWallet=lockWallet;
 function startLockTimer(){clearTimeout(lockTimer);lockTimer=setTimeout(lockWallet,LOCK_AFTER_MS)}
@@ -698,13 +886,35 @@ function emptyHtml(){
     '<div class="btns"><button type="button" class="btn" data-act="add">Pridať záznam</button>'+
     '<button type="button" class="btn ghost" data-act="demo">Vyskúšať s ukážkou</button></div></div>';
 }
+function recentRow(t){var c=catById(t.cat),inc=t.type==='income';
+  return '<button type="button" class="r" data-act="edit" data-id="'+esc(t.id)+'"><span class="ci" style="background:'+okColor(c.color)+'">'+ico(c.icon)+'</span>'+
+    '<span class="rt"><b>'+esc(c.name)+'</b><small>'+esc(dayLabel(t.date))+'</small></span>'+
+    '<span class="amt '+(inc?'income':'expense')+'">'+(inc?'+':'−')+esc(money(+t.amount||0))+'</span></button>';}
+function tile(cls,icon,title,sub,v){return '<button type="button" class="tile '+cls+'" data-act="view" data-v="'+v+'"><span class="ic"><i data-lucide="'+icon+'"></i></span><b>'+title+'</b><small>'+sub+'</small></button>'}
+function overviewHtml(mt,inc,exp){
+  var last=mt.slice().sort(function(a,b){return a.date<b.date?1:a.date>b.date?-1:(a.id<b.id?1:-1)}).slice(0,4);
+  var rows=last.length?last.map(recentRow).join(''):'<p class="none" style="padding:14px 10px;text-align:left">V tomto mesiaci zatiaľ nie sú žiadne záznamy. Pridaj ich tlačidlom +.</p>';
+  return '<section class="hero" aria-label="Celkový zostatok"><div class="hd"><span>Celkový zostatok</span><button type="button" data-act="eye" aria-label="Skryť alebo zobraziť sumy"><i data-lucide="eye"></i></button></div>'+
+    '<strong id="bal">'+esc(money(inc-exp))+'</strong><span class="deco" aria-hidden="true"><i data-lucide="wallet"></i></span></section>'+
+    '<div class="stats2"><div class="sc2 inc"><span class="ic"><i data-lucide="trending-up"></i></span><div><span>Príjmy</span><b id="inc">'+esc(money(inc))+'</b></div></div>'+
+    '<div class="sc2 exp"><span class="ic"><i data-lucide="trending-down"></i></span><div><span>Výdavky</span><b id="exp">'+esc(money(exp))+'</b></div></div></div>'+
+    '<div class="tiles">'+
+      tile('t-sav','piggy-bank','Úspory','Ciele sporenia','goals')+
+      tile('t-stat','chart-pie','Štatistiky','Prehľady a grafy','stats')+
+      tile('t-bud','target','Rozpočty','Plány a limity','budgets')+
+      tile('t-goal','mountain','Ciele','Sporenie na sny','goals')+
+    '</div>'+
+    '<div class="sec-head"><h3>Posledné transakcie</h3><button type="button" class="link" data-act="view" data-v="transactions">Zobraziť všetky ›</button></div>'+
+    '<div class="recent">'+rows+'</div>';
+}
+function placeholderView(title,text){return '<div class="view-heading"><h2>'+title+'</h2></div><section class="card"><p class="none" style="text-align:left">'+text+' Zatiaľ môžeš pridávať a upravovať transakcie v sekcii Transakcie.</p></section>'}
+function settingsHtml(){return '<div class="view-heading"><h2>Nastavenia</h2></div><section class="card"><div class="set-list"><button type="button" class="set-row" data-act="theme-toggle"><span class="drawer-icon"><i data-lucide="moon-star"></i></span>Svetlý / tmavý režim</button><button type="button" class="set-row" data-act="lock"><span class="drawer-icon"><i data-lucide="lock-keyhole"></i></span>Uzamknúť aplikáciu</button></div></section>'}
 function render(){
   var key=Y+'-'+pad(M+1);
   var all=txs();
   var mt=all.filter(function(t){return t.date.slice(0,7)===key});
   var inc=sum(mt,'income'),exp=sum(mt,'expense');
   $('#monthTitle').textContent=cap(new Date(Y,M,1).toLocaleDateString('sk-SK',{month:'long',year:'numeric'}));
-  $('#bal').textContent=money(inc-exp);$('#inc').textContent=money(inc);$('#exp').textContent=money(exp);
   var h='';
   if(!ready){h='<p class="note">Načítavam údaje…</p>'}
   else{
@@ -712,21 +922,28 @@ function render(){
     var demoN=all.filter(function(t){return t.demo}).length;
     if(demoN)h+='<div class="banner"><span>Zobrazujú sa ukážkové údaje.</span><button type="button" class="link" data-act="cleardemo">Vymazať ukážky</button></div>';
     if(activeView==='overview'){
-      h+='<div class="cols"><section>'+chartCard(mt)+'</section><section>'+listHtml(mt)+'</section></div>';
+      h+=overviewHtml(mt,inc,exp);
     }else if(activeView==='transactions'){
       h+='<div class="view-heading"><span class="view-mark"><i data-lucide="receipt-text"></i></span><h2>Transakcie</h2></div>'+listHtml(mt);
     }else if(activeView==='stats'){
       h+='<div class="view-heading"><span class="view-mark"><i data-lucide="chart-no-axes-combined"></i></span><h2>Štatistiky</h2></div>'+chartCard(mt);
     }else if(activeView==='appearance'){
-      h+='<div class="view-heading"><span class="view-mark"><i data-lucide="palette"></i></span><h2>Vzhľad aplikácie</h2></div>'+skinSettingsHtml();
+      h+='<div class="view-heading"><h2>Vzhľad a skiny</h2></div>'+skinSettingsHtml();
     }else if(activeView==='backup'){
-      h+='<div class="view-heading"><span class="view-mark"><i data-lucide="shield-check"></i></span><h2>Záloha a prenos</h2></div><section class="card"><h3>Bezpečná záloha</h3><p class="none" style="text-align:left">Záloha je chránená samostatným heslom. Pri obnove ho zadáš znova; PIN jednotlivých prehliadačov zostáva nezávislý.</p><div class="btns"><button type="button" class="btn" data-act="backup-export">Stiahnuť zálohu</button><button type="button" class="btn ghost" data-act="backup-import">Obnoviť zo zálohy</button></div></section>';
-    }else if(activeView==='wallets'){
+      h+='<div class="view-heading"><span class="view-mark"><i data-lucide="shield-check"></i></span><h2>Záloha a obnova</h2></div><section class="card"><h3>Bezpečná záloha</h3><p class="none" style="text-align:left">Záloha je chránená samostatným heslom. Pri obnove ho zadáš znova; PIN jednotlivých prehliadačov zostáva nezávislý.</p><div class="btns"><button type="button" class="btn" data-act="backup-export">Stiahnuť zálohu</button><button type="button" class="btn ghost" data-act="backup-import">Obnoviť zo zálohy</button></div></section>';
+    }else if(activeView==='budgets'){h+=placeholderView('Rozpočty','Plány a limity pre jednotlivé kategórie pripravujeme.')}
+    else if(activeView==='goals'){h+=placeholderView('Ciele sporenia','Sporenie na sny pridáme v ďalšej verzii.')}
+    else if(activeView==='calendar'){h+=placeholderView('Kalendár','Prehľad platieb a príjmov podľa dátumov pripravujeme.')}
+    else if(activeView==='reports'){h+=placeholderView('Finančné reporty','Mesačné reporty a export pripravujeme.')}
+    else if(activeView==='settings'){h+=settingsHtml()}
+    else if(activeView==='wallets'){
       h+='<div class="view-heading"><span class="view-mark"><i data-lucide="wallet"></i></span><h2>Moje peňaženky</h2></div><section class="card"><h3>Osobná peňaženka</h3><p class="none" style="text-align:left">Všetky tvoje príjmy a výdavky sú zatiaľ vedené v jednej peňaženke. Viac samostatných peňaženiek môžeme doplniť v ďalšej verzii bez straty existujúcich údajov.</p></section>';
     }
     h+='<p class="foot">'+(mode==='db'?'Tvoje údaje sú súkromné, vidíš ich len ty.':'Údaje sa ukladajú iba v tomto prehliadači.')+'</p>';
   }
   $('#main').innerHTML=h;
+  var fabBtn=document.getElementById('fab');if(fabBtn)fabBtn.hidden=!(activeView==='overview'||activeView==='transactions');
+  document.querySelectorAll('.bnav [data-v]').forEach(function(x){x.setAttribute('aria-current',String(x.dataset.v===activeView?'page':'false'))});
   paintIcons();
 }
 
@@ -894,24 +1111,28 @@ async function restoreBackup(file){
 
 /* ---------- skin settings ---------- */
 function skinSettingsHtml(){
-  var skin=getPref('penazenka.skin','emerald'),motion=getPref('penazenka.motion','normal');
+  var skin=getPref('penazenka.skin','emerald');
   var custom=getCustomColors();
   var skins=[
-    ['emerald','Emerald Luxury','Smaragdová + zlato','#064b38'],
-    ['midnight','Midnight Neon','Fialová + neón','#241044'],
-    ['candy','3D Candy','Hravé pastelové farby','#ed7b9b'],
-    ['pastel','Pastel Dream','Jemná levanduľa','#e9d8f0'],
-    ['ocean','Ocean Glass','Oceán + tyrkysová','#078da5'],
-    ['titanium','Titanium Black','Grafit + striebro','#252d38'],
-    ['custom','Môj vlastný','Moje farby','#20a879']
+    ['emerald','Smaragdová','linear-gradient(145deg,#24996d,#0b4d37)'],
+    ['ocean','Modrá','linear-gradient(145deg,#3a8fe0,#1c4fa8)'],
+    ['midnight','Fialová','linear-gradient(145deg,#8a4fd0,#4a1f8a)'],
+    ['burgundy','Bordová','linear-gradient(145deg,#a8334f,#5e1224)'],
+    ['gold','Zlatá','linear-gradient(145deg,#e6b93c,#9a7417)'],
+    ['brown','Hnedá','linear-gradient(145deg,#8a5a36,#4f2f19)']
   ];
-  var skinButtons=skins.map(function(x){return '<button type="button" class="skin-choice" data-act="skin-choice" data-v="'+x[0]+'" aria-pressed="'+(skin===x[0]?'true':'false')+'"><span class="skin-orb" style="--orb:'+x[3]+'"></span><span class="skin-choice-copy"><strong>'+x[1]+'</strong><small>'+x[2]+'</small></span>'+(skin===x[0]?'<span class="skin-check">✓</span>':'')+'</button>'}).join('');
-  var motions=[['soft','Jemné'],['normal','Normálne'],['bold','Výrazné'],['off','Vypnuté']];
-  var motionButtons=motions.map(function(x){return '<button type="button" class="motion-choice" data-act="motion-choice" data-v="'+x[0]+'" aria-pressed="'+(motion===x[0]?'true':'false')+'">'+x[1]+'</button>'}).join('');
-  return '<section class="card skin-panel"><h3>Vzhľad aplikácie</h3><p class="skin-intro">Vyber si atmosféru svojej peňaženky. Zmena sa prejaví okamžite a tvoje finančné údaje zostanú nedotknuté.</p><div class="skin-controls">'+
-    '<div><div class="skin-section-title"><span>Vyber si skin</span><span class="skin-note">7 možností</span></div><div class="skin-grid">'+skinButtons+'</div></div>'+
-    '<div id="customSkinControls" class="skin-custom" '+(skin==='custom'?'':'hidden')+'><div class="skin-section-title">Vlastné farby</div><div class="skin-colors"><label>Pozadie<input id="customBg" type="color" value="'+custom.bg+'"></label><label>Hlavná farba<input id="customBrand" type="color" value="'+custom.brand+'"></label><label>Hlavička<input id="customHead" type="color" value="'+custom.head+'"></label><label>Karty<input id="customSurface" type="color" value="'+custom.surface+'"></label></div><button type="button" class="btn skin-action" data-act="save-custom-skin">Použiť vlastné farby</button></div>'+
-    '<div class="skin-divider"></div><div><div class="skin-section-title">Animácie <span class="skin-note">Podľa výkonu zariadenia</span></div><div class="skin-motion-grid">'+motionButtons+'</div><p class="skin-note">Môžeš si zvoliť jemné efekty, výraznejšie pohyby alebo animácie úplne vypnúť.</p></div></div></section>';
+  var tabs=[['theme','Motív'],['icons','Ikony'],['font','Písmo']];
+  var tabHtml='<div class="app-tabs" role="group" aria-label="Sekcie">'+tabs.map(function(t){return '<button type="button" data-act="app-tab" data-v="'+t[0]+'" aria-pressed="'+(appTab===t[0]?'true':'false')+'">'+t[1]+'</button>'}).join('')+'</div>';
+  if(appTab!=='theme'){return '<section class="card skin-panel">'+tabHtml+'<p class="none" style="text-align:left">Táto sekcia sa pripravuje. Zatiaľ si vieš vybrať motív a vlastné farby.</p></section>'}
+  var tiles=skins.map(function(x){var on=skin===x[0];
+    return '<button type="button" class="theme-tile" data-act="skin-choice" data-v="'+x[0]+'" aria-pressed="'+(on?'true':'false')+'" style="--orb:'+x[2]+'"><span class="tt"><span aria-hidden="true">€</span>'+(on?'<span class="ok">✓</span>':'')+'</span><span>'+x[1]+'</span>'+(on?'<span class="cur">(aktuálna)</span>':'')+'</button>'}).join('');
+  function crow(label,id,val){return '<label class="crow" style="--c:'+val+'"><span class="cl">'+label+'</span><span class="cs" aria-hidden="true"></span><i data-lucide="chevron-right" class="chev"></i><input type="color" id="'+id+'" value="'+val+'" aria-label="'+label+'"></label>'}
+  return '<section class="card skin-panel">'+tabHtml+
+    '<div class="sec-head"><h3>Vyber farebnú tému</h3></div><div class="theme-grid">'+tiles+'</div>'+
+    '<div class="sec-head"><h3>Vlastné farby</h3></div><div class="color-rows">'+
+      crow('Hlavná farba','customBrand',custom.brand)+crow('Vedľajšia farba','customHead',custom.head)+
+      crow('Pozadie','customBg',custom.bg)+crow('Karty / Panely','customSurface',custom.surface)+
+    '</div><button type="button" class="btn save-theme" data-act="save-custom-skin">✓ Uložiť motív</button></section>';
 }
 function getPref(k,d){try{return localStorage.getItem(k)||d}catch(e){return d}}
 function getCustomColors(){try{return JSON.parse(localStorage.getItem('penazenka.customSkin')||'null')||{bg:'#f3f7f4',brand:'#087a52',head:'#075c42',surface:'#ffffff'}}catch(e){return {bg:'#f3f7f4',brand:'#087a52',head:'#075c42',surface:'#ffffff'}}}
@@ -973,6 +1194,9 @@ document.addEventListener('click',function(e){
   else if(a==='theme-toggle')toggleTheme();
   else if(a==='skin-choice'){var sv=b.dataset.v;applySkin(sv);render()}
   else if(a==='motion-choice'){applyMotion(b.dataset.v);render()}
+  else if(a==='app-tab'){appTab=v;render()}
+  else if(a==='eye'){document.body.classList.toggle('hide-amounts');var hidden=document.body.classList.contains('hide-amounts');b.innerHTML=hidden?'<i data-lucide="eye-off"></i>':'<i data-lucide="eye"></i>';paintIcons()}
+  else if(a==='bell'){toast('Zatiaľ nemáš žiadne upozornenia.')}
   else if(a==='save-custom-skin')saveCustomSkin();
   else if(a==='backup-export')downloadBackup();
   else if(a==='backup-import')$('#backupFile').click();
