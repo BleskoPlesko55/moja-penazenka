@@ -1,15 +1,14 @@
-MOJA PEŇAŽENKA – PREMIUM MOBILE (pracovná verzia)
+Moja Peňaženka – čistá hlavná obrazovka
 
-Do koreňového priečinka GitHub repozitára nahraj a nahraď: index.html, manifest.webmanifest a sw.js.
+Zmeny:
+- Záloha a vzhľad aplikácie sa zobrazujú iba po otvorení príslušnej položky v bočnom menu.
+- Hlavná obrazovka je zjednodušená: bez panelov zálohy a vzhľadu.
+- Prepínanie svetlého/tmavého režimu a uzamknutie sú dostupné v bočnom menu.
+- Zachované je pridávanie transakcií cez plávajúce tlačidlo +.
+- Aktualizovaná verzia service worker cache.
 
-DÔLEŽITÉ: priečinok icons ponechaj z pôvodnej aplikácie. Neodstraňuj ani neprepisuj lokálne údaje prehliadača.
-
-Novinky: bankovo ladená prihlasovacia obrazovka, smaragdovo-zlatý vzhľad, prehľadnejšie 3D prvky, report podľa dátumového rozsahu a tlač / uloženie do PDF cez systémovú tlačovú ponuku.
-
-Zachované zabezpečenie: AES-GCM 256-bit, kľúč odvodený z PIN-u cez PBKDF2-SHA-256 (310 000 iterácií), PIN sa neukladá a automatické uzamknutie po 5 minútach.
-
-PDF: otvor menu > Reporty, PDF a tlač, vyber dátumy a stlač Tlačiť / Uložiť PDF. V tlačovej ponuke zariadenia vyber tlačiareň alebo Uložiť ako PDF.
-
-Pred nahratím si v aplikácii vytvor heslom chránenú zálohu. Obnova zálohy nahradí aktuálne záznamy. Vymazanie údajov stránky/prezerača môže odstrániť lokálne uložené financie.
-
-Toto je pracovná verzia: pred použitím na dôležité financie otestuj PIN, odomknutie, zálohu/obnovu, zmenu tém a PDF report s testovacími údajmi.
+Aktualizácia:
+1. Pred zmenou vytvorte a bezpečne uložte aktuálnu zálohu peňaženky.
+2. V koreňovom priečinku GitHub repozitára nahraďte index.html, manifest.webmanifest a sw.js.
+3. Existujúci priečinok icons ponechajte bez zmien.
+4. Po deployi stránku znovu otvorte. Nevymazávajte údaje webu ani úložisko prehliadača.

@@ -27,20 +27,42 @@
 .ib.on{box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 3px 8px rgba(8,122,82,.18)}
 .nc-top .ci{width:44px;height:44px;border-radius:15px}
 @media(prefers-reduced-motion:no-preference){.ci{transition:transform .18s ease,box-shadow .18s ease}.row:hover .ci,.cat:hover .ci{transform:translateY(-2px);box-shadow:inset 0 2px 2px rgba(255,255,255,.5),inset 0 -3px 5px rgba(0,0,0,.16),0 4px 0 rgba(0,0,0,.12),0 8px 14px rgba(10,45,30,.2)}}
+
+/* FIX: real overlay drawer and working theme palettes */
+.drawer-scrim{position:fixed;inset:0;background:rgba(3,15,10,.58);z-index:80;opacity:0;visibility:hidden;transition:opacity .24s ease,visibility .24s ease;backdrop-filter:blur(3px)}
+.drawer{position:fixed;z-index:81;inset:0 auto 0 0;width:min( min(86vw,360px), 360px );height:100dvh;max-height:100dvh;padding:calc(18px + env(safe-area-inset-top,0px)) 16px calc(16px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:10px;overflow-y:auto;transform:translateX(-105%);visibility:hidden;transition:transform .26s cubic-bezier(.2,.8,.2,1),visibility .26s;background:var(--surface);border-right:1px solid var(--line);box-shadow:16px 0 44px rgba(0,0,0,.2)}
+.drawer.open{transform:translateX(0);visibility:visible}.drawer-scrim.open{opacity:1;visibility:visible}
+body.drawer-open{overflow:hidden}
+.drawer-brand{display:flex;align-items:center;gap:10px;padding:4px 2px 20px;border-bottom:1px solid var(--line);color:var(--fg)}
+.drawer-brand strong{display:block;font:800 12px var(--font-display);letter-spacing:.09em}.drawer-brand small{display:block;color:var(--muted);font-size:11px;margin-top:3px}
+.drawer-label{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:12px 8px 2px}
+.drawer-nav{display:grid;gap:8px}.drawer-item{width:100%;display:flex;align-items:center;gap:12px;padding:8px 12px;border:1px solid var(--line);background:var(--bg);color:var(--fg);font-weight:650;text-align:left;cursor:pointer;transition:transform .16s ease,background .16s ease,border-color .16s ease;}
+.drawer-item:active{transform:translateY(1px) scale(.99)}.drawer-item[aria-current="page"]{background:var(--soft);border-color:var(--brand);color:var(--brand)}
+.drawer-icon{display:grid;place-items:center;flex:none;background:var(--surface);color:var(--brand);border:1px solid var(--line)}.drawer-icon svg{width:19px;height:19px}
+.drawer-spacer{flex:1;min-height:18px}.drawer-footer{font-size:11px;line-height:1.45;color:var(--muted);padding:12px 6px 2px;border-top:1px solid var(--line)}
+.menu-trigger{display:grid;place-items:center;border:1px solid rgba(255,255,255,.22);color:var(--head-ink);cursor:pointer}.menu-trigger svg{width:21px;height:21px}
+.view-heading{display:flex;align-items:center;gap:10px;margin:2px 0 14px}.view-heading h2{font:800 21px var(--font-display);margin:0}.view-mark{width:38px;height:38px;border-radius:12px;background:var(--soft);color:var(--brand);display:grid;place-items:center}.view-mark svg{width:20px;height:20px}
+.skin-panel{display:grid;gap:18px}.skin-intro,.skin-note{color:var(--muted);font-size:13px}.skin-intro{margin:0}.skin-controls{display:grid;gap:20px}.skin-section-title{display:flex;justify-content:space-between;align-items:center;gap:8px;font-weight:750;margin-bottom:10px}.skin-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}.skin-choice{display:flex;align-items:center;gap:10px;min-width:0;text-align:left;padding:11px;border:1.5px solid var(--line);border-radius:15px;background:var(--bg);color:var(--fg);cursor:pointer}.skin-choice[aria-pressed="true"]{border-color:var(--brand);background:var(--soft);box-shadow:0 0 0 2px color-mix(in srgb,var(--brand) 12%,transparent)}.skin-orb{width:32px;height:32px;flex:none;border-radius:50%;background:var(--orb);box-shadow:inset 0 2px 4px rgba(255,255,255,.45),0 3px 8px rgba(0,0,0,.15)}.skin-choice-copy{display:grid;gap:2px;min-width:0}.skin-choice-copy strong{font-size:12px}.skin-choice-copy small{font-size:10px;color:var(--muted)}.skin-check{margin-left:auto;color:var(--brand);font-weight:900}.skin-divider{height:1px;background:var(--line)}.skin-custom{padding:14px;border:1px solid var(--line);border-radius:16px;background:var(--bg)}.skin-colors{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:12px 0}.skin-colors label{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted)}.skin-colors input{width:42px;height:32px;border:0;background:transparent;padding:0}.skin-action{width:100%}.skin-motion-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.motion-choice{padding:9px 5px;border:1px solid var(--line);border-radius:11px;background:var(--bg);color:var(--fg);font-size:12px;font-weight:650}.motion-choice[aria-pressed="true"]{background:var(--soft);border-color:var(--brand);color:var(--brand)}
+:root[data-skin="midnight"]{--bg:#120d20;--surface:#211735;--fg:#f4edff;--muted:#b8a9d0;--line:#403052;--brand:#c58bff;--brand-ink:#1c1030;--head:#21103d;--head-ink:#fff8ff;--head-dim:#d6b9ff;--soft:#332448;--inc:#7be7c0;--exp:#ff8fa8;--shadow:0 9px 28px rgba(0,0,0,.22);color-scheme:dark}
+:root[data-skin="candy"]{--bg:#fff3f7;--surface:#fffafd;--fg:#42283b;--muted:#927487;--line:#f1d6e3;--brand:#e45c91;--brand-ink:#fff;--head:#9d426f;--head-ink:#fff8fc;--head-dim:#ffd8e9;--soft:#ffe5ef;--inc:#279d78;--exp:#dc5272;--shadow:0 8px 25px rgba(150,70,110,.10)}
+:root[data-skin="pastel"]{--bg:#f5f0fb;--surface:#fffaff;--fg:#392d4b;--muted:#857694;--line:#e6dced;--brand:#9670c6;--brand-ink:#fff;--head:#685080;--head-ink:#fffaff;--head-dim:#e5d5f6;--soft:#eee4f7;--inc:#3b9b7d;--exp:#d56e83;--shadow:0 8px 25px rgba(90,65,120,.09)}
+:root[data-skin="ocean"]{--bg:#edf8fa;--surface:#fbffff;--fg:#153744;--muted:#66838c;--line:#d3e9ed;--brand:#078da5;--brand-ink:#fff;--head:#07576c;--head-ink:#f2fdff;--head-dim:#b6e6ee;--soft:#dff3f6;--inc:#168c68;--exp:#d85f60;--shadow:0 8px 25px rgba(15,100,120,.09)}
+:root[data-skin="titanium"]{--bg:#171b21;--surface:#242a32;--fg:#edf1f5;--muted:#a3adb8;--line:#3a424d;--brand:#b9c6d4;--brand-ink:#151a20;--head:#10151b;--head-ink:#f5f7fa;--head-dim:#bdc8d4;--soft:#303943;--inc:#65d5a0;--exp:#ff827b;--shadow:0 9px 28px rgba(0,0,0,.24);color-scheme:dark}
+:root[data-skin="emerald"]{--bg:#f3f7f4;--surface:#fff;--fg:#10271e;--muted:#718279;--line:#e2ebe5;--brand:#087a52;--brand-ink:#fff;--head:#075c42;--head-ink:#f3fff8;--head-dim:#b8dfcc;--soft:#e8f3ed;--inc:#07865a;--exp:#d85c52;--shadow:0 8px 28px rgba(13,66,43,.07);color-scheme:light}
+:root[data-theme="dark"][data-skin="emerald"],:root[data-theme="dark"][data-skin="ocean"],:root[data-theme="dark"][data-skin="pastel"],:root[data-theme="dark"][data-skin="candy"]{--bg:#0e1914;--surface:#19271f;--fg:#edf7f0;--muted:#a1b2a7;--line:#2d4035;--soft:#263a2e;--brand:#58d49a;--brand-ink:#062316;--head:#09291d;--head-ink:#f3fff8;--head-dim:#b8dfcc;--inc:#69dfa5;--exp:#ff9288;color-scheme:dark}
+:root[data-theme="light"]{color-scheme:light}
+@media(max-width:480px){.skin-grid{grid-template-columns:1fr}.skin-motion-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.drawer{width:min(88vw,340px)}}
+@media(prefers-reduced-motion:reduce){.drawer,.drawer-scrim,.drawer-item,.menu-trigger,.skin-choice{transition:none!important}}
 </style><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#075c42"><link rel="icon" href="./icons/icon-192.png" type="image/png"></head><body>
-<div id="securityGate"><div class="security-card premium-login">
-  <div class="login-emblem" aria-hidden="true"><svg viewBox="0 0 120 100" role="img"><defs><linearGradient id="gold" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#fff2b2"/><stop offset=".45" stop-color="#d8a943"/><stop offset="1" stop-color="#8d5b16"/></linearGradient><linearGradient id="green" x1="0" x2="0" y1="0" y2="1"><stop stop-color="#147653"/><stop offset="1" stop-color="#042e22"/></linearGradient></defs><path d="M8 32 60 5l52 27Z" fill="url(#green)" stroke="url(#gold)" stroke-width="3"/><path d="M16 37h88M18 83h84M12 91h96" stroke="url(#gold)" stroke-width="4" stroke-linecap="round"/><g fill="url(#green)" stroke="url(#gold)" stroke-width="3"><path d="M23 39h13v42H23zM53.5 39h13v42h-13zM84 39h13v42H84z"/></g><rect x="43" y="51" width="34" height="27" rx="5" fill="url(#gold)"/><path d="M48 51v-7a12 12 0 0 1 24 0v7" fill="none" stroke="url(#gold)" stroke-width="5"/><circle cx="60" cy="63" r="3" fill="#073b2b"/><path d="M60 65v6" stroke="#073b2b" stroke-width="3"/></svg></div>
-  <div class="login-kicker">BEZPEČNÝ PRÍSTUP</div>
-  <h2 id="securityTitle">Moja Peňaženka</h2>
-  <div class="login-subtitle">Osobné financie pod kontrolou</div>
-  <div class="login-divider"><span></span><i>✦</i><span></span></div>
+<div id="securityGate"><div class="security-card">
+  <div style="font-size:32px;margin-bottom:12px">🔐</div>
+  <h2 id="securityTitle">Zabezpečená Peňaženka</h2>
   <p id="securityDescription">Nastav si PIN s aspoň 6 číslicami. Bez neho nebude možné dešifrovať uložené záznamy.</p>
-  <label class="login-label" for="securityPin">Tvoj bezpečnostný PIN</label>
-  <input id="securityPin" type="password" inputmode="numeric" autocomplete="current-password" maxlength="32" placeholder="Zadaj PIN (6 až 32 číslic)">
-  <input id="securityPinConfirm" type="password" inputmode="numeric" autocomplete="new-password" maxlength="32" placeholder="Zopakuj PIN">
-  <button id="securitySubmit" type="button" class="btn">Odomknúť peňaženku</button>
+  <input id="securityPin" type="password" inputmode="numeric" maxlength="32" placeholder="PIN (aspoň 6 číslic)">
+  <input id="securityPinConfirm" type="password" inputmode="numeric" maxlength="32" placeholder="Zopakuj PIN">
+  <button id="securitySubmit" type="button" class="btn">Nastaviť PIN</button>
   <div id="securityError" class="security-error" role="alert"></div>
-  <p class="login-footnote"><span>♢</span> PIN sa neukladá. Tvoje záznamy zostávajú šifrované v tomto prehliadači.</p>
+  <p style="font-size:12px;margin-top:14px">PIN sa neukladá. Záznamy zostávajú šifrované v tomto prehliadači.</p>
 </div></div>
 
 <title>Peňaženka</title>
@@ -284,61 +306,6 @@ main{padding-top:20px}
 .fab{width:58px;height:58px;border-radius:19px}
 @media(max-width:520px){.bal strong{font-size:33px}.split{gap:8px}.split div{padding:9px 11px}}
 @media(prefers-reduced-motion:reduce){.drawer,.drawer-scrim,.drawer-item,.menu-trigger{transition:none!important}}
-
-/* ---------- Premium Mobile: bank-style secure login ---------- */
-#securityGate{background:radial-gradient(ellipse at 50% 12%,rgba(36,157,111,.28),transparent 42%),linear-gradient(145deg,#031c16 0%,#06412f 48%,#021b15 100%);overflow:auto}
-#securityGate:before,#securityGate:after{content:"";position:fixed;pointer-events:none;border-radius:50%;filter:blur(1px)}
-#securityGate:before{width:360px;height:360px;right:-180px;top:-160px;border:1px solid rgba(224,185,94,.18);box-shadow:0 0 0 22px rgba(224,185,94,.025),0 0 0 48px rgba(224,185,94,.02)}
-#securityGate:after{width:300px;height:300px;left:-190px;bottom:-160px;border:1px solid rgba(48,205,142,.2);box-shadow:0 0 0 26px rgba(48,205,142,.025),0 0 0 54px rgba(48,205,142,.02)}
-.premium-login{position:relative;z-index:1;width:min(100%,430px);padding:27px 25px 22px;text-align:center;color:#f4f8f3;background:linear-gradient(150deg,rgba(14,83,60,.96),rgba(3,35,26,.98));border:1px solid rgba(224,190,111,.55);border-radius:28px;box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 22px 65px rgba(0,0,0,.48),0 0 36px rgba(29,161,111,.15);backdrop-filter:blur(18px)}
-.login-emblem{width:132px;height:112px;margin:0 auto 10px;display:grid;place-items:center;filter:drop-shadow(0 7px 10px rgba(0,0,0,.35))}
-.login-emblem svg{width:100%;height:100%;overflow:visible}
-.login-kicker{font-size:10px;letter-spacing:.24em;font-weight:800;color:#e6c77b}
-.premium-login h2{font:800 27px/1.12 var(--font-display);letter-spacing:-.04em;color:#f7e5b1;margin:8px 0 4px;text-shadow:0 2px 12px rgba(0,0,0,.32)}
-.login-subtitle{font-size:13px;color:#b9d8c9;letter-spacing:.04em}
-.login-divider{display:flex;align-items:center;gap:12px;margin:17px 4px 14px;color:#e6c77b}
-.login-divider span{height:1px;flex:1;background:linear-gradient(90deg,transparent,rgba(230,199,123,.65))}
-.login-divider span:last-child{background:linear-gradient(90deg,rgba(230,199,123,.65),transparent)}
-.login-divider i{font-style:normal;font-size:13px}
-.premium-login #securityDescription{font-size:13px;line-height:1.5;color:#c1d8cc;margin:0 0 16px}
-.login-label{display:block;text-align:left;font-size:12px;font-weight:700;color:#e5d4a3;margin:0 0 7px}
-.premium-login input{display:block;width:100%;height:49px;margin:0 0 10px;padding:0 15px;border-radius:14px;border:1px solid rgba(214,190,128,.42);background:rgba(0,20,14,.56);color:#fff;text-align:center;letter-spacing:.18em;box-shadow:inset 0 2px 8px rgba(0,0,0,.2);outline:none}
-.premium-login input::placeholder{color:#9db9aa;letter-spacing:0}
-.premium-login input:focus{border-color:#e5c36d;box-shadow:0 0 0 3px rgba(229,195,109,.13),inset 0 2px 8px rgba(0,0,0,.2)}
-.premium-login .btn{width:100%;min-height:49px;margin-top:4px;border:1px solid #f0d48c;border-radius:14px;background:linear-gradient(180deg,#f3d98f,#bd8c36);color:#183b2b;font-weight:800;box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 5px 0 #76511d,0 10px 20px rgba(0,0,0,.22)}
-.premium-login .btn:active{transform:translateY(3px);box-shadow:inset 0 1px 0 rgba(255,255,255,.7),0 2px 0 #76511d,0 5px 12px rgba(0,0,0,.2)}
-.premium-login .security-error{color:#ffb0a8;text-align:center}
-.login-footnote{font-size:11px!important;line-height:1.45;color:#9ebcaf!important;margin:14px 0 0!important}
-.login-footnote span{color:#e5c36d;margin-right:4px}
-@media(max-width:420px){.premium-login{padding:22px 19px 18px;border-radius:24px}.login-emblem{width:112px;height:96px}.premium-login h2{font-size:25px}}
-/* A true light palette when the user explicitly selects light mode. */
-:root[data-theme="light"]{--bg:#f3f7f4;--surface:#ffffff;--fg:#13251b;--muted:#64766c;--line:#dce8df;--brand:#087a52;--brand-ink:#ffffff;--head:#075c42;--head-ink:#ffffff;--head-dim:#c5e6d5;--inc:#087a52;--exp:#c9423a;--soft:#e8f2eb;--scrim:rgba(3,24,16,.52);--head-inc:#b8f1d0;--head-exp:#ffd0ca;--shadow:0 1px 2px rgba(15,40,28,.06),0 8px 24px rgba(15,40,28,.06);color-scheme:light}
-/* Report preview and clean print/PDF output. */
-.report-tools{display:flex;flex-wrap:wrap;gap:10px;align-items:end;margin:14px 0}
-.report-tools label{display:grid;gap:5px;color:var(--muted);font-size:12px;font-weight:700;flex:1;min-width:130px}
-.report-tools input{min-width:0;width:100%;border:1px solid var(--line);border-radius:11px;background:var(--bg);color:var(--fg);padding:10px}
-.report-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin:12px 0}
-.report-stat{background:var(--soft);border-radius:13px;padding:11px;min-width:0}
-.report-stat small{display:block;color:var(--muted);font-size:11px}
-.report-stat strong{display:block;margin-top:4px;font:800 16px var(--font-display);overflow-wrap:anywhere}
-.report-table-wrap{overflow-x:auto}
-.report-table{width:100%;border-collapse:collapse;font-size:13px}
-.report-table th,.report-table td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
-.report-table th{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.04em}
-.report-table td:last-child,.report-table th:last-child{text-align:right;white-space:nowrap}
-.report-print-title{margin:0 0 4px;font:800 22px var(--font-display)}
-.report-print-meta{color:var(--muted);font-size:12px;margin-bottom:14px}
-.report-positive{color:var(--inc);font-weight:700}.report-negative{color:var(--exp);font-weight:700}
-/* Realistic 3D category columns with glossy faces and visible side depth. */
-.chart3d{display:flex;align-items:flex-end;gap:13px;min-height:150px;overflow-x:auto;padding:18px 12px 8px;margin:4px 0 12px;perspective:700px;border-radius:16px;background:linear-gradient(180deg,rgba(15,110,75,.035),transparent)}
-.chart3d-item{flex:1 0 46px;min-width:46px;display:flex;flex-direction:column;align-items:center;gap:7px}
-.chart3d-value{font-size:10px;font-weight:800;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
-.chart3d-bar{position:relative;width:30px;min-height:7px;border-radius:7px 7px 2px 2px;transform:rotateX(-5deg) skewY(-1deg);transform-style:preserve-3d;box-shadow:0 8px 12px rgba(0,0,0,.16),inset 2px 0 3px rgba(255,255,255,.42),inset -3px 0 5px rgba(0,0,0,.12);border:1px solid rgba(255,255,255,.3)}
-.chart3d-bar:before{content:"";position:absolute;left:100%;top:3px;width:8px;height:100%;transform:skewY(-35deg);transform-origin:left top;background:linear-gradient(90deg,rgba(0,0,0,.2),rgba(0,0,0,.42));border-radius:0 4px 3px 0}
-.chart3d-bar:after{content:"";position:absolute;left:3px;right:3px;top:2px;height:10px;border-radius:50%;background:rgba(255,255,255,.3);filter:blur(2px)}
-.chart3d-label{max-width:66px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:10px;color:var(--muted)}
-@media print{body{background:#fff!important;color:#111!important}body *{visibility:hidden!important}#reportPrintArea,#reportPrintArea *{visibility:visible!important}#reportPrintArea{position:absolute!important;left:0!important;top:0!important;width:100%!important;padding:0!important;margin:0!important;background:#fff!important;color:#111!important}#reportPrintArea .card{border:0!important;box-shadow:none!important;padding:0!important}#reportPrintArea .report-table th,#reportPrintArea .report-table td{border-bottom:1px solid #ddd!important;color:#111!important}#reportPrintArea .report-summary{break-inside:avoid}#reportPrintArea .report-stat{background:#f2f5f3!important;color:#111!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}#reportPrintArea .report-stat small{color:#555!important}.report-tools,.report-print-button{display:none!important}@page{size:auto;margin:14mm}}
-
 </style>
 
 <header class="top">
@@ -367,7 +334,6 @@ main{padding-top:20px}
     <button class="drawer-item" data-act="view" data-v="wallets"><span class="drawer-icon"><i data-lucide="wallet"></i></span>Peňaženky</button>
     <button class="drawer-item" data-act="view" data-v="appearance"><span class="drawer-icon"><i data-lucide="palette"></i></span>Vzhľad a skiny</button>
     <button class="drawer-item" data-act="view" data-v="backup"><span class="drawer-icon"><i data-lucide="shield-check"></i></span>Záloha a prenos</button>
-    <button class="drawer-item" data-act="view" data-v="reports"><span class="drawer-icon"><i data-lucide="file-chart-column"></i></span>Reporty, PDF a tlač</button>
   </nav>
   <div class="drawer-spacer"></div>
   <button class="drawer-item" data-act="theme-toggle"><span class="drawer-icon"><i data-lucide="moon-star"></i></span>Svetlý / tmavý režim</button>
@@ -636,10 +602,6 @@ function donut(rows,total){
     '<g transform="rotate(-90 60 60)"><circle class="track" r="'+R+'" cx="60" cy="60" fill="none" stroke-width="14"/>'+s+'</g>'+
     '<text class="dl" x="60" y="56">Spolu</text><text class="dv" x="60" y="71">'+esc(money(total))+'</text></svg>';
 }
-function bar3dHtml(rows,total){
-  var max=Math.max.apply(null,rows.map(function(r){return r.v}))||1;
-  return '<div class="chart3d" aria-label="Priestorový stĺpcový graf podľa kategórií">'+rows.slice(0,8).map(function(r){var height=Math.max(8,Math.round(r.v/max*112));return '<div class="chart3d-item"><span class="chart3d-value">'+esc(money(r.v))+'</span><div class="chart3d-bar" style="height:'+height+'px;background:linear-gradient(135deg,rgba(255,255,255,.62),'+r.color+' 28%,'+r.color+' 72%,rgba(0,0,0,.38))"></div><span class="chart3d-label">'+esc(r.name)+'</span></div>'}).join('')+'</div>';
-}
 function chartCard(mt){
   var list=mt.filter(function(t){return t.type===chartType});
   var by={};list.forEach(function(t){by[t.cat]=(by[t.cat]||0)+(+t.amount||0)});
@@ -649,7 +611,7 @@ function chartCard(mt){
     '<button type="button" data-act="chart" data-v="expense" aria-pressed="'+(chartType==='expense')+'">Výdavky</button>'+
     '<button type="button" data-act="chart" data-v="income" aria-pressed="'+(chartType==='income')+'">Príjmy</button></div></div>';
   if(!rows.length){h+='<p class="none">'+(chartType==='expense'?'Žiadne výdavky':'Žiadne príjmy')+' v tomto mesiaci.</p></div>';return h}
-  h+=donut(rows,total)+bar3dHtml(rows,total)+'<div class="legend">';
+  h+=donut(rows,total)+'<div class="legend">';
   rows.forEach(function(r){
     var p=r.v/total*100;
     h+='<div class="lg"><span class="ci" style="background:'+r.color+'">'+ico(r.icon)+'</span>'+
@@ -680,15 +642,6 @@ function emptyHtml(){
     '<div class="btns"><button type="button" class="btn" data-act="add">Pridať záznam</button>'+
     '<button type="button" class="btn ghost" data-act="demo">Vyskúšať s ukážkou</button></div></div>';
 }
-function reportPreviewHtml(from,to){
-  var valid=txs().filter(function(t){return t.date>=from&&t.date<=to}).slice().sort(function(a,b){return a.date<b.date?-1:a.date>b.date?1:0});
-  var inc=sum(valid,'income'),exp=sum(valid,'expense'),balance=inc-exp;
-  var rows=valid.map(function(t){var c=catById(t.cat),income=t.type==='income';return '<tr><td>'+esc(t.date)+'</td><td>'+esc(c.name)+'</td><td>'+esc(t.note||'—')+'</td><td class="'+(income?'report-positive':'report-negative')+'">'+(income?'+':'−')+esc(money(+t.amount||0))+'</td></tr>'}).join('');
-  return '<div class="card"><h2 class="report-print-title">Moja Peňaženka – finančný report</h2><div class="report-print-meta">Obdobie: '+esc(from)+' až '+esc(to)+' · Vytvorené: '+esc(new Date().toLocaleDateString('sk-SK'))+'</div><div class="report-summary"><div class="report-stat"><small>Príjmy</small><strong class="report-positive">'+esc(money(inc))+'</strong></div><div class="report-stat"><small>Výdavky</small><strong class="report-negative">'+esc(money(exp))+'</strong></div><div class="report-stat"><small>Rozdiel</small><strong>'+esc(money(balance))+'</strong></div></div><div class="report-table-wrap"><table class="report-table"><thead><tr><th>Dátum</th><th>Kategória</th><th>Poznámka</th><th>Suma</th></tr></thead><tbody>'+(rows||'<tr><td colspan="4">Za vybrané obdobie nie sú žiadne záznamy.</td></tr>')+'</tbody></table></div><p class="report-print-meta" style="margin-top:12px">Počet záznamov: '+valid.length+'</p></div>';
-}
-function updateReportPreview(){var a=$('#reportFrom'),b=$('#reportTo'),area=$('#reportPrintArea');if(!a||!b||!area)return;if(a.value&&b.value&&a.value>b.value){toast('Dátum „od“ nemôže byť po dátume „do“.');return}area.innerHTML=reportPreviewHtml(a.value||'0000-00-00',b.value||'9999-12-31');paintIcons()}
-function printReport(){updateReportPreview();window.print()}
-
 function render(){
   var key=Y+'-'+pad(M+1);
   var all=txs();
@@ -708,13 +661,11 @@ function render(){
     }else if(activeView==='transactions'){
       h+='<div class="view-heading"><span class="view-mark"><i data-lucide="receipt-text"></i></span><h2>Transakcie</h2></div>'+listHtml(mt);
     }else if(activeView==='stats'){
-      h+='<div class="view-heading"><span class="view-mark"><i data-lucide="chart-no-axes-combined"></i></span><h2>Štatistiky</h2>'+chartCard(mt);
+      h+='<div class="view-heading"><span class="view-mark"><i data-lucide="chart-no-axes-combined"></i></span><h2>Štatistiky</h2></div>'+chartCard(mt);
     }else if(activeView==='appearance'){
       h+='<div class="view-heading"><span class="view-mark"><i data-lucide="palette"></i></span><h2>Vzhľad aplikácie</h2></div>'+skinSettingsHtml();
     }else if(activeView==='backup'){
       h+='<div class="view-heading"><span class="view-mark"><i data-lucide="shield-check"></i></span><h2>Záloha a prenos</h2></div><section class="card"><h3>Bezpečná záloha</h3><p class="none" style="text-align:left">Záloha je chránená samostatným heslom. Pri obnove ho zadáš znova; PIN jednotlivých prehliadačov zostáva nezávislý.</p><div class="btns"><button type="button" class="btn" data-act="backup-export">Stiahnuť zálohu</button><button type="button" class="btn ghost" data-act="backup-import">Obnoviť zo zálohy</button></div></section>';
-    }else if(activeView==='reports'){
-      h+='<div class="view-heading"><span class="view-mark"><i data-lucide="file-chart-column"></i></span><h2>Reporty a tlač</h2></div><section class="card"><h3>Finančný prehľad</h3><p class="none" style="text-align:left">Vyber obdobie. Report môžeš vytlačiť alebo uložiť ako PDF cez tlačovú ponuku zariadenia.</p><div class="report-tools"><label>Od dátumu<input id="reportFrom" type="date" value="'+Y+'-'+pad(M+1)+'-01"></label><label>Do dátumu<input id="reportTo" type="date" value="'+dstr(new Date())+'"></label></div><div id="reportPrintArea">'+reportPreviewHtml(Y+'-'+pad(M+1)+'-01',dstr(new Date()))+'</div><div class="btns report-print-button"><button type="button" class="btn" data-act="report-print"><i data-lucide="printer"></i> Tlačiť / Uložiť PDF</button></div></section>';
     }else if(activeView==='wallets'){
       h+='<div class="view-heading"><span class="view-mark"><i data-lucide="wallet"></i></span><h2>Moje peňaženky</h2></div><section class="card"><h3>Osobná peňaženka</h3><p class="none" style="text-align:left">Všetky tvoje príjmy a výdavky sú zatiaľ vedené v jednej peňaženke. Viac samostatných peňaženiek môžeme doplniť v ďalšej verzii bez straty existujúcich údajov.</p></section>';
     }
@@ -944,13 +895,10 @@ try{applySkin(localStorage.getItem('penazenka.skin')||'emerald');applyMotion(loc
 /* ---------- events ---------- */
 /* Live appearance controls */
 document.addEventListener('change',function(e){
-  if(e.target&&(e.target.id==='reportFrom'||e.target.id==='reportTo'))updateReportPreview();
-  if(e.target&&e.target.id==='skinSelect'){
-    var v=e.target.value;$('#customSkinControls').hidden=(v!=='custom');applySkin(v);
-  }
+  if(e.target&&['customBg','customBrand','customHead','customSurface'].indexOf(e.target.id)>=0){var c=getCustomColors();c.bg=$('#customBg').value;c.brand=$('#customBrand').value;c.head=$('#customHead').value;c.surface=$('#customSurface').value;try{localStorage.setItem('penazenka.customSkin',JSON.stringify(c))}catch(err){}applySkin('custom')}
   if(e.target&&e.target.id==='motionSelect')applyMotion(e.target.value);
 });
-function toggleDrawer(open){var d=$('#appDrawer'),s=$('#drawerScrim');if(!d||!s)return;d.classList.toggle('open',!!open);s.classList.toggle('open',!!open);document.body.style.overflow=open?'hidden':'';if(open)paintIcons()}
+function toggleDrawer(open){var d=$('#appDrawer'),s=$('#drawerScrim');if(!d||!s)return;d.classList.toggle('open',!!open);s.classList.toggle('open',!!open);document.body.style.overflow=open?'hidden':'';document.body.classList.toggle('drawer-open',!!open);if(open)paintIcons()}
 
 document.addEventListener('click',function(e){
   if(e.target===$('#sheet')){closeSheet();return}
@@ -973,7 +921,6 @@ document.addEventListener('click',function(e){
   else if(a==='save-custom-skin')saveCustomSkin();
   else if(a==='backup-export')downloadBackup();
   else if(a==='backup-import')$('#backupFile').click();
-  else if(a==='report-print')printReport();
   else if(a==='close')closeSheet();
   else if(a==='type')setType(v);
   else if(a==='cat'){form.cat=id;showErr('');renderCats()}
