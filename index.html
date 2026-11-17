@@ -53,6 +53,62 @@ body.drawer-open{overflow:hidden}
 :root[data-theme="light"]{color-scheme:light}
 @media(max-width:480px){.skin-grid{grid-template-columns:1fr}.skin-motion-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.drawer{width:min(88vw,340px)}}
 @media(prefers-reduced-motion:reduce){.drawer,.drawer-scrim,.drawer-item,.menu-trigger,.skin-choice{transition:none!important}}
+
+/* Emerald Luxury balanced redesign – dashboard, drawer and dimensional icon finish */
+:root[data-skin="emerald"]{
+ --bg:#f3f5f3;--surface:#ffffff;--fg:#172820;--muted:#718078;--line:#e3e8e4;
+ --brand:#176b50;--brand-ink:#fff;--head:#123d30;--head-ink:#fff;--head-dim:#c9ded3;--soft:#e8f1ec;
+ --inc:#287dca;--exp:#d66d68;--shadow:0 8px 24px rgba(20,48,36,.08);color-scheme:light;
+}
+:root[data-theme="dark"][data-skin="emerald"]{
+ --bg:#111b18;--surface:#1b2924;--fg:#edf5ef;--muted:#a8b9af;--line:#34473d;
+ --brand:#55b991;--brand-ink:#08271c;--head:#092b20;--head-ink:#f4fff8;--head-dim:#b9d7c8;--soft:#263b31;
+ --inc:#6bb7f0;--exp:#f18b83;--shadow:0 10px 28px rgba(0,0,0,.24);color-scheme:dark;
+}
+body{background:var(--bg);color:var(--fg)}
+.top{background:linear-gradient(145deg,#103e30 0%,#176b50 68%,#287e65 100%);border-radius:0 0 28px 28px;box-shadow:0 12px 28px rgba(16,62,48,.16)}
+.top:before{border-color:rgba(231,202,135,.20);box-shadow:0 0 0 28px rgba(231,202,135,.045),0 0 0 58px rgba(255,255,255,.025)}
+.brand-symbol{background:linear-gradient(145deg,#f1d99a,#b88b3f);color:#183b2d;box-shadow:inset 0 1px 2px #fff8d8,0 3px 9px #071e1644}
+.bal{padding:16px 18px 18px;margin:18px 0 0;border-radius:22px;background:linear-gradient(135deg,#0d5b42,#16815e 58%,#0c6349);border:1px solid rgba(225,194,119,.75);box-shadow:inset 0 1px 0 #ffffff55,0 8px 20px rgba(8,61,43,.20)}
+.bal span{color:#d3e8dc}.bal strong{color:#fff;text-shadow:0 2px 8px #001b1266}
+.split div{position:relative;overflow:hidden;backdrop-filter:blur(8px);box-shadow:inset 0 1px 0 #ffffff45,0 4px 12px #061d1422}
+.split div:first-child{background:linear-gradient(135deg,#287dca,#4d9de0);border-color:#ffffff45}
+.split div:last-child{background:linear-gradient(135deg,#c85e5a,#e8897e);border-color:#ffffff45}
+.split span,.split b{color:#fff}
+.cols{gap:14px}.cols>section{min-width:0}
+.card,.rows{border-radius:20px;background:var(--surface);box-shadow:0 6px 20px rgba(21,47,36,.065)}
+.chart-head{align-items:center}.chart-head h3{letter-spacing:-.02em}
+/* Distinct section accents without flooding the page with green */
+.view-mark{background:linear-gradient(145deg,#e6f1eb,#f6faf7);color:#176b50;box-shadow:inset 0 1px #fff,0 3px 8px #183c2b16}
+/* Soft dimensional icon tiles; original Lucide paths remain crisp and accessible */
+.ci,.drawer-icon,.view-mark,.ib{position:relative;isolation:isolate;box-shadow:inset 0 1px 0 rgba(255,255,255,.72),inset 0 -2px 3px rgba(0,0,0,.10),0 3px 0 rgba(0,0,0,.08),0 6px 10px rgba(12,38,26,.10)}
+.ci{border:1px solid rgba(255,255,255,.62);background-image:linear-gradient(145deg,rgba(255,255,255,.50),rgba(255,255,255,.04) 48%,rgba(0,0,0,.13))}
+.ci svg,.drawer-icon svg{filter:drop-shadow(0 1px 1px rgba(0,0,0,.25));stroke-width:2.35}
+.drawer{background:linear-gradient(180deg,#fff 0%,#f3f6f3 100%);border-right:1px solid #dbe5de}
+.drawer-brand{margin:-18px -16px 0;padding:24px 16px 22px;background:linear-gradient(140deg,#0c392b,#176b50 72%,#258166);color:#fff;border:0;border-radius:0 0 22px 0;box-shadow:0 8px 18px #123d3028}
+.drawer-brand small{color:#d1e7db}.drawer-brand .brand-symbol{border:1px solid #e7cb86}
+.drawer-label{color:#8b7650;letter-spacing:.12em}
+.drawer-nav{gap:7px}.drawer-item{background:#fff;border-color:#e7ece8;border-radius:15px;min-height:52px;box-shadow:inset 0 1px 0 #fff,0 3px 9px rgba(20,48,36,.055);color:#24372e}
+.drawer-icon{width:38px;height:38px;border-radius:13px;background:linear-gradient(145deg,#fff,#edf3ef);color:#176b50;border-color:#e3ebe5}
+.drawer-nav .drawer-item:nth-child(1) .drawer-icon{color:#176b50;background:linear-gradient(145deg,#e3f2e9,#c8e5d5)}
+.drawer-nav .drawer-item:nth-child(2) .drawer-icon{color:#287dca;background:linear-gradient(145deg,#e5f2ff,#c8e3fb)}
+.drawer-nav .drawer-item:nth-child(3) .drawer-icon{color:#b9852e;background:linear-gradient(145deg,#fff4d9,#f3dfad)}
+.drawer-nav .drawer-item:nth-child(4) .drawer-icon{color:#8060b5;background:linear-gradient(145deg,#f1eaff,#ddd0f5)}
+.drawer-nav .drawer-item:nth-child(5) .drawer-icon{color:#b56d9b;background:linear-gradient(145deg,#ffedf6,#f4d5e7)}
+.drawer-nav .drawer-item:nth-child(6) .drawer-icon{color:#348d9a;background:linear-gradient(145deg,#e1f6f6,#c4e7e7)}
+.drawer-item[aria-current="page"]{background:linear-gradient(100deg,#e2f1e8,#f7fbf8);border-color:#9ccab0;color:#145b40}
+.drawer-footer{background:#e8f2ec;border:1px solid #d7e7dc;border-radius:14px;color:#496858}
+.fab{background:linear-gradient(145deg,#1b966b,#0b684a);border:1px solid #b9e0c9;box-shadow:inset 0 1px 0 #ffffff66,0 5px 0 #075137,0 10px 22px rgba(8,85,58,.25);color:#fff}
+.fab:active{transform:translateY(3px);box-shadow:inset 0 1px 0 #ffffff55,0 2px 0 #075137,0 5px 12px rgba(8,85,58,.2)}
+/* Keep the drawer polished in dark mode too */
+:root[data-theme="dark"] .drawer{background:linear-gradient(180deg,#192820,#111d18);border-color:#34483c}
+:root[data-theme="dark"] .drawer-item{background:#20342a;border-color:#354b3e;color:#edf5ef}
+:root[data-theme="dark"] .drawer-item[aria-current="page"]{background:#294a39;border-color:#4e9873;color:#b8f0d0}
+:root[data-theme="dark"] .drawer-footer{background:#20382c;border-color:#355341;color:#c2d8ca}
+:root[data-theme="dark"] .drawer-brand{background:linear-gradient(140deg,#071f17,#10533b 72%,#1c7254)}
+@media(min-width:700px){.cols{grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:start}}
+@media(max-width:520px){.bal{padding:14px}.split div{padding:11px 12px}.drawer{width:min(88vw,360px)}}
+
 </style><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#075c42"><link rel="icon" href="./icons/icon-192.png" type="image/png"></head><body>
 <div id="securityGate"><div class="security-card">
   <div style="font-size:32px;margin-bottom:12px">🔐</div>
@@ -656,8 +712,7 @@ function render(){
     var demoN=all.filter(function(t){return t.demo}).length;
     if(demoN)h+='<div class="banner"><span>Zobrazujú sa ukážkové údaje.</span><button type="button" class="link" data-act="cleardemo">Vymazať ukážky</button></div>';
     if(activeView==='overview'){
-      if(!all.length)h+=emptyHtml();
-      else h+='<div class="cols"><section>'+chartCard(mt)+'</section><section>'+listHtml(mt)+'</section></div>';
+      h+='<div class="cols"><section>'+chartCard(mt)+'</section><section>'+listHtml(mt)+'</section></div>';
     }else if(activeView==='transactions'){
       h+='<div class="view-heading"><span class="view-mark"><i data-lucide="receipt-text"></i></span><h2>Transakcie</h2></div>'+listHtml(mt);
     }else if(activeView==='stats'){
